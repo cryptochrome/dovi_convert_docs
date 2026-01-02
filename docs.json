@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "dovi_convert Documentation",
   "colors": {
-    "primary": "#1e66f5",
-    "light": "#1e66f5",
-    "dark": "#89b4fa"
+    "primary": "#8839ef",
+    "light": "#8839ef",
+    "dark": "#cba6f7"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -119,5 +119,14 @@
       "linkedin": "https://linkedin.com/company/mintlify"
     }
   },
-  "description": "Everything you need to know about dovi_convert"
+  "description": "Everything you need to know about dovi_convert",
+  "background": {
+    "color": {
+      "light": "#eff1f5",
+      "dark": "#1e1e2e"
+    }
+  },
+  "appearance": {
+    "default": "system"
+  }
 }
