@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "maple",
   "name": "dovi_convert Documentation",
   "colors": {
     "primary": "#1e66f5",
