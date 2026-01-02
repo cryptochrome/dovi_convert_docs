@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
-  "name": "Mint Starter Kit",
+  "name": "dovi_convert Documentation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#1e66f5",
+    "light": "#1e66f5",
+    "dark": "#89b4fa"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -118,5 +118,6 @@
       "github": "https://github.com/mintlify",
       "linkedin": "https://linkedin.com/company/mintlify"
     }
-  }
+  },
+  "description": "Everything you need to know about dovi_convert"
 }
