@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "dovi_convert Documentation",
   "colors": {
-    "primary": "#8839ef",
-    "light": "#8839ef",
-    "dark": "#cba6f7"
+    "primary": "#ea76cb",
+    "light": "#ea76cb",
+    "dark": "#f5c2e7"
   },
   "favicon": "/favicon.svg",
   "navigation": {
