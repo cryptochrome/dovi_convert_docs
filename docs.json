@@ -20,30 +20,31 @@
     },
     "tabs": [
       {
-        "tab": "Documentation",
+        "tab": "Docs",
         "groups": [
           {
             "group": "Getting started",
             "pages": [
               "index",
-              "quickstart",
-              "development"
+              "quickstart"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Installation",
+            "expanded": true,
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "installation/terminal",
+              "installation/docker"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Core Concepts",
+            "expanded": true,
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "essentials/scanning",
+              "essentials/conversion",
+              "essentials/batch",
+              "essentials/backup-restore"
             ]
           },
           {
@@ -55,6 +56,9 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Command Referecnce"
       }
     ]
   },
