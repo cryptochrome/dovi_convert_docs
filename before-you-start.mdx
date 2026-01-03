@@ -3,20 +3,20 @@ title: "Before You Start"
 description: "Understand the technical background, caveats, and why dovi_convert exists"
 ---
 
-Before converting your files, take a few minutes to understand what dovi_convert does, why it exists, and when conversion is—or isn't—appropriate.
+Before converting your files, take a few minutes to understand what dovi_convert does, why it exists, and when conversion is - or isn't - appropriate.
 
 ## The problem
 
 Dolby Vision Profile 7 files contain two video layers:
 
-- **Base Layer (BL)** — HDR10-compatible video
-- **Enhancement Layer (EL)** — Additional data that improves picture quality
+- **Base Layer (BL)** - HDR10-compatible video
+- **Enhancement Layer (EL)** - Additional data that improves picture quality
 
 Many devices can't decode the Enhancement Layer. When they encounter Profile 7 content, they either:
 
-1. **Fall back to HDR10** — You lose all Dolby Vision benefits
-2. **Fail to play** — The file won't work at all
-3. **Convert blindly** — Strip the Enhancement Layer without checking if it's safe
+1. **Fall back to HDR10** - You lose all Dolby Vision benefits
+2. **Fail to play** - The file won't work at all
+3. **Convert blindly** - Strip the Enhancement Layer without checking if it's safe
 
 The third option is what devices like Nvidia Shield and software like Kodi (with Dolby Vision Compatibility Mode) do. They convert on-the-fly, but they don't check whether the Enhancement Layer contains critical brightness data. If it does, the conversion produces a broken picture.
 
@@ -44,7 +44,7 @@ The Enhancement Layer in Profile 7 files comes in different forms. dovi_convert 
 
 ### MEL (Minimal Enhancement Layer)
 
-The most common type. The Enhancement Layer exists in the file structure but contains no useful data. Converting is completely safe—you lose nothing.
+The most common type. The Enhancement Layer exists in the file structure but contains no useful data. Converting is completely safe - you lose nothing.
 
 ### Simple FEL (No brightness expansion)
 
@@ -56,10 +56,10 @@ If you're uncertain about a Simple FEL verdict, use the `-inspect` command for a
 
 ### Complex FEL (Brightness expansion)
 
-The Enhancement Layer actively elevates brightness beyond what the Base Layer contains. Some films are mastered at 4000 nits but have an HDR10 Base Layer trimmed to 1000 nits—the Enhancement Layer provides the missing brightness.
+The Enhancement Layer actively elevates brightness beyond what the Base Layer contains. Some films are mastered at 4000 nits but have an HDR10 Base Layer trimmed to 1000 nits - the Enhancement Layer provides the missing brightness.
 
 <Warning>
-Converting Complex FEL files produces incorrect results. The retained metadata was designed for the combined layers. Without the Enhancement Layer, tone mapping fails—causing a darker picture, flickering, and other issues.
+Converting Complex FEL files produces incorrect results. The retained metadata was designed for the combined layers. Without the Enhancement Layer, tone mapping fails - causing a darker picture, flickering, and other issues.
 </Warning>
 
 **What to do with Complex FEL files:**
@@ -80,12 +80,12 @@ The community maintains a list of known FEL titles:
 
 ### Nvidia Shield
 
-The Shield handles Profile 7 files by stripping the Enhancement Layer and injecting the RPU in real-time—the same process dovi_convert does offline.
+The Shield handles Profile 7 files by stripping the Enhancement Layer and injecting the RPU in real-time - the same process dovi_convert does offline.
 
 However, the Shield has limitations:
 
-- **High bitrate struggles** — Real-time conversion during playback can cause stuttering on high-bitrate files
-- **No safety checks** — The Shield converts everything, including Complex FEL files
+- **High bitrate struggles** - Real-time conversion during playback can cause stuttering on high-bitrate files
+- **No safety checks** - The Shield converts everything, including Complex FEL files
 
 dovi_convert gives you control. You analyze files in advance, identify problematic titles, and only convert what's safe.
 
@@ -98,16 +98,16 @@ If you use Plex on Apple TV 4K, you may encounter "Fake Dolby Vision" regardless
 - **The solution:** Use [Infuse](https://firecore.com/infuse) instead of Plex. Infuse uses a custom player that correctly applies Dolby Vision metadata. It integrates with Plex servers (the free version doesn't support Dolby Vision).
 
 <Note>
-This is a Plex player issue, not a file format problem. Apple TV hardware supports Profile 8.1 correctly—Plex's implementation doesn't.
+This is a Plex player issue, not a file format problem. Apple TV hardware supports Profile 8.1 correctly - Plex's implementation doesn't.
 </Note>
 
 ## What conversion cannot fix
 
 Converting to Profile 8.1 does not solve format incompatibility issues unrelated to the Enhancement Layer:
 
-- **TrueHD Atmos audio** — Apple TV can't decode TrueHD. You need EAC3 Atmos or AAC fallback tracks.
-- **Multi-angle or Picture-in-Picture** — Secondary video streams are dropped during conversion.
-- **Subtitle compatibility** — Some devices have issues with PGS subtitles; conversion doesn't change this.
+- **TrueHD Atmos audio** - Apple TV can't decode TrueHD. You need EAC3 Atmos or AAC fallback tracks.
+- **Multi-angle or Picture-in-Picture** - Secondary video streams are dropped during conversion.
+- **Subtitle compatibility** - Some devices have issues with PGS subtitles; conversion doesn't change this.
 
 ## Next steps
 

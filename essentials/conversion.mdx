@@ -23,9 +23,9 @@ No video re-encoding happens. The bitstream is processed directly, so conversion
 
 dovi_convert is designed to be non-destructive:
 
-- **Automatic backup** — Your original file is renamed to `*.bak.dovi_convert` before any changes
-- **Scan before convert** — Each file is analyzed to detect Complex FEL
-- **Safe defaults** — Complex FEL files are skipped unless you explicitly override
+- **Automatic backup** - Your original file is renamed to `*.bak.dovi_convert` before any changes
+- **Scan before convert** - Each file is analyzed to detect Complex FEL
+- **Safe defaults** - Complex FEL files are skipped unless you explicitly override
 
 All audio and subtitle tracks are preserved in the converted file.
 
@@ -49,7 +49,7 @@ dovi_convert has two processing modes:
 
 ### Standard mode (default)
 
-Pipes video data directly between ffmpeg and dovi_tool. Fast and efficient—requires no temporary disk space for the video stream.
+Pipes video data directly between ffmpeg and dovi_tool. Fast and efficient - requires no temporary disk space for the video stream.
 
 ```bash
 dovi_convert -convert "Movie.mkv"
@@ -90,7 +90,7 @@ dovi_convert -convert "Movie.mkv" -delete
 ```
 
 <Warning>
-This removes your only copy of the original Profile 7 file. Use with caution—if something goes wrong or you later want to restore the original, you can't.
+This removes your only copy of the original Profile 7 file. Use with caution - if something goes wrong or you later want to restore the original, you can't.
 </Warning>
 
 ### Debug mode (`-debug`)
@@ -112,14 +112,14 @@ Simple FEL detected. This file likely converts safely, but verify with -inspect 
 Continue? [y/N]
 ```
 
-This is a precaution—Simple FEL files usually convert correctly, but the scan might have missed isolated brightness spikes. If you want certainty, run `-inspect` first.
+This is a precaution - Simple FEL files usually convert correctly, but the scan might have missed isolated brightness spikes. If you want certainty, run `-inspect` first.
 
 ## What happens to your files
 
 | Before | After |
 |--------|-------|
 | `Movie.mkv` (Profile 7) | `Movie.mkv` (Profile 8.1) |
-| — | `Movie.mkv.bak.dovi_convert` (original backup) |
+| - | `Movie.mkv.bak.dovi_convert` (original backup) |
 
 The backup contains your complete original file. You can restore it by:
 
@@ -139,9 +139,9 @@ If conversion fails:
 2. Check `dovi_convert_debug.log` for errors from ffmpeg, dovi_tool, or mkvmerge
 
 3. Common issues:
-   - **Seamless Branching** — Try with `-safe` mode
-   - **Corrupted files** — Verify the original file plays correctly
-   - **Disk space** — Safe mode needs space for the extracted video stream
+   - **Seamless Branching** - Try with `-safe` mode
+   - **Corrupted files** - Verify the original file plays correctly
+   - **Disk space** - Safe mode needs space for the extracted video stream
 
 ## Next steps
 

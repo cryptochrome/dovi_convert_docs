@@ -8,13 +8,13 @@ Before converting files, you should analyze them to understand their format and 
 
 ## Why scan first?
 
-Not every Dolby Vision Profile 7 file should be converted. Some contain Enhancement Layers with brightness expansion data—converting these produces incorrect results (dark picture, flickering).
+Not every Dolby Vision Profile 7 file should be converted. Some contain Enhancement Layers with brightness expansion data - converting these produces incorrect results (dark picture, flickering).
 
 Scanning identifies:
 
-- **Video format** — HDR10, HDR10+, Dolby Vision (and which profile)
-- **FEL classification** — MEL, Simple FEL, or Complex FEL
-- **Conversion safety** — Whether the file is safe to convert
+- **Video format** - HDR10, HDR10+, Dolby Vision (and which profile)
+- **FEL classification** - MEL, Simple FEL, or Complex FEL
+- **Conversion safety** - Whether the file is safe to convert
 
 The `-convert` and `-batch` commands automatically scan files before processing and warn you about risky conversions. Running `-scan` separately gives you an overview without starting any conversion.
 
@@ -52,7 +52,7 @@ Non-Profile 7 files (HDR10, SDR, etc.) are also identified but cannot be convert
 
 ### How `-scan` works
 
-The scan samples 10 timestamps across the file and analyzes the RPU (Reference Processing Unit) metadata at each point. It checks for brightness values that exceed the Base Layer's capability—an indicator of Complex FEL.
+The scan samples 10 timestamps across the file and analyzes the RPU (Reference Processing Unit) metadata at each point. It checks for brightness values that exceed the Base Layer's capability - an indicator of Complex FEL.
 
 <Note>
 Sampling is fast but not exhaustive. A file might have brightness spikes in sections the scan didn't sample. For definitive results, use `-inspect`.
@@ -62,11 +62,11 @@ Sampling is fast but not exhaustive. A file might have brightness spikes in sect
 
 ### MEL (Minimal Enhancement Layer)
 
-The Enhancement Layer exists but contains no useful data. This is the most common type. Converting is completely safe—you lose nothing.
+The Enhancement Layer exists but contains no useful data. This is the most common type. Converting is completely safe - you lose nothing.
 
 ### Simple FEL (No brightness expansion)
 
-The Enhancement Layer contains some data (film grain, minor color adjustments), but does not expand brightness. Converting is generally safe—you lose minor enhancements, but the picture remains correct.
+The Enhancement Layer contains some data (film grain, minor color adjustments), but does not expand brightness. Converting is generally safe - you lose minor enhancements, but the picture remains correct.
 
 ### Complex FEL (Brightness expansion)
 
@@ -110,7 +110,7 @@ After analysis, `-inspect` reports:
 - The **peak brightness** values found in the metadata
 - A **verdict** confirming if the file is safe to convert
 
-If `-inspect` says the file is safe but `-scan` said Complex FEL, trust `-inspect`—it analyzed the entire file rather than sampling.
+If `-inspect` says the file is safe but `-scan` said Complex FEL, trust `-inspect` - it analyzed the entire file rather than sampling.
 
 ## Automatic scanning in other commands
 
@@ -119,7 +119,7 @@ You don't always need to run `-scan` manually. Both `-convert` and `-batch` perf
 - **Complex FEL files** are skipped by default (use `-force` to override)
 - **Simple FEL files** trigger a confirmation prompt
 
-This means you can safely run `-convert` on any file—the tool warns you before doing anything risky.
+This means you can safely run `-convert` on any file - the tool warns you before doing anything risky.
 
 ## Next steps
 
