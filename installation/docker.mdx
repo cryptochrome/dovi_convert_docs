@@ -1,9 +1,129 @@
 ---
 title: "Docker"
-description: "Installing dovi_convert with a Docker container"
+description: "Run dovi_convert in a container with a web-based terminal"
 icon: "whale"
 ---
 
+The dovi_convert Docker container provides a self-contained environment with all dependencies pre-installed. It includes a web-based terminal, so you can access the tool from any browser without installing anything on your host system.
+
+## Features
+
+- **Web terminal** — Access dovi_convert through your browser at `http://your-host:7681`
+- **Pre-configured environment** — All dependencies (ffmpeg, dovi_tool, mkvtoolnix, mediainfo) included
+- **NAS-friendly** — Designed for network storage devices and servers
+- **User mapping** — Run with your own UID/GID to avoid file permission issues
+
+## Quick start
+
+Pull and run the container:
+
+```bash
+docker run -d \
+  --name=dovi_convert \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=Europe/Berlin \
+  -p 7681:7681 \
+  -v /path/to/media:/data \
+  --restart unless-stopped \
+  cryptochrome/dovi_convert:latest
+```
+
+Then open `http://your-docker-host:7681` in your browser.
+
+## Configuration
+
+### User and group IDs
+
+The `PUID` and `PGID` environment variables control which user the container runs as. Set these to match your host user to avoid permission problems when accessing files.
+
+To find your user and group IDs:
+
+```bash
+id
+```
+
+This outputs something like `uid=1000(yourname) gid=1000(yourname)`. Use these values for `PUID` and `PGID`.
+
+### Environment variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PUID` | 1000 | User ID for file permissions |
+| `PGID` | 1000 | Group ID for file permissions |
+| `TZ` | `Europe/Berlin` | Timezone for log timestamps |
+
+### Volume mounts
+
+Mount your media directories to `/data` inside the container. You can mount multiple paths:
+
+```bash
+-v /mnt/movies:/data/movies \
+-v /mnt/tv:/data/tv
+```
+
+Inside the container, access your files at `/data/movies`, `/data/tv`, etc.
+
+### Port configuration
+
+The web terminal runs on port 7681 inside the container. Map it to any available port on your host:
+
+```bash
+-p 8080:7681  # Access at http://your-host:8080
+```
+
+## Docker Compose
+
+For persistent deployments, use Docker Compose:
+
+```yaml
+services:
+  dovi_convert:
+    image: cryptochrome/dovi_convert:latest
+    container_name: dovi_convert
+    hostname: dovi-convert
+    environment:
+      - PUID=1000  # Your user ID (run 'id' to find)
+      - PGID=1000  # Your group ID
+      - TZ=Europe/Berlin  # Your timezone
+    volumes:
+      # Mount your media folder(s) here
+      - /mnt/media/movies:/data/movies
+      - /mnt/media/tv:/data/tv
+    ports:
+      - 7681:7681
+    restart: unless-stopped
+```
+
+Start the container:
+
+```bash
+docker compose up -d
+```
+
+## Using the web terminal
+
+Once the container is running, open `http://your-docker-host:7681` in your browser. You'll see a terminal session with dovi_convert ready to use.
+
+The container includes a `dovi` alias for convenience:
+
+```bash
+dovi -help         # Same as dovi_convert -help
+dovi -scan /data   # Scan all files in /data
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="File Scanning" icon="scanner-image" href="/essentials/scanning">
+    Analyze your files to identify formats and FEL status
+  </Card>
+  <Card title="Batch Processing" icon="files" href="/essentials/batch">
+    Process entire directories at once
+  </Card>
+</CardGroup>
+
+<Accordion title="Notes (for internal use)">
 This page should talk a bit our docker container, its features (like the web terminal) and then explain installation with the normal docker run command, as well as a separate section for Docker Compose (example file is in the dovi_convert repo, use it). 
 
 Make sure you explain the PUID and PGID environment variables. 
@@ -11,3 +131,4 @@ Make sure you explain the PUID and PGID environment variables.
 Also explain the other config options like the bind-mount and the web server port.
 
 Use code blocks. Use mintlify features to make the page look beautiful.
+</Accordion>

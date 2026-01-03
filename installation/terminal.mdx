@@ -1,9 +1,116 @@
 ---
 title: "Terminal / Shell"
-description: "Installing dovi_convert directly"
+description: "Install dovi_convert directly on macOS, Linux, or Windows"
 icon: "terminal"
 ---
 
+This guide covers installing dovi_convert on your system without Docker. If you prefer a containerized setup with a web terminal, see the [Docker installation](/installation/docker) instead.
+
+## Platform support
+
+dovi_convert runs on:
+
+- **macOS** (tested on macOS 26)
+- **Linux** (any modern distribution with Python 3.8+)
+- **Windows** (via WSL—Windows Subsystem for Linux)
+
+<Note>
+Windows native support is not available. You must use WSL to run dovi_convert on Windows.
+</Note>
+
+## Dependencies
+
+Before installing dovi_convert, you need the following tools:
+
+| Dependency | Purpose |
+|------------|---------|
+| **Python 3.8+** | Runtime for the script |
+| **ffmpeg** | Video extraction |
+| **dovi_tool** | Dolby Vision metadata processing |
+| **mkvtoolnix** | MKV handling (`mkvmerge`, `mkvextract`) |
+| **mediainfo** | Media file analysis |
+
+<Warning>
+**macOS users:** You must use the command-line versions of these tools, not the `.app` bundles.
+
+GUI applications like MKVToolNix.app or MediaInfo.app are sandboxed differently and don't work correctly with dovi_convert. Install via [Homebrew](https://brew.sh) or [MacPorts](https://www.macports.org/) instead.
+</Warning>
+
+### Automatic installation
+
+When you run dovi_convert, it checks for missing dependencies and offers to install them automatically. It supports:
+
+- **Homebrew** (macOS)
+- **apt** (Ubuntu, Debian)
+- **dnf** (Fedora)
+- **pacman** (Arch Linux)
+
+<Warning>
+dovi_tool may not be available in all package managers. If automatic installation fails, download it manually from the [dovi_tool GitHub releases](https://github.com/quietvoid/dovi_tool/releases).
+</Warning>
+
+## Installation
+
+### Quick install
+
+Download the script and make it executable:
+
+```bash
+curl -sSLO https://github.com/cryptochrome/dovi_convert/releases/latest/download/dovi_convert.py
+chmod +x dovi_convert.py
+sudo mv dovi_convert.py /usr/local/bin/dovi_convert
+```
+
+After installation, run `dovi_convert -help` to verify everything works.
+
+### From source
+
+If you want to stay updated with development changes:
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/cryptochrome/dovi_convert.git
+    cd dovi_convert
+    ```
+  </Step>
+  <Step title="Create a symlink">
+    ```bash
+    sudo ln -s "$(pwd)/dovi_convert.py" /usr/local/bin/dovi_convert
+    ```
+  </Step>
+  <Step title="Update when needed">
+    ```bash
+    cd /path/to/dovi_convert
+    git pull
+    ```
+  </Step>
+</Steps>
+
+## Verify installation
+
+Run the help command to confirm dovi_convert is installed correctly:
+
+```bash
+dovi_convert -help
+```
+
+If any dependencies are missing, the script prompts you to install them.
+
+## Next steps
+
+Now that you've installed dovi_convert, learn how to use it:
+
+<CardGroup cols={2}>
+  <Card title="File Scanning" icon="scanner-image" href="/essentials/scanning">
+    Analyze your files to identify formats and FEL status
+  </Card>
+  <Card title="File Conversion" icon="recycle" href="/essentials/conversion">
+    Convert individual files to Profile 8.1
+  </Card>
+</CardGroup>
+
+<Accordion title="Notes (for internal use)">
 This page should contain detailed installation instructions for dovi_convert, but only for the non-docker version. The page should contain:
 
 1. The OSes we support (macOS, Linux, and Windows with WSL)
@@ -18,3 +125,4 @@ Be verbose enough but don't write a novel, be friendly and mindful of users who 
 MAke use of codeblocks and other Mintlify features to make the page look beautiful.
 
 At the end, point users to reading the core concepts section to get started. 
+</Accordion>

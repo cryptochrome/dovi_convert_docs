@@ -13,8 +13,8 @@
       "anchors": [
         {
           "anchor": "GitHub",
-          "icon": "globe",
-          "href": "https://mintlify.com/docs"
+          "icon": "github",
+          "href": "https://github.com/cryptochrome/dovi_convert"
         }
       ]
     },
@@ -26,7 +26,7 @@
             "group": "Getting started",
             "pages": [
               "index",
-              "the-why"
+              "before-you-start"
             ]
           },
           {
@@ -50,9 +50,9 @@
         ]
       },
       {
-        "tab": "Command Referecnce",
+        "tab": "Command Reference",
         "pages": [
-          "command-referecnce/coming-soon"
+          "command-reference/coming-soon"
         ]
       }
     ]
@@ -63,24 +63,19 @@
         "label": "GitHub",
         "href": "https://github.com/cryptochrome/dovi_convert"
       }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
+    ]
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {

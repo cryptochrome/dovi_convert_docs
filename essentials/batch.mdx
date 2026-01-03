@@ -1,7 +1,206 @@
 ---
 title: "Batch Processing"
-description: "Batch-convert files with dovi_convert"
+description: "Scan and convert entire directories of files"
 icon: "files"
 ---
 
+The `-batch` command processes multiple files at once. It recursively scans a directory, identifies all Profile 7 files, and converts them in sequence. This is ideal for processing large media libraries.
+
+## How batch processing works
+
+When you run `-batch`:
+
+1. **Scans** the directory recursively for MKV files
+2. **Analyzes** each file to identify Profile 7 content and FEL status
+3. **Displays** a summary showing what will be converted
+4. **Asks** for confirmation before proceeding
+5. **Converts** eligible files one by one
+
+<Note>
+Non-Profile 7 files are skipped automatically. You don't need to filter your directory first.
+</Note>
+
+## Basic usage
+
+Process all Profile 7 files in the current directory:
+
+```bash
+dovi_convert -batch
+```
+
+### Set recursive depth
+
+Control how deep the scan goes into subdirectories:
+
+```bash
+dovi_convert -batch 2    # Scan 2 levels deep
+dovi_convert -batch 5    # Scan 5 levels deep (default)
+```
+
+## Safety behavior
+
+Batch processing follows the same safety rules as single-file conversion:
+
+| File type | Default behavior |
+|-----------|------------------|
+| **MEL** | Converted automatically |
+| **Simple FEL** | Pauses for confirmation |
+| **Complex FEL** | Skipped entirely |
+
+### Handling Simple FEL files
+
+By default, batch processing stops when it encounters Simple FEL files and asks if you want to include them:
+
+```
+Found 3 Simple FEL files. Include them in this batch? [y/N]
+```
+
+If you say no, the batch continues with only MEL files.
+
+## Automation options
+
+### Auto-confirm (`-y`)
+
+Skip the initial confirmation prompt:
+
+```bash
+dovi_convert -batch -y
+```
+
+<Note>
+The `-y` flag skips the "Start batch?" prompt but still pauses on Simple FEL files. This prevents accidental processing of files you might want to verify first.
+</Note>
+
+### Include Simple FEL (`-include-simple`)
+
+Treat Simple FEL files the same as MEL—process them without pausing:
+
+```bash
+dovi_convert -batch -y -include-simple
+```
+
+This combination gives you fully automated processing:
+- `-y` skips the start confirmation
+- `-include-simple` skips the Simple FEL confirmation
+
+### Force Complex FEL (`-force`)
+
+Include Complex FEL files in the batch:
+
+```bash
+dovi_convert -batch -force
+```
+
+<Warning>
+Forcing conversion on Complex FEL files produces incorrect results. Use this only if you understand and accept that some files will have incorrect tone mapping.
+</Warning>
+
+### Delete backups (`-delete`)
+
+Automatically delete backup files after each successful conversion:
+
+```bash
+dovi_convert -batch -delete
+```
+
+<Warning>
+This removes your original Profile 7 files permanently. There's no undo. Consider running a batch without `-delete` first, verify the results, then use `-cleanup` to remove backups.
+</Warning>
+
+## Batch summary
+
+After scanning, dovi_convert shows a summary:
+
+```
+=== Batch Summary ===
+Profile 7 MEL:        12 files
+Profile 7 Simple FEL:  3 files
+Profile 7 Complex FEL: 1 file (will be skipped)
+Other/Ignored:        45 files
+
+Total to convert: 15 files (423 GB)
+Proceed? [y/N]
+```
+
+This gives you a chance to review before any changes are made.
+
+## Cleaning up backups
+
+After batch processing, you may have many `.bak.dovi_convert` backup files. The `-cleanup` command removes them safely.
+
+### Basic cleanup
+
+Remove backup files in the current directory:
+
+```bash
+dovi_convert -cleanup
+```
+
+### Recursive cleanup
+
+Remove backups from subdirectories:
+
+```bash
+dovi_convert -cleanup -r
+```
+
+### Auto-confirm cleanup
+
+Skip the confirmation prompt:
+
+```bash
+dovi_convert -cleanup -y
+```
+
+<Note>
+The cleanup command has a safety check: it only deletes backups where the corresponding converted file exists. If you deleted the converted file (maybe it was corrupted), the backup is kept as orphan protection.
+</Note>
+
+## Recommended workflow
+
+For large libraries, consider this workflow:
+
+<Steps>
+  <Step title="Scan first">
+    Get an overview of your library:
+    ```bash
+    dovi_convert -scan -r
+    ```
+  </Step>
+  <Step title="Inspect uncertain files">
+    For any Simple FEL files you're unsure about:
+    ```bash
+    dovi_convert -inspect "Uncertain.mkv"
+    ```
+  </Step>
+  <Step title="Run batch">
+    Convert with confirmation:
+    ```bash
+    dovi_convert -batch
+    ```
+  </Step>
+  <Step title="Verify results">
+    Spot-check a few converted files to ensure they play correctly.
+  </Step>
+  <Step title="Clean up">
+    Once satisfied, remove backups:
+    ```bash
+    dovi_convert -cleanup -r
+    ```
+  </Step>
+</Steps>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="File Scanning" icon="scanner-image" href="/essentials/scanning">
+    Learn more about analyzing files before conversion
+  </Card>
+  <Card title="Backup & Restore" icon="floppy-disk" href="/essentials/backup-restore">
+    Archive original layers for future restoration
+  </Card>
+</CardGroup>
+
+<Accordion title="Notes (for internal use)">
 This page should contain an extensive guide for the -batch command, including usage examples with all command options, similar to the File Conversion page. Take the instructions from there and apply them to this page.
+</Accordion>

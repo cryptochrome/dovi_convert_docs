@@ -1,8 +1,77 @@
 ---
 title: "Introduction"
-description: "Homepage of the dovi_convert documentation"
+description: "Convert Dolby Vision Profile 7 to Profile 8.1 safely and automatically"
 ---
 
+dovi_convert automates the conversion of Dolby Vision Profile 7 MKV files (typically UHD Blu-ray rips) into Profile 8.1. This ensures compatibility with media players that don't support the Profile 7 Enhancement Layer.
+
+## Why convert?
+
+Many popular devices—including Apple TV 4K, Nvidia Shield, Zidoo players, and Plex clients—cannot process the Enhancement Layer in Profile 7 files. Without proper handling, these devices fall back to HDR10, losing Dolby Vision benefits entirely.
+
+Converting to Profile 8.1 strips the Enhancement Layer while preserving the dynamic metadata (RPU), giving you a file that works on virtually any Dolby Vision-capable device.
+
+<Warning>
+Not every Profile 7 file should be converted. Some use the Enhancement Layer for brightness expansion—converting these causes visual issues. dovi_convert analyzes files before conversion and warns you when conversion is risky.
+</Warning>
+
+## What you need to know
+
+Before using dovi_convert, you should understand what it does and when conversion is appropriate.
+
+<CardGroup cols={2}>
+  <Card title="Before You Start" icon="circle-info" href="/before-you-start">
+    Understand the technical background, caveats, and device-specific considerations
+  </Card>
+  <Card title="FEL Types Explained" icon="layer-group" href="/before-you-start#understanding-the-enhancement-layer">
+    Learn about MEL, Simple FEL, and Complex FEL—and why it matters
+  </Card>
+</CardGroup>
+
+## Platform support
+
+dovi_convert runs on:
+
+- **macOS** (tested on macOS 26)
+- **Linux** (any modern distribution)
+- **Windows** (via WSL)
+- **Docker** (with web terminal access)
+
+<Tip>
+The conversion process does not re-encode video. Your CPU only needs to handle metadata extraction and remuxing—no powerful hardware required.
+</Tip>
+
+## Installation
+
+<CardGroup cols={2}>
+  <Card title="Terminal / Shell" icon="terminal" href="/installation/terminal">
+    Install directly on macOS, Linux, or Windows (WSL)
+  </Card>
+  <Card title="Docker" icon="whale" href="/installation/docker">
+    Run in a container with a web-based terminal
+  </Card>
+</CardGroup>
+
+## Core concepts
+
+Once installed, familiarize yourself with the main features:
+
+<CardGroup cols={2}>
+  <Card title="File Scanning & Analysis" icon="scanner-image" href="/essentials/scanning">
+    Identify video formats and analyze FEL complexity with `-scan` and `-inspect`
+  </Card>
+  <Card title="File Conversion" icon="recycle" href="/essentials/conversion">
+    Convert individual files with `-convert`
+  </Card>
+  <Card title="Batch Processing" icon="files" href="/essentials/batch">
+    Scan and convert entire directories with `-batch`
+  </Card>
+  <Card title="Backup & Restore" icon="floppy-disk" href="/essentials/backup-restore">
+    Archive original layers for future restoration (coming soon)
+  </Card>
+</CardGroup>
+
+<Accordion title="Notes (for internal use)">
 - we should have a nice welcome page that explains what dovi_convert does
   - basically the top part of the dovi_convert repo README.md
   - but a bit more verbose and user-friendly
@@ -11,3 +80,4 @@ description: "Homepage of the dovi_convert documentation"
 - Have an important section that asks users to understand the core concepts (conversion, scanning and analysis, batch processing, backup & restore) - use nice cards or other decorative elements that lead to those pages
 
 So this whole page should serve as a welcome page and a home page for the entire dovi_convert project.
+</Accordion>

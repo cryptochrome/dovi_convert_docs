@@ -1,0 +1,134 @@
+---
+title: "Before You Start"
+description: "Understand the technical background, caveats, and why dovi_convert exists"
+---
+
+Before converting your files, take a few minutes to understand what dovi_convert does, why it exists, and when conversion is—or isn't—appropriate.
+
+## The problem
+
+Dolby Vision Profile 7 files contain two video layers:
+
+- **Base Layer (BL)** — HDR10-compatible video
+- **Enhancement Layer (EL)** — Additional data that improves picture quality
+
+Many devices can't decode the Enhancement Layer. When they encounter Profile 7 content, they either:
+
+1. **Fall back to HDR10** — You lose all Dolby Vision benefits
+2. **Fail to play** — The file won't work at all
+3. **Convert blindly** — Strip the Enhancement Layer without checking if it's safe
+
+The third option is what devices like Nvidia Shield and software like Kodi (with Dolby Vision Compatibility Mode) do. They convert on-the-fly, but they don't check whether the Enhancement Layer contains critical brightness data. If it does, the conversion produces a broken picture.
+
+## What dovi_convert does differently
+
+dovi_convert analyzes files before conversion. It examines the Enhancement Layer to determine whether stripping it is safe. If the layer contains brightness expansion data, the tool warns you and skips the file by default.
+
+The conversion process:
+
+1. Strips the Enhancement Layer from the video
+2. Injects the RPU (dynamic metadata) into the Base Layer
+3. Creates a Profile 8.1 file that works on nearly any Dolby Vision device
+
+All audio and subtitle tracks are preserved. Your original file is backed up automatically.
+
+## Understanding the Enhancement Layer
+
+The Enhancement Layer in Profile 7 files comes in different forms. dovi_convert classifies them into three categories:
+
+| Type | What it means | Safe to convert? |
+|------|---------------|------------------|
+| **MEL** | Minimal Enhancement Layer with no actual data | Yes |
+| **Simple FEL** | Full Enhancement Layer, but no brightness data | Usually yes |
+| **Complex FEL** | Enhancement Layer with brightness expansion | No |
+
+### MEL (Minimal Enhancement Layer)
+
+The most common type. The Enhancement Layer exists in the file structure but contains no useful data. Converting is completely safe—you lose nothing.
+
+### Simple FEL (No brightness expansion)
+
+The Enhancement Layer contains some data (like film grain or minor color adjustments), but does not expand brightness. Converting is generally safe. You lose the minor enhancements, but the picture remains correct.
+
+<Tip>
+If you're uncertain about a Simple FEL verdict, use the `-inspect` command for a definitive frame-by-frame analysis.
+</Tip>
+
+### Complex FEL (Brightness expansion)
+
+The Enhancement Layer actively elevates brightness beyond what the Base Layer contains. Some films are mastered at 4000 nits but have an HDR10 Base Layer trimmed to 1000 nits—the Enhancement Layer provides the missing brightness.
+
+<Warning>
+Converting Complex FEL files produces incorrect results. The retained metadata was designed for the combined layers. Without the Enhancement Layer, tone mapping fails—causing a darker picture, flickering, and other issues.
+</Warning>
+
+**What to do with Complex FEL files:**
+
+- Watch the HDR10 fallback (the Base Layer plays as HDR10 on unsupported devices)
+- Use a device that supports Profile 7 FEL playback (e.g., Ugoos AM6B+)
+- Do not convert unless you understand and accept the quality loss
+
+### Cross-reference your results
+
+The community maintains a list of known FEL titles:
+
+<Card title="Official DoVi_Scripts FEL List" icon="table" href="https://docs.google.com/spreadsheets/d/15i0a84uiBtWiHZ5CXZZ7wygLFXwYOd84/edit?gid=828864432#gid=828864432">
+  Maintained by R3S3t999, author of DoVi_Scripts. Use this to verify scan results.
+</Card>
+
+## Device-specific notes
+
+### Nvidia Shield
+
+The Shield handles Profile 7 files by stripping the Enhancement Layer and injecting the RPU in real-time—the same process dovi_convert does offline.
+
+However, the Shield has limitations:
+
+- **High bitrate struggles** — Real-time conversion during playback can cause stuttering on high-bitrate files
+- **No safety checks** — The Shield converts everything, including Complex FEL files
+
+dovi_convert gives you control. You analyze files in advance, identify problematic titles, and only convert what's safe.
+
+### Apple TV with Plex
+
+If you use Plex on Apple TV 4K, you may encounter "Fake Dolby Vision" regardless of which Dolby Vision profile your file uses.
+
+- **The issue:** Plex displays the Dolby Vision logo on your TV, but fails to apply the dynamic metadata. The result is HDR10 in a Dolby Vision container.
+- **Why it happens:** Plex uses Apple's AVPlayer, which has inconsistent Dolby Vision support despite Apple adding Profile 8.1 support in tvOS 17.
+- **The solution:** Use [Infuse](https://firecore.com/infuse) instead of Plex. Infuse uses a custom player that correctly applies Dolby Vision metadata. It integrates with Plex servers (the free version doesn't support Dolby Vision).
+
+<Note>
+This is a Plex player issue, not a file format problem. Apple TV hardware supports Profile 8.1 correctly—Plex's implementation doesn't.
+</Note>
+
+## What conversion cannot fix
+
+Converting to Profile 8.1 does not solve format incompatibility issues unrelated to the Enhancement Layer:
+
+- **TrueHD Atmos audio** — Apple TV can't decode TrueHD. You need EAC3 Atmos or AAC fallback tracks.
+- **Multi-angle or Picture-in-Picture** — Secondary video streams are dropped during conversion.
+- **Subtitle compatibility** — Some devices have issues with PGS subtitles; conversion doesn't change this.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/installation/terminal">
+    Install dovi_convert on your system
+  </Card>
+  <Card title="File Scanning" icon="scanner-image" href="/essentials/scanning">
+    Learn how to analyze your files
+  </Card>
+</CardGroup>
+
+<Accordion title="Notes (for internal use)">
+This page should cover important topics and caveats, mimicing what we have in the dovi_convert repo README.md, but more verbose and friendly. 
+
+Structure could be:
+
+1. The Problem (they why, many players don't support dovi profile 7, fall back to HDR, Shield converts blindly, Kodi too (when Dovi compatiibility mode is active), etc. - So basically, why it makes sense to convert to 8.1
+2. Explain the FEL details we have in the README.md, without going into the technical details on how our tool inspects and scans. Just the "good to know about FEL" stuff, the caveats and why not every Dovi 7 video should be converted (and that our tool handles it - point to the File Scanning and Analysis page)
+3. Have some explicit notes about the nvidia shield, as well as plex on appletv (same as in the README.md, but nicer, friendlier, more verbose, and fact checked)
+4. Anything else that comes to mind?
+
+Make sure the page has a nice design, making extensive use of Mintlify's features
+</Accordion>
