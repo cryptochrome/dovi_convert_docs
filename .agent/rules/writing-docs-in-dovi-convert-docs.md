@@ -86,7 +86,6 @@ description: "Concise description for SEO and navigation"
 
 ## Quality standards
 
-- Test all code examples before publishing
 - Use relative paths for internal links
 - Include alt text for all images
 - Ensure proper heading hierarchy (start with h2)
