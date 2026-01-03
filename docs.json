@@ -5,7 +5,7 @@
   "colors": {
     "primary": "#ea76cb",
     "light": "#ea76cb",
-    "dark": "#f5c2e7"
+    "dark": "#ea76cb"
   },
   "favicon": "/images/dovi_convert-icon-round-cropped.png",
   "navigation": {
@@ -104,6 +104,5 @@
     "telemetry": {
       "enabled": false
     }
-  },
-  "logo": "/images/dovi_convert-icon-round-cropped.png"
+  }
 }
