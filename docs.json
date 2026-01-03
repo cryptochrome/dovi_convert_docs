@@ -3,8 +3,8 @@
   "theme": "mint",
   "name": "dovi_convert Docs",
   "colors": {
-    "primary": "#ea76cb",
-    "light": "#ea76cb",
+    "primary": "#8839ef",
+    "light": "#8839ef",
     "dark": "#ea76cb"
   },
   "favicon": "/images/dovi_convert-icon-round-cropped.png",
