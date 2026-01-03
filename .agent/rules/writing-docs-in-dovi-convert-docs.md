@@ -25,6 +25,10 @@ trigger: always_on
 - Include expected outcomes for major steps
 - Use descriptive, keyword-rich headings
 - Keep sentences concise but informative
+- Avoid marketing speech and AI-slop at all cost. 
+   - We are not trying to sell the tool
+   - This is not a startup pitching a product to VCs
+   - Do not invent and fancy feature names
 
 ## Required page structure
 
