@@ -4,85 +4,23 @@ description: "Using dovi_convert to scan and analyze your files"
 icon: "scanner-image"
 ---
 
-## Titles
+This page will be an extensive one, explaining the two file analyis features -scan and -inspect in detail, along with concepts, terminology and usage examples. 
 
-Best used for section headers.
+It should have sections like this:
 
-```md
-## Titles
-```
-
-### Subtitles
-
-Best used for subsection headers.
-
-```md
-### Subtitles
-```
-
-<Tip>
-
-Each **title** and **subtitle** creates an anchor and also shows up on the table of contents on the right.
-
-</Tip>
-
-## Text formatting
-
-We support most markdown formatting. Simply add `**`, `_`, or `~` around text to format it.
-
-| Style         | How to write it   | Result          |
-| ------------- | ----------------- | --------------- |
-| Bold          | `**bold**`        | **bold**        |
-| Italic        | `_italic_`        | _italic_        |
-| Strikethrough | `~strikethrough~` | ~strikethrough~ |
-
-You can combine these. For example, write `**_bold and italic_**` to get **_bold and italic_** text.
-
-You need to use HTML to write superscript and subscript text. That is, add `<sup>` or `<sub>` around your text.
-
-| Text Size   | How to write it          | Result                 |
-| ----------- | ------------------------ | ---------------------- |
-| Superscript | `<sup>superscript</sup>` | <sup>superscript</sup> |
-| Subscript   | `<sub>subscript</sub>`   | <sub>subscript</sub>   |
-
-## Linking to pages
-
-You can add a link by wrapping text in `[]()`. You would write `[link to google](https://google.com)` to [link to google](https://google.com).
-
-Links to pages in your docs need to be root-relative. Basically, you should include the entire folder path. For example, `[link to text](/writing-content/text)` links to the page "Text" in our components section.
-
-Relative links like `[link to text](../text)` will open slower because we cannot optimize them as easily.
-
-## Blockquotes
-
-### Singleline
-
-To create a blockquote, add a `>` in front of a paragraph.
-
-> Dorothy followed her through many of the beautiful rooms in her castle.
-
-```md
-> Dorothy followed her through many of the beautiful rooms in her castle.
-```
-
-### Multiline
-
-> Dorothy followed her through many of the beautiful rooms in her castle.
->
-> The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.
-
-```md
-> Dorothy followed her through many of the beautiful rooms in her castle.
->
-> The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.
-```
-
-### LaTeX
-
-Mintlify supports [LaTeX](https://www.latex-project.org) through the Latex component.
-
-<Latex>8 x (vk x H1 - H2) = (0,1)</Latex>
-
-```md
-<Latex>8 x (vk x H1 - H2) = (0,1)</Latex>
-```
+1. General intro to file scanning & analysis
+2. Purpose and why you'd use it
+3. The difference between -scan and -inspect (as explained in the dovi_convert repo README.md, but more verbose, userfriendly), e. g. "How it works"
+4. Highlight that -scan is useful for an overview, but that all other commands like -convert and -inspect will actually use the same scan before they start converting (and warn when better not to convert)
+5. Section about -scan
+   1. Terminology used (MEL, Simple FEL, Complex FEL)
+   2. Understanding -scan verdicts
+   3. When to use -inspect to verify
+   4. Usage examples (including all command options)
+6. Section about -inspect
+   1. When to use it
+   2. How it's different from -scan and how it works (e. g. full frame by frame analysis)
+   3. Why it's verdict can be different from -scan (-inspect being the definitive result)
+   4. Interpreting the output
+   5. Usage examples (including all command options)
+   6. 

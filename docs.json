@@ -46,19 +46,14 @@
               "essentials/batch",
               "essentials/backup-restore"
             ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
           }
         ]
       },
       {
-        "tab": "Command Referecnce"
+        "tab": "Command Referecnce",
+        "pages": [
+          "command-referecnce/coming-soon"
+        ]
       }
     ]
   },
