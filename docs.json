@@ -3,7 +3,7 @@
   "theme": "mint",
   "name": "dovi_convert Docs",
   "colors": {
-    "primary": "#8839ef",
+    "primary": "#ea76cb",
     "light": "#8839ef",
     "dark": "#ea76cb"
   },
@@ -95,7 +95,7 @@
     }
   },
   "appearance": {
-    "default": "system"
+    "default": "dark"
   },
   "styling": {
     "eyebrows": "breadcrumbs"
