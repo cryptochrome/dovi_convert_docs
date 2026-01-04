@@ -95,17 +95,21 @@ dovi_convert -batch -force
 Forcing conversion on Complex FEL files produces incorrect results. Use this only if you understand and accept that some files will have incorrect tone mapping.
 </Warning>
 
-### Delete backups (`-delete`)
+### Permanent deletion (`-delete`)
 
-Automatically delete backup files after each successful conversion:
+Remove original files immediately after each successful conversion, skipping the backup step entirely:
 
 ```bash
 dovi_convert -batch -delete
 ```
 
-<Warning>
-This removes your original Profile 7 files permanently. There's no undo. Consider running a batch without `-delete` first, verify the results, then use `-cleanup` to remove backups.
-</Warning>
+<Danger>
+This is irreversible. Your original Profile 7 files are gone permanently. Only use this if storage space is critical (e.g., limited NAS capacity) and you're confident in the conversion results.
+</Danger>
+
+<Tip>
+If storage is a concern but you want a safety net, run the batch without `-delete`, verify your results, then use `-cleanup` to remove backups selectively.
+</Tip>
 
 ## Batch summary
 
@@ -181,12 +185,6 @@ For large libraries, consider this workflow:
   </Step>
   <Step title="Verify results">
     Spot-check a few converted files to ensure they play correctly.
-  </Step>
-  <Step title="Clean up">
-    Once satisfied, remove backups:
-    ```bash
-    dovi_convert -cleanup -r
-    ```
   </Step>
 </Steps>
 
