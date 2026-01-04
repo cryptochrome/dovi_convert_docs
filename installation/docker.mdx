@@ -15,19 +15,49 @@ The dovi_convert Docker container provides a self-contained environment with all
 
 ## Quick start
 
-Pull and run the container:
+<Tabs>
+  <Tab title="Docker run">
+    ```bash
+    docker run -d \
+      --name=dovi_convert \
+      -e PUID=1000 \
+      -e PGID=1000 \
+      -e TZ=Europe/Berlin \
+      -p 7681:7681 \
+      -v /path/to/media:/data \
+      --restart unless-stopped \
+      cryptochrome/dovi_convert:latest
+    ```
+  </Tab>
+  <Tab title="Docker Compose">
+    Save this as `docker-compose.yml`:
 
-```bash
-docker run -d \
-  --name=dovi_convert \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ=Europe/Berlin \
-  -p 7681:7681 \
-  -v /path/to/media:/data \
-  --restart unless-stopped \
-  cryptochrome/dovi_convert:latest
-```
+    ```yaml
+    services:
+      dovi_convert:
+        image: cryptochrome/dovi_convert:latest
+        container_name: dovi_convert
+        hostname: dovi-convert
+        environment:
+          - PUID=1000  # Your user ID (run 'id' to find)
+          - PGID=1000  # Your group ID
+          - TZ=Europe/Berlin  # Your timezone
+        volumes:
+          # Mount your media folder(s) here
+          - /mnt/media/movies:/data/movies
+          - /mnt/media/tv:/data/tv
+        ports:
+          - 7681:7681
+        restart: unless-stopped
+    ```
+
+    Then start the container:
+
+    ```bash
+    docker compose up -d
+    ```
+  </Tab>
+</Tabs>
 
 Then open `http://your-docker-host:7681` in your browser.
 
@@ -70,35 +100,6 @@ The web terminal runs on port 7681 inside the container. Map it to any available
 
 ```bash
 -p 8080:7681  # Access at http://your-host:8080
-```
-
-## Docker Compose
-
-For persistent deployments, use Docker Compose:
-
-```yaml
-services:
-  dovi_convert:
-    image: cryptochrome/dovi_convert:latest
-    container_name: dovi_convert
-    hostname: dovi-convert
-    environment:
-      - PUID=1000  # Your user ID (run 'id' to find)
-      - PGID=1000  # Your group ID
-      - TZ=Europe/Berlin  # Your timezone
-    volumes:
-      # Mount your media folder(s) here
-      - /mnt/media/movies:/data/movies
-      - /mnt/media/tv:/data/tv
-    ports:
-      - 7681:7681
-    restart: unless-stopped
-```
-
-Start the container:
-
-```bash
-docker compose up -d
 ```
 
 ## Using the web terminal
