@@ -9,15 +9,6 @@
   },
   "favicon": "/images/dovi_convert-icon-round-cropped.png",
   "navigation": {
-    "global": {
-      "anchors": [
-        {
-          "anchor": "GitHub",
-          "icon": "github",
-          "href": "https://github.com/cryptochrome/dovi_convert"
-        }
-      ]
-    },
     "tabs": [
       {
         "tab": "Docs",
@@ -51,9 +42,18 @@
       },
       {
         "tab": "Command Reference",
+        "hidden": true,
         "pages": [
           "command-reference/coming-soon"
         ]
+      },
+      {
+        "tab": "Release Notes",
+        "hidden": true
+      },
+      {
+        "tab": "Roadmap",
+        "hidden": true
       }
     ]
   },
