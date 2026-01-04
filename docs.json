@@ -42,9 +42,28 @@
       },
       {
         "tab": "Command Reference",
-        "hidden": true,
-        "pages": [
-          "command-reference/coming-soon"
+        "groups": [
+          {
+            "group": "Analysis",
+            "pages": [
+              "command-reference/scan",
+              "command-reference/inspect"
+            ]
+          },
+          {
+            "group": "Conversion",
+            "pages": [
+              "command-reference/convert",
+              "command-reference/batch",
+              "command-reference/cleanup"
+            ]
+          },
+          {
+            "group": "Utilities",
+            "pages": [
+              "command-reference/update-check"
+            ]
+          }
         ]
       },
       {

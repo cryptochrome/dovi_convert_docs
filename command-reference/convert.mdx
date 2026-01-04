@@ -1,0 +1,93 @@
+---
+title: "-convert"
+description: "Convert a single Profile 7 file to Profile 8.1"
+icon: "arrows-rotate"
+---
+
+## Synopsis
+
+```
+dovi_convert -convert <file> [options]
+```
+
+## Description
+
+Converts a single Dolby Vision Profile 7 MKV file to Profile 8.1. The conversion strips the Enhancement Layer while injecting the RPU (dynamic metadata) into the Base Layer, creating a file compatible with devices that don't support FEL.
+
+The original file is automatically backed up as `*.mkv.bak.dovi_convert` before conversion.
+
+## Arguments
+
+| Argument | Required | Description |
+|----------|----------|-------------|
+| `<file>` | Yes | Path to the Profile 7 MKV file to convert |
+
+## Options
+
+| Option | Description |
+|--------|-------------|
+| `-force` | Override Complex FEL safety check and convert anyway |
+| `-safe` | Force Safe Mode (disk extraction). Slower but handles problematic files |
+| `-delete` | Delete backup file after successful conversion |
+| `-debug` | Generate `dovi_convert_debug.log` with detailed tool output |
+
+<Callout icon="circle-info" color="#8caaee" iconType="solid">
+If Standard mode fails (common with Seamless Branching), Safe mode is triggered automatically. You don't need to manually retry.
+</Callout>
+
+## Examples
+
+**Basic conversion:**
+
+```bash
+dovi_convert -convert "Movie.mkv"
+```
+
+**Force conversion on Complex FEL file:**
+
+```bash
+dovi_convert -convert "Movie.mkv" -force
+```
+
+<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
+Forcing conversion on Complex FEL files produces incorrect tone mapping. Only use this if you understand and accept the quality loss.
+</Callout>
+
+**Use Safe Mode:**
+
+```bash
+dovi_convert -convert "Movie.mkv" -safe
+```
+
+**Delete backup after conversion:**
+
+```bash
+dovi_convert -convert "Movie.mkv" -delete
+```
+
+<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
+This removes your only copy of the original Profile 7 file. Use with caution.
+</Callout>
+
+**Enable debug logging:**
+
+```bash
+dovi_convert -convert "Movie.mkv" -debug
+```
+
+## Conversion Process
+
+1. **Analyzes** the file to detect FEL complexity
+2. **Creates backup** (`*.mkv.bak.dovi_convert`)
+3. **Strips** Enhancement Layer from video
+4. **Injects** RPU metadata into Base Layer
+5. **Remuxes** everything into new MKV file
+6. **Verifies** frame count matches
+
+All audio and subtitle tracks are preserved.
+
+## See also
+
+- [-scan](/command-reference/scan) - Analyze files before conversion
+- [-batch](/command-reference/batch) - Convert multiple files
+- [-cleanup](/command-reference/cleanup) - Remove backup files

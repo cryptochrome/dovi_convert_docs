@@ -1,0 +1,68 @@
+---
+title: "-cleanup"
+description: "Remove backup files created during conversion"
+icon: "trash"
+---
+
+## Synopsis
+
+```
+dovi_convert -cleanup [-r] [-y]
+```
+
+## Description
+
+Scans for and removes `*.mkv.bak.dovi_convert` backup files in the current directory. Includes orphan protection - only deletes backups where the corresponding converted file exists.
+
+## Options
+
+| Option | Description |
+|--------|-------------|
+| `-r` | Scan recursively through subdirectories |
+| `-y` | Skip confirmation prompt |
+
+<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
+This is irreversible. Your original Profile 7 files are gone permanently. Only use this if storage space is a concern and you're confident in the conversion results.
+</Callout>
+
+## Examples
+
+**Clean up current directory:**
+
+```bash
+dovi_convert -cleanup
+```
+
+**Clean up recursively:**
+
+```bash
+dovi_convert -cleanup -r
+```
+
+**Auto-confirm cleanup:**
+
+```bash
+dovi_convert -cleanup -y
+```
+
+**Recursive cleanup without prompts:**
+
+```bash
+dovi_convert -cleanup -r -y
+```
+
+## Orphan Protection
+
+The cleanup command has a safety check: it only deletes backups where the corresponding converted file exists.
+
+**Example:**
+- Backup exists: `Movie.mkv.bak.dovi_convert`
+- Converted file missing: `Movie.mkv` (deleted or corrupted)
+- **Result:** Backup is kept
+
+This prevents data loss if you've deleted a converted file due to quality issues.
+
+## See also
+
+- [-convert](/command-reference/convert) - Convert single files
+- [-batch](/command-reference/batch) - Batch convert files

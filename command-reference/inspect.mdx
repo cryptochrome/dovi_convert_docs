@@ -1,0 +1,58 @@
+---
+title: "-inspect"
+description: "Perform full frame-by-frame analysis of FEL brightness metadata"
+icon: "magnifying-glass"
+---
+
+## Synopsis
+
+```
+dovi_convert -inspect <file> [-safe]
+```
+
+## Description
+
+Performs a definitive frame-by-frame analysis of the entire file to verify whether the Enhancement Layer contains active brightness expansion. Use this to verify Simple FEL verdicts from `-scan`, or when you need absolute certainty before conversion.
+
+## Arguments
+
+| Argument | Required | Description |
+|----------|----------|-------------|
+| `<file>` | Yes | Path to the MKV file to inspect |
+
+## Options
+
+| Option | Description |
+|--------|-------------|
+| `-safe` | Force Safe Mode (disk extraction). Extracts video stream to disk before analyzing |
+
+<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
+`-inspect` reads the entire file frame-by-frame. For a typical 50-80 GB movie, this takes several minutes. It's not suitable for batch operations.
+</Callout>
+
+## Examples
+
+**Inspect a file:**
+
+```bash
+dovi_convert -inspect "Movie.mkv"
+```
+
+**Inspect with Safe Mode:**
+
+```bash
+dovi_convert -inspect "Movie.mkv" -safe
+```
+
+## Output
+
+After analysis, `-inspect` reports:
+
+- Whether **brightness expansion** was detected
+- The **peak brightness** values found in the metadata
+- **FEL verdict** - Simple FEL (safe) or Complex FEL (skip)
+
+## See also
+
+- [-scan](/command-reference/scan) - Fast sampling analysis
+- [-convert](/command-reference/convert) - Convert a single file

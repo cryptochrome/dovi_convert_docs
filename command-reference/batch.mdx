@@ -1,0 +1,111 @@
+---
+title: "-batch"
+description: "Scan and convert multiple Profile 7 files in directories"
+icon: "files"
+---
+
+## Synopsis
+
+```
+dovi_convert -batch [depth] [options]
+```
+
+## Description
+
+Recursively scans directories for Profile 7 files, analyzes their FEL complexity, and batch-converts safe candidates. The command first scans all files, shows a summary, then asks for confirmation before converting.
+
+## Arguments
+
+| Argument | Type | Default | Description |
+|----------|------|---------|-------------|
+| `[depth]` | number | 1 | Recursion depth (1 = current directory only) |
+
+## Options
+
+| Option | Description |
+|--------|-------------|
+| `-y` | Skip confirmation prompts (auto-confirm batch start) |
+| `-include-simple` | Include Simple FEL files in auto-mode (requires `-y`) |
+| `-force` | Force conversion on Complex FEL files |
+| `-delete` | Delete backup files after successful conversions |
+| `-safe` | Force Safe Mode for all conversions |
+| `-debug` | Generate debug logs for all conversions |
+
+## Safety Behavior
+
+| File Type | Default Behavior |
+|-----------|------------------|
+| **MEL** | Converted automatically |
+| **Simple FEL** | Pauses for confirmation |
+| **Complex FEL** | Skipped entirely |
+
+## Examples
+
+**Batch convert current directory:**
+
+```bash
+dovi_convert -batch
+```
+
+**Scan 3 levels deep:**
+
+```bash
+dovi_convert -batch 3
+```
+
+**Fully automated (MEL only):**
+
+```bash
+dovi_convert -batch -y
+```
+
+**Fully automated (include Simple FEL):**
+
+```bash
+dovi_convert -batch -y -include-simple
+```
+
+<Callout icon="lightbulb" color="#a6d189" iconType="solid">
+The `-y` flag skips the "Start batch?" prompt but still pauses on Simple FEL files unless you also use `-include-simple`.
+</Callout>
+
+**Force convert Complex FEL files:**
+
+```bash
+dovi_convert -batch -force
+```
+
+<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
+Forcing conversion on Complex FEL files produces incorrect results. Use this only if you understand and accept that some files will have incorrect tone mapping.
+</Callout>
+
+**Delete backups immediately:**
+
+```bash
+dovi_convert -batch -y -delete
+```
+
+<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
+This is irreversible. Your original Profile 7 files are gone permanently. Only use this if storage space is a concern and you're confident in the conversion results.
+</Callout>
+
+## Batch Summary
+
+After scanning, dovi_convert shows a summary:
+
+```
+=== Batch Summary ===
+Profile 7 MEL:        12 files
+Profile 7 Simple FEL:  3 files
+Profile 7 Complex FEL: 1 file (will be skipped)
+Other/Ignored:        45 files
+
+Total to convert: 15 files (423 GB)
+Proceed? [y/N]
+```
+
+## See also
+
+- [-scan](/command-reference/scan) - Analyze files first
+- [-convert](/command-reference/convert) - Convert single files
+- [-cleanup](/command-reference/cleanup) - Remove backup files
