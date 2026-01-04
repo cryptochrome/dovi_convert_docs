@@ -49,11 +49,35 @@ description: "Concise description for SEO and navigation"
 
 ### Callouts
 
-- `<Note>` for helpful supplementary information
-- `<Warning>` for important cautions and breaking changes
-- `<Tip>` for best practices and expert advice  
-- `<Info>` for neutral contextual information
-- `<Check>` for success confirmations
+We use custom Catppuccin-themed callouts for visual consistency. **Do NOT use** the built-in `<Note>`, `<Warning>`, `<Tip>`, `<Info>`, or `<Danger>` components.
+
+#### Danger (destructive/irreversible actions)
+```mdx
+<Callout icon="triangle-exclamation" color="#d20f39">
+Content here
+</Callout>
+```
+
+#### Warning (caution required)
+```mdx
+<Callout icon="circle-exclamation" color="#fe640b">
+Content here
+</Callout>
+```
+
+#### Tip (best practices)
+```mdx
+<Callout icon="lightbulb" color="#40a02b">
+Content here
+</Callout>
+```
+
+#### Info (helpful context)
+```mdx
+<Callout icon="circle-info" color="#1e66f5">
+Content here
+</Callout>
+```
 
 ### Code examples
 
