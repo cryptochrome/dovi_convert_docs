@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "dovi_convert Docs",
+  "name": "dovi_convert",
   "colors": {
     "primary": "#8839ef",
     "light": "#ea76cb",
