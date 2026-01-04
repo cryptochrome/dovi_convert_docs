@@ -7,12 +7,12 @@ Before converting your files, take a few minutes to understand what dovi_convert
 
 ## The problem
 
-Dolby Vision Profile 7 files contain two video layers:
+Dolby Vision Profile 7 was designed for UHD Blu-ray, exclusively. Blu-ray discs contain two video layers:
 
 - **Base Layer (BL)** - HDR10-compatible video
 - **Enhancement Layer (EL)** - Additional data that improves picture quality
 
-Many devices can't decode the Enhancement Layer. When they encounter Profile 7 content, they either:
+Blu-ray players have dual decoders to handle both layers. Most media players and streaming devices only have one - they can't decode the Enhancement Layer. When they encounter Profile 7 content, they either:
 
 1. **Fall back to HDR10** - You lose all Dolby Vision benefits
 2. **Fail to play** - The file won't work at all
@@ -22,7 +22,11 @@ The third option is what devices like Nvidia Shield and software like Kodi (with
 
 ## What dovi_convert does differently
 
-dovi_convert analyzes files before conversion. It examines the Enhancement Layer to determine whether stripping it is safe. If the layer contains brightness expansion data, the tool warns you and skips the file by default.
+<Info>
+**The key difference:** dovi_convert analyzes your files *before* conversion.
+</Info>
+
+It examines the Enhancement Layer to determine whether stripping it is safe. If the layer contains brightness expansion data - meaning it actively increases brightness beyond the base video - the tool warns you and skips the file by default.
 
 The conversion process:
 
@@ -31,6 +35,21 @@ The conversion process:
 3. Creates a Profile 8.1 file that works on nearly any Dolby Vision device
 
 All audio and subtitle tracks are preserved. Your original file is backed up automatically.
+
+## What you lose (and why it usually doesn't matter) - and what you gain
+
+The Enhancement Layer can contain more than brightness data. Some titles include reconstructive information like film grain, noise patterns, or color corrections. When you convert to Profile 8.1, this data is discarded.
+
+However, this is only a concern if your playback device supports FEL - and if it did, you wouldn't need this tool. Devices that lack FEL support give you two options:
+
+1. **Fall back to plain HDR10** - Lose all Dolby Vision benefits, including dynamic metadata (almost all devices)
+2. **Convert to Profile 8.1 on the fly** - Keep the dynamic metadata, lose only the Enhancement Layer (this is what the Nvidia Shield does)
+
+The dynamic metadata (RPU) is the core of what makes Dolby Vision valuable. It contains scene-by-scene tone mapping instructions that tell your TV how to display each frame. Profile 8.1 preserves this entirely. HDR10 fallback gives you none of it.
+
+<Tip>
+Converting to Profile 8.1 is almost always better than falling back to HDR10. You retain the dynamic tone mapping that makes Dolby Vision look good - you just lose enhancements your device couldn't use anyway.
+</Tip>
 
 ## Understanding the Enhancement Layer
 
@@ -68,13 +87,9 @@ Converting Complex FEL files produces incorrect results. The retained metadata w
 - Use a device that supports Profile 7 FEL playback (e.g., Ugoos AM6B+)
 - Do not convert unless you understand and accept the quality loss
 
-### Cross-reference your results
-
-The community maintains a list of known FEL titles:
-
-<Card title="Official DoVi_Scripts FEL List" icon="table" href="https://docs.google.com/spreadsheets/d/15i0a84uiBtWiHZ5CXZZ7wygLFXwYOd84/edit?gid=828864432#gid=828864432">
-  Maintained by R3S3t999, author of DoVi_Scripts. Use this to verify scan results.
-</Card>
+<Note>
+R3S3t999, author of [DoVi_Scripts](https://github.com/R3S3t9999/DoVi_Scripts), maintains a spreadsheet of known Complex FEL titles. Check the [FEL List](https://docs.google.com/spreadsheets/d/15i0a84uiBtWiHZ5CXZZ7wygLFXwYOd84/edit?gid=828864432#gid=828864432) if you want to verify a title before converting.
+</Note>
 
 ## Device-specific notes
 
