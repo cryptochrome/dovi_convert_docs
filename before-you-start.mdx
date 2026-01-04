@@ -22,7 +22,7 @@ The third option is what devices like Nvidia Shield and software like Kodi (with
 
 ## What dovi_convert does differently
 
-<Callout icon="circle-info" color="#1e66f5" iconType="solid">
+<Callout icon="circle-info" color="#8caaee" iconType="solid">
 **The key difference:** dovi_convert analyzes your files *before* conversion.
 </Callout>
 
@@ -47,7 +47,7 @@ However, this is only a concern if your playback device supports FEL - and if it
 
 The dynamic metadata (RPU) is the core of what makes Dolby Vision valuable. It contains scene-by-scene tone mapping instructions that tell your TV how to display each frame. Profile 8.1 preserves this entirely. HDR10 fallback gives you none of it.
 
-<Callout icon="lightbulb" color="#40a02b" iconType="solid">
+<Callout icon="lightbulb" color="#a6d189" iconType="solid">
 Converting to Profile 8.1 is almost always better than falling back to HDR10. You retain the dynamic tone mapping that makes Dolby Vision look good - you just lose enhancements your device couldn't use anyway.
 </Callout>
 
@@ -69,7 +69,7 @@ The most common type. The Enhancement Layer exists in the file structure but con
 
 The Enhancement Layer contains some data (like film grain or minor color adjustments), but does not expand brightness. Converting is generally safe. You lose the minor enhancements, but the picture remains correct.
 
-<Callout icon="lightbulb" color="#40a02b" iconType="solid">
+<Callout icon="lightbulb" color="#a6d189" iconType="solid">
 If you're uncertain about a Simple FEL verdict, use the `-inspect` command for a definitive frame-by-frame analysis.
 </Callout>
 
@@ -77,7 +77,7 @@ If you're uncertain about a Simple FEL verdict, use the `-inspect` command for a
 
 The Enhancement Layer actively elevates brightness beyond what the Base Layer contains. Some films are mastered at 4000 nits but have an HDR10 Base Layer trimmed to 1000 nits - the Enhancement Layer provides the missing brightness.
 
-<Callout icon="circle-exclamation" color="#fe640b" iconType="solid">
+<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
 Converting Complex FEL files produces incorrect results. The retained metadata was designed for the combined layers. Without the Enhancement Layer, tone mapping fails - causing a darker picture, flickering, and other issues.
 </Callout>
 
@@ -87,7 +87,7 @@ Converting Complex FEL files produces incorrect results. The retained metadata w
 - Use a device that supports Profile 7 FEL playback (e.g., Ugoos AM6B+)
 - Do not convert unless you understand and accept the quality loss
 
-<Callout icon="circle-info" color="#1e66f5" iconType="solid">
+<Callout icon="circle-info" color="#8caaee" iconType="solid">
 R3S3t999, author of [DoVi_Scripts](https://github.com/R3S3t9999/DoVi_Scripts), maintains a spreadsheet of known Complex FEL titles. Check the [FEL List](https://docs.google.com/spreadsheets/d/15i0a84uiBtWiHZ5CXZZ7wygLFXwYOd84/edit?gid=828864432#gid=828864432) if you want to verify a title before converting.
 </Callout>
 
@@ -112,7 +112,7 @@ If you use Plex on Apple TV 4K, you may encounter "Fake Dolby Vision" regardless
 - **Why it happens:** Plex uses Apple's AVPlayer, which has inconsistent Dolby Vision support despite Apple adding Profile 8.1 support in tvOS 17.
 - **The solution:** Use [Infuse](https://firecore.com/infuse) instead of Plex. Infuse uses a custom player that correctly applies Dolby Vision metadata. It integrates with Plex servers (the free version doesn't support Dolby Vision).
 
-<Callout icon="circle-info" color="#1e66f5" iconType="solid">
+<Callout icon="circle-info" color="#8caaee" iconType="solid">
 This is a Plex player issue, not a file format problem. Apple TV hardware supports Profile 8.1 correctly - Plex's implementation doesn't.
 </Callout>
 
