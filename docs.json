@@ -93,7 +93,13 @@
     "default": "dark"
   },
   "styling": {
-    "eyebrows": "breadcrumbs"
+    "eyebrows": "breadcrumbs",
+    "codeblocks": {
+      "theme": {
+        "light": "catppuccin-frappe",
+        "dark": "catppuccin-mocha"
+      }
+    }
   },
   "integrations": {
     "telemetry": {
