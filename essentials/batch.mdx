@@ -104,7 +104,7 @@ dovi_convert -batch -delete
 ```
 
 <Danger>
-This is irreversible. Your original Profile 7 files are gone permanently. Only use this if storage space is critical (e.g., limited NAS capacity) and you're confident in the conversion results.
+This is irreversible. Your original Profile 7 files are gone permanently. Only use this if storage space is a concern and you're confident in the conversion results.
 </Danger>
 
 <Tip>
@@ -130,7 +130,11 @@ This gives you a chance to review before any changes are made.
 
 ## Cleaning up backups
 
-After batch processing, you may have many `.bak.dovi_convert` backup files. The `-cleanup` command removes them safely.
+After batch processing, you will have `.bak.dovi_convert` backup files. These are the backups of your original files. If you don't want to keep them, you can remove them using the `-cleanup` command.
+
+<Danger>
+This is irreversible. Your original Profile 7 files are gone permanently. Only use this if storage space is a concern and you're confident in the conversion results.
+</Danger>
 
 ### Basic cleanup
 
@@ -159,34 +163,6 @@ dovi_convert -cleanup -y
 <Note>
 The cleanup command has a safety check: it only deletes backups where the corresponding converted file exists. If you deleted the converted file (maybe it was corrupted), the backup is kept as orphan protection.
 </Note>
-
-## Recommended workflow
-
-For large libraries, consider this workflow:
-
-<Steps>
-  <Step title="Scan first">
-    Get an overview of your library:
-    ```bash
-    dovi_convert -scan -r
-    ```
-  </Step>
-  <Step title="Inspect uncertain files">
-    For any Simple FEL files you're unsure about:
-    ```bash
-    dovi_convert -inspect "Uncertain.mkv"
-    ```
-  </Step>
-  <Step title="Run batch">
-    Convert with confirmation:
-    ```bash
-    dovi_convert -batch
-    ```
-  </Step>
-  <Step title="Verify results">
-    Spot-check a few converted files to ensure they play correctly.
-  </Step>
-</Steps>
 
 ## Next steps
 
