@@ -53,28 +53,28 @@ We use custom Catppuccin-themed callouts for visual consistency. **Do NOT use** 
 
 #### Danger (destructive/irreversible actions)
 ```mdx
-<Callout icon="triangle-exclamation" color="#d20f39">
+<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
 Content here
 </Callout>
 ```
 
 #### Warning (caution required)
 ```mdx
-<Callout icon="circle-exclamation" color="#fe640b">
+<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
 Content here
 </Callout>
 ```
 
 #### Tip (best practices)
 ```mdx
-<Callout icon="lightbulb" color="#40a02b">
+<Callout icon="lightbulb" color="#a6d189" iconType="solid">
 Content here
 </Callout>
 ```
 
 #### Info (helpful context)
 ```mdx
-<Callout icon="circle-info" color="#1e66f5">
+<Callout icon="circle-info" color="#8caaee" iconType="solid">
 Content here
 </Callout>
 ```

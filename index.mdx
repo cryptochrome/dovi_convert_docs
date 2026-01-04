@@ -11,9 +11,9 @@ Many popular devices - including Apple TV 4K, Nvidia Shield, Zidoo players, and 
 
 Converting to Profile 8.1 strips the Enhancement Layer while preserving the dynamic metadata (RPU), giving you a file that works on virtually any Dolby Vision-capable device.
 
-<Warning>
+<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
 Not every Profile 7 file should be converted. Some use the Enhancement Layer for brightness expansion - converting these causes visual issues. dovi_convert analyzes files before conversion and warns you when conversion is risky.
-</Warning>
+</Callout>
 
 ## What you need to know
 
@@ -37,9 +37,9 @@ dovi_convert runs on:
 - **Windows** (via WSL)
 - **Docker** (with web terminal access)
 
-<Tip>
+<Callout icon="lightbulb" color="#a6d189" iconType="solid">
 The conversion process does not re-encode video. Your CPU only needs to handle metadata extraction and remuxing - no powerful hardware required.
-</Tip>
+</Callout>
 
 ## Installation
 

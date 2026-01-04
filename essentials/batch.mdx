@@ -16,9 +16,9 @@ When you run `-batch`:
 4. **Asks** for confirmation before proceeding
 5. **Converts** eligible files one by one
 
-<Note>
+<Callout icon="circle-info" color="#8caaee" iconType="solid">
 Non-Profile 7 files are skipped automatically. You don't need to filter your directory first.
-</Note>
+</Callout>
 
 ## Basic usage
 
@@ -67,9 +67,9 @@ Skip the initial confirmation prompt:
 dovi_convert -batch -y
 ```
 
-<Note>
+<Callout icon="circle-info" color="#8caaee" iconType="solid">
 The `-y` flag skips the "Start batch?" prompt but still pauses on Simple FEL files. This prevents accidental processing of files you might want to verify first.
-</Note>
+</Callout>
 
 ### Include Simple FEL (`-include-simple`)
 
@@ -91,9 +91,9 @@ Include Complex FEL files in the batch:
 dovi_convert -batch -force
 ```
 
-<Warning>
+<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
 Forcing conversion on Complex FEL files produces incorrect results. Use this only if you understand and accept that some files will have incorrect tone mapping.
-</Warning>
+</Callout>
 
 ### Permanent deletion (`-delete`)
 
@@ -103,13 +103,13 @@ Remove original files immediately after each successful conversion, skipping the
 dovi_convert -batch -delete
 ```
 
-<Danger>
+<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
 This is irreversible. Your original Profile 7 files are gone permanently. Only use this if storage space is a concern and you're confident in the conversion results.
-</Danger>
+</Callout>
 
-<Tip>
+<Callout icon="lightbulb" color="#a6d189" iconType="solid">
 If storage is a concern but you want a safety net, run the batch without `-delete`, verify your results, then use `-cleanup` to remove backups selectively.
-</Tip>
+</Callout>
 
 ## Batch summary
 
@@ -132,9 +132,9 @@ This gives you a chance to review before any changes are made.
 
 After batch processing, you will have `.bak.dovi_convert` backup files. These are the backups of your original files. If you don't want to keep them, you can remove them using the `-cleanup` command.
 
-<Danger>
+<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
 This is irreversible. Your original Profile 7 files are gone permanently. Only use this if storage space is a concern and you're confident in the conversion results.
-</Danger>
+</Callout>
 
 ### Basic cleanup
 
@@ -160,9 +160,9 @@ Skip the confirmation prompt:
 dovi_convert -cleanup -y
 ```
 
-<Note>
+<Callout icon="circle-info" color="#8caaee" iconType="solid">
 The cleanup command has a safety check: it only deletes backups where the corresponding converted file exists. If you deleted the converted file (maybe it was corrupted), the backup is kept as orphan protection.
-</Note>
+</Callout>
 
 ## Next steps
 

@@ -15,9 +15,9 @@ The conversion process:
 3. **Injects** the RPU metadata into the Base Layer
 4. **Remuxes** everything back into a new MKV file
 
-<Tip>
+<Callout icon="lightbulb" color="#a6d189" iconType="solid">
 No video re-encoding happens. The bitstream is processed directly, so conversion is fast and quality is preserved exactly.
-</Tip>
+</Callout>
 
 ## Safety features
 
@@ -63,9 +63,9 @@ Extracts the video stream to disk first, then processes it. Slower, but handles 
 dovi_convert -convert "Movie.mkv" -safe
 ```
 
-<Note>
+<Callout icon="circle-info" color="#8caaee" iconType="solid">
 If Standard mode fails (common with Seamless Branching or irregular file structures), Safe mode is triggered automatically. You don't need to manually retry.
-</Note>
+</Callout>
 
 ## Command options
 
@@ -77,9 +77,9 @@ Override safety checks and convert Complex FEL files:
 dovi_convert -convert "Movie.mkv" -force
 ```
 
-<Warning>
+<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
 Forcing conversion on Complex FEL files produces incorrect tone mapping. The picture may appear dark, have flickering, or show other artifacts. Only use this if you understand and accept the quality loss.
-</Warning>
+</Callout>
 
 ### Delete backup (`-delete`)
 
@@ -89,9 +89,9 @@ Automatically delete the backup file after successful conversion:
 dovi_convert -convert "Movie.mkv" -delete
 ```
 
-<Danger>
+<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
 This removes your only copy of the original Profile 7 file. Use with caution - if something goes wrong or you later want to restore the original, you can't.
-</Danger>
+</Callout>
 
 ### Debug mode (`-debug`)
 

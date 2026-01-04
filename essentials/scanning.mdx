@@ -54,9 +54,9 @@ Non-Profile 7 files (HDR10, SDR, etc.) are also identified but cannot be convert
 
 The scan samples 10 timestamps across the file and analyzes the RPU (Reference Processing Unit) metadata at each point. It checks for brightness values that exceed the Base Layer's capability - an indicator of Complex FEL.
 
-<Note>
+<Callout icon="circle-info" color="#8caaee" iconType="solid">
 Sampling is fast but not exhaustive. A file might have brightness spikes in sections the scan didn't sample. For definitive results, use `-inspect`.
-</Note>
+</Callout>
 
 ## Terminology
 
@@ -98,9 +98,9 @@ dovi_convert -inspect "Movie.mkv"
 | **Accuracy** | High (may miss isolated spikes) | Definitive |
 | **Batch support** | Yes | No (single file only) |
 
-<Warning>
+<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
 `-inspect` reads the entire file frame-by-frame. For a typical 50-80 GB movie, this takes several minutes. It's not suitable for batch operations.
-</Warning>
+</Callout>
 
 ### Interpreting results
 

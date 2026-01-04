@@ -14,9 +14,9 @@ dovi_convert runs on:
 - **Linux** (any modern distribution with Python 3.8+)
 - **Windows** (via WSL - Windows Subsystem for Linux)
 
-<Note>
+<Callout icon="circle-info" color="#8caaee" iconType="solid">
 Windows native support is not available. You must use WSL to run dovi_convert on Windows.
-</Note>
+</Callout>
 
 ## Dependencies
 
@@ -30,11 +30,11 @@ Before installing dovi_convert, you need the following tools:
 | **mkvtoolnix** | MKV handling (`mkvmerge`, `mkvextract`) |
 | **mediainfo** | Media file analysis |
 
-<Warning>
+<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
 **macOS users:** You must use the command-line versions of these tools, not the `.app` bundles.
 
 GUI applications like MKVToolNix.app or MediaInfo.app are sandboxed differently and don't work correctly with dovi_convert. Install via [Homebrew](https://brew.sh) or [MacPorts](https://www.macports.org/) instead.
-</Warning>
+</Callout>
 
 ### Automatic installation
 
@@ -45,9 +45,9 @@ When you run dovi_convert, it checks for missing dependencies and offers to inst
 - **dnf** (Fedora)
 - **pacman** (Arch Linux)
 
-<Warning>
+<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
 dovi_tool may not be available in all package managers. If automatic installation fails, download it manually from the [dovi_tool GitHub releases](https://github.com/quietvoid/dovi_tool/releases).
-</Warning>
+</Callout>
 
 ## Installation
 
