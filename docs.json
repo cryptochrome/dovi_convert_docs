@@ -90,7 +90,8 @@
     }
   },
   "appearance": {
-    "default": "dark"
+    "default": "dark",
+    "strict": true
   },
   "styling": {
     "eyebrows": "breadcrumbs",
