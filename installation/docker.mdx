@@ -17,7 +17,7 @@ The dovi_convert Docker container provides a self-contained environment with all
 
 Pull and run the container:
 
-```bash
+```bash title="Docker run"
 docker run -d \
   --name=dovi_convert \
   -e PUID=1000 \
@@ -39,7 +39,7 @@ The `PUID` and `PGID` environment variables control which user the container run
 
 To find your user and group IDs:
 
-```bash
+```bash title="Find your user ID"
 id
 ```
 
@@ -57,7 +57,7 @@ This outputs something like `uid=1000(yourname) gid=1000(yourname)`. Use these v
 
 Mount your media directories to `/data` inside the container. You can mount multiple paths:
 
-```bash
+```bash title="Multiple volume mounts"
 -v /mnt/movies:/data/movies \
 -v /mnt/tv:/data/tv
 ```
@@ -68,7 +68,7 @@ Inside the container, access your files at `/data/movies`, `/data/tv`, etc.
 
 The web terminal runs on port 7681 inside the container. Map it to any available port on your host:
 
-```bash
+```bash title="Custom port"
 -p 8080:7681  # Access at http://your-host:8080
 ```
 
@@ -76,7 +76,7 @@ The web terminal runs on port 7681 inside the container. Map it to any available
 
 For persistent deployments, use Docker Compose:
 
-```yaml
+```yaml title="docker-compose.yml"
 services:
   dovi_convert:
     image: cryptochrome/dovi_convert:latest
@@ -97,7 +97,7 @@ services:
 
 Start the container:
 
-```bash
+```bash title="Start container"
 docker compose up -d
 ```
 
@@ -107,7 +107,7 @@ Once the container is running, open `http://your-docker-host:7681` in your brows
 
 The container includes a `dovi` alias for convenience:
 
-```bash
+```bash title="Using the dovi alias"
 dovi -help         # Same as dovi_convert -help
 dovi -scan         # Scan all files in current directory
 ```
