@@ -90,10 +90,7 @@
     }
   },
   "appearance": {
-    "default": "dark",
-    "modeToggle": {
-      "isHidden": true
-    }
+    "default": "dark"
   },
   "styling": {
     "eyebrows": "breadcrumbs",
