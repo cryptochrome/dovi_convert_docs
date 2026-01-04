@@ -1,7 +1,7 @@
 ---
 title: "File Conversion"
 description: "Convert Dolby Vision Profile 7 files to Profile 8.1"
-icon: "recycle"
+icon: "download"
 ---
 
 The `-convert` command converts a single Dolby Vision Profile 7 file to Profile 8.1. The process strips the Enhancement Layer, injects the dynamic metadata (RPU) into the Base Layer, and produces a file compatible with most Dolby Vision devices.
@@ -15,9 +15,9 @@ The conversion process:
 3. **Injects** the RPU metadata into the Base Layer
 4. **Remuxes** everything back into a new MKV file
 
-<Callout icon="lightbulb" color="#a6d189" iconType="solid">
-No video re-encoding happens. The bitstream is processed directly, so conversion is fast and quality is preserved exactly.
-</Callout>
+<Info>
+  No video re-encoding happens. The bitstream is processed directly, so conversion is fast and quality is preserved exactly.
+</Info>
 
 ## Safety features
 
@@ -38,6 +38,7 @@ dovi_convert -convert "Movie.mkv"
 ```
 
 The command:
+
 1. Analyzes the file for FEL complexity
 2. Creates a backup (`Movie.mkv.bak.dovi_convert`)
 3. Converts to Profile 8.1
@@ -63,9 +64,9 @@ Extracts the video stream to disk first, then processes it. Slower, but handles 
 dovi_convert -convert "Movie.mkv" -safe
 ```
 
-<Callout icon="circle-info" color="#8caaee" iconType="solid">
-If Standard mode fails (common with Seamless Branching or irregular file structures), Safe mode is triggered automatically. You don't need to manually retry.
-</Callout>
+<Info>
+  If Standard mode fails (common with Seamless Branching or irregular file structures), Safe mode is triggered automatically. You don't need to manually retry.
+</Info>
 
 ## Command options
 
@@ -77,9 +78,9 @@ Override safety checks and convert Complex FEL files:
 dovi_convert -convert "Movie.mkv" -force
 ```
 
-<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
-Forcing conversion on Complex FEL files produces incorrect tone mapping. The picture may appear dark, have flickering, or show other artifacts. Only use this if you understand and accept the quality loss.
-</Callout>
+<Info>
+  Forcing conversion on Complex FEL files produces incorrect tone mapping. The picture may appear dark, have flickering, or show other artifacts. Only use this if you understand and accept the quality loss.
+</Info>
 
 ### Delete backup (`-delete`)
 
@@ -89,9 +90,9 @@ Automatically delete the backup file after successful conversion:
 dovi_convert -convert "Movie.mkv" -delete
 ```
 
-<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
-This removes your only copy of the original Profile 7 file. Use with caution - if something goes wrong or you later want to restore the original, you can't.
-</Callout>
+<Info>
+  This removes your only copy of the original Profile 7 file. Use with caution - if something goes wrong or you later want to restore the original, you can't.
+</Info>
 
 ### Debug mode (`-debug`)
 
@@ -116,10 +117,10 @@ This is a precaution - Simple FEL files usually convert correctly, but the scan 
 
 ## What happens to your files
 
-| Before | After |
-|--------|-------|
-| `Movie.mkv` (Profile 7) | `Movie.mkv` (Profile 8.1) |
-| - | `Movie.mkv.bak.dovi_convert` (original backup) |
+| Before                  | After                                          |
+| ----------------------- | ---------------------------------------------- |
+| `Movie.mkv` (Profile 7) | `Movie.mkv` (Profile 8.1)                      |
+| -                       | `Movie.mkv.bak.dovi_convert` (original backup) |
 
 The backup contains your complete original file. You can restore it by:
 
@@ -132,12 +133,11 @@ mv "Movie.mkv.bak.dovi_convert" "Movie.mkv"
 If conversion fails:
 
 1. Run with `-debug` to generate a log:
+
    ```bash
    dovi_convert -convert "Movie.mkv" -debug
    ```
-
 2. Check `dovi_convert_debug.log` for errors from ffmpeg, dovi_tool, or mkvmerge
-
 3. Common issues:
    - **Seamless Branching** - Try with `-safe` mode
    - **Corrupted files** - Verify the original file plays correctly
@@ -155,12 +155,12 @@ If conversion fails:
 </CardGroup>
 
 <Accordion title="Notes (for internal use)">
-This page will explain in detail how to use the -convert feature. 
+  This page will explain in detail how to use the -convert feature.
 
-Sections:
+  Sections:
 
-1. How convert works (what it does), including "safety first" (e. g. non-destructive, backing up originals, etc.)
-2. How to use it, with concrete usage examples, covering all command options (like -safe. -force, -delete, etc.). Be verbose, userfriendly, mindful of users not too familiar with the CLI, and use codeblocks and other mintlify features to make it look beautiful. Don't cram all usage examples into the same codeblock, discuss every option with it's own codeblock, give warnings for potentially unsafe options (like -delete and -force) and explain why they might be unsafe. 
-3. The page should really be extensive and the usage examples should be grouped into sections
-4. 
+  1. How convert works (what it does), including "safety first" (e. g. non-destructive, backing up originals, etc.)
+  2. How to use it, with concrete usage examples, covering all command options (like -safe. -force, -delete, etc.). Be verbose, userfriendly, mindful of users not too familiar with the CLI, and use codeblocks and other mintlify features to make it look beautiful. Don't cram all usage examples into the same codeblock, discuss every option with it's own codeblock, give warnings for potentially unsafe options (like -delete and -force) and explain why they might be unsafe.
+  3. The page should really be extensive and the usage examples should be grouped into sections
+  4. 
 </Accordion>
