@@ -143,6 +143,20 @@ If conversion fails:
    - **Corrupted files** - Verify the original file plays correctly
    - **Disk space** - Safe mode needs space for the extracted video stream
 
+## Improving performance on slow storage
+
+If your source files are on a mechanical hard drive or network storage, conversion can be slow. This happens because the disk has to read the source file and write temporary files at the same time.
+
+Use the `-temp` flag to write temporary files to a separate, faster drive:
+
+```bash
+dovi_convert -convert "Movie.mkv" -temp /mnt/ssd/temp
+```
+
+<Callout icon="lightbulb" color="#a6d189" iconType="solid">
+Use an SSD or NVMe drive as your temp directory for best results.
+</Callout>
+
 ## Next steps
 
 <CardGroup cols={2}>

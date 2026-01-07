@@ -28,6 +28,7 @@ The original file is automatically backed up as `*.mkv.bak.dovi_convert` before 
 
 | Option | Description |
 |--------|-------------|
+| `-temp PATH` | Write temporary files to a separate directory (improves speed on HDDs/NAS) |
 | `-force` | Override Complex FEL safety check and convert anyway |
 | `-safe` | Force Safe Mode (disk extraction). Slower but handles problematic files |
 | `-delete` | Delete backup file after successful conversion |
@@ -89,6 +90,12 @@ This removes your only copy of the original Profile 7 file. Use with caution.
 
 ```bash
 dovi_convert -convert "Movie.mkv" -debug
+```
+
+**Use a fast temp directory (for HDDs/NAS):**
+
+```bash
+dovi_convert -convert "Movie.mkv" -temp /mnt/ssd/temp
 ```
 
 ## Conversion Process

@@ -25,6 +25,7 @@ Scans directories for Profile 7 files, analyzes their FEL complexity, and batch-
 
 | Option | Description |
 |--------|-------------|
+| `-temp PATH` | Write temporary files to a separate directory (improves speed on HDDs/NAS) |
 | `-y` | Skip confirmation prompts (auto-confirm batch start) |
 | `-include-simple` | Include Simple FEL files in auto-mode (requires `-y`) |
 | `-force` | Force conversion on Complex FEL files |
@@ -107,6 +108,12 @@ dovi_convert -batch -y -delete
 <Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
 This is irreversible. Your original Profile 7 files are gone permanently. Only use this if storage space is a concern and you're confident in the conversion results.
 </Callout>
+
+**Use a fast temp directory (for HDDs/NAS):**
+
+```bash
+dovi_convert -batch -temp /mnt/ssd/temp
+```
 
 ## Batch Summary
 

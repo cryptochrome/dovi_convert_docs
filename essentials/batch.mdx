@@ -184,6 +184,20 @@ dovi_convert -cleanup -y
 The cleanup command has a safety check: it only deletes backups where the corresponding converted file exists. If you deleted the converted file (maybe it was corrupted), the backup is kept as orphan protection.
 </Callout>
 
+## Improving performance on slow storage
+
+If your source files are on a mechanical hard drive or network storage, batch processing can be slow. This happens because the disk has to read source files and write temporary files at the same time.
+
+Use the `-temp` flag to write temporary files to a separate, faster drive:
+
+```bash
+dovi_convert -batch -temp /mnt/ssd/temp
+```
+
+<Callout icon="lightbulb" color="#a6d189" iconType="solid">
+Use an SSD or NVMe drive as your temp directory for best results.
+</Callout>
+
 ## Next steps
 
 <CardGroup cols={2}>
