@@ -7,12 +7,14 @@ icon: "arrows-rotate"
 ## Synopsis
 
 ```
-dovi_convert -convert <file> [options]
+dovi_convert -convert <file> [file2] ... [options]
 ```
 
 ## Description
 
-Converts a single Dolby Vision Profile 7 MKV file to Profile 8.1. The conversion strips the Enhancement Layer while injecting the RPU (dynamic metadata) into the Base Layer, creating a file compatible with devices that don't support FEL.
+Converts Dolby Vision Profile 7 MKV files to Profile 8.1. The conversion strips the Enhancement Layer while injecting the RPU (dynamic metadata) into the Base Layer, creating a file compatible with devices that don't support FEL.
+
+You can convert a single file or multiple files at once. Wildcards are supported.
 
 The original file is automatically backed up as `*.mkv.bak.dovi_convert` before conversion.
 
@@ -20,7 +22,7 @@ The original file is automatically backed up as `*.mkv.bak.dovi_convert` before 
 
 | Argument | Required | Description |
 |----------|----------|-------------|
-| `<file>` | Yes | Path to the Profile 7 MKV file to convert |
+| `<file>` | Yes | One or more Profile 7 MKV files. Wildcards supported |
 
 ## Options
 
@@ -41,6 +43,20 @@ If Standard mode fails (common with Seamless Branching), Safe mode is triggered 
 
 ```bash
 dovi_convert -convert "Movie.mkv"
+```
+
+**Convert multiple files:**
+
+```bash
+dovi_convert -convert "Movie1.mkv" "Movie2.mkv" "Movie3.mkv"
+```
+
+A summary is displayed at the end showing success/failure counts.
+
+**Convert using wildcards:**
+
+```bash
+dovi_convert -convert *.mkv
 ```
 
 **Force conversion on Complex FEL file:**

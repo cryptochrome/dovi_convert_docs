@@ -7,14 +7,16 @@ icon: "scanner-image"
 ## Synopsis
 
 ```
-dovi_convert -scan [file] [-r depth]
+dovi_convert -scan [path] [path2] ... [-r depth]
 ```
 
 **Alias:** `-check`
 
 ## Description
 
-Scans MKV files to identify their video format (HDR10, Dolby Vision Profile) and analyzes Profile 7 files to determine FEL complexity. If no file is specified, scans all MKV files in the current directory.
+Scans MKV files to identify their video format (HDR10, Dolby Vision Profile) and analyzes Profile 7 files to determine FEL complexity. 
+
+You can scan individual files, directories, or any combination. If no path is specified, scans all MKV files in the current directory.
 
 The scan samples 10 timestamps across each file and analyzes the RPU metadata to detect brightness expansion, which indicates Complex FEL.
 
@@ -22,7 +24,7 @@ The scan samples 10 timestamps across each file and analyzes the RPU metadata to
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `[file]` | path | current directory | File or directory to scan. If omitted, scans current directory |
+| `[path]` | path | current directory | File or directory to scan. Multiple paths supported |
 | `-r [depth]` | number | 5 | Scan subdirectories recursively up to specified depth |
 
 ## Examples
@@ -39,21 +41,35 @@ dovi_convert -scan
 dovi_convert -scan "Movie.mkv"
 ```
 
+**Scan a directory:**
+
+```bash
+dovi_convert -scan /path/to/movies
+```
+
+**Scan multiple directories:**
+
+```bash
+dovi_convert -scan /movies /tv
+```
+
+**Mixed files and directories:**
+
+```bash
+dovi_convert -scan /movies "Individual.mkv" /tv
+```
+
 **Scan recursively (2 levels deep):**
 
 ```bash
 dovi_convert -scan -r 2
 ```
 
-**Scan recursively with default depth (5 levels):**
+**Directory with recursion:**
 
 ```bash
-dovi_convert -scan -r
+dovi_convert -scan /movies -r 3
 ```
-
-<Callout icon="circle-info" color="#8caaee" iconType="solid">
-Sampling is fast but not exhaustive. A file might have brightness spikes in sections the scan didn't sample. For definitive results, use `-inspect`.
-</Callout>
 
 ## Output
 

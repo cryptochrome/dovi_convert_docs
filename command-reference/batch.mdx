@@ -7,18 +7,19 @@ icon: "files"
 ## Synopsis
 
 ```
-dovi_convert -batch [depth] [options]
+dovi_convert -batch [dir] [-r depth] [options]
 ```
 
 ## Description
 
-Recursively scans directories for Profile 7 files, analyzes their FEL complexity, and batch-converts safe candidates. The command first scans all files, shows a summary, then asks for confirmation before converting.
+Scans directories for Profile 7 files, analyzes their FEL complexity, and batch-converts safe candidates. The command first scans all files, shows a summary, then asks for confirmation before converting.
 
 ## Arguments
 
 | Argument | Type | Default | Description |
 |----------|------|---------|-------------|
-| `[depth]` | number | 1 | Recursion depth (1 = current directory only) |
+| `[dir]` | path | current directory | Directory to scan. Multiple directories supported |
+| `-r [depth]` | number | 1 (or 5 if just `-r`) | Recursion depth for subdirectories |
 
 ## Options
 
@@ -47,10 +48,28 @@ Recursively scans directories for Profile 7 files, analyzes their FEL complexity
 dovi_convert -batch
 ```
 
+**Target a specific directory:**
+
+```bash
+dovi_convert -batch /path/to/movies
+```
+
+**Multiple directories:**
+
+```bash
+dovi_convert -batch /movies /tv
+```
+
 **Scan 3 levels deep:**
 
 ```bash
-dovi_convert -batch 3
+dovi_convert -batch -r 3
+```
+
+**Directory with recursion:**
+
+```bash
+dovi_convert -batch /movies -r 3
 ```
 
 **Fully automated (MEL only):**

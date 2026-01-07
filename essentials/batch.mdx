@@ -4,7 +4,7 @@ description: "Scan and convert entire directories of files"
 icon: "files"
 ---
 
-The `-batch` command processes multiple files at once. It recursively scans a directory, identifies all Profile 7 files, and converts them in sequence. This is ideal for processing large media libraries.
+The `-batch` command processes multiple files at once. It scans a directory (or the current directory by default), identifies all Profile 7 files, and converts them in sequence. You can target specific directories and control recursion depth.
 
 ## How batch processing works
 
@@ -28,13 +28,33 @@ Process all Profile 7 files in the current directory:
 dovi_convert -batch
 ```
 
-### Set recursive depth
+### Target specific directories
 
-Control how deep the scan goes into subdirectories:
+Point `-batch` at any directory instead of navigating there first:
 
 ```bash
-dovi_convert -batch 2    # Scan and convert 2 levels deep
-dovi_convert -batch 5    # Scan and convert 5 levels deep
+dovi_convert -batch /path/to/movies
+```
+
+You can specify multiple directories in a single command:
+
+```bash
+dovi_convert -batch /movies /tv /documentaries
+```
+
+### Recursive scanning
+
+By default, `-batch` only looks at the top level of each directory. Use `-r` to scan subdirectories:
+
+```bash
+dovi_convert -batch -r 2    # Scan 2 levels deep
+dovi_convert -batch -r       # Default: 5 levels deep
+```
+
+Combine with directory targeting:
+
+```bash
+dovi_convert -batch /movies -r 3
 ```
 
 ## Safety behavior

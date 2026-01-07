@@ -20,13 +20,28 @@ The `-convert` and `-batch` commands automatically scan files before processing 
 
 ## The `-scan` command
 
-Scans files to identify their video format and FEL status.
+Scans files to identify their video format and FEL status. You can scan individual files, entire directories, or any combination.
 
 ### Basic usage
 
 ```bash
 dovi_convert -scan                   # All MKV files in current directory
 dovi_convert -scan "Movie.mkv"       # Specific file
+```
+
+### Scan directories
+
+Point `-scan` at any directory instead of navigating there first:
+
+```bash
+dovi_convert -scan /path/to/movies
+```
+
+Scan multiple directories or mix files and directories:
+
+```bash
+dovi_convert -scan /movies /tv
+dovi_convert -scan /movies "Individual.mkv"
 ```
 
 ### Recursive scanning
@@ -36,6 +51,7 @@ Scan subdirectories with the `-r` flag:
 ```bash
 dovi_convert -scan -r                # Recursive (default depth: 5)
 dovi_convert -scan -r 2              # Recursive (depth: 2 folders)
+dovi_convert -scan /movies -r 3      # Directory with recursion
 ```
 
 ### Understanding the output
