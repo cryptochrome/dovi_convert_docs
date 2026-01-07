@@ -25,6 +25,7 @@ The dovi_convert Docker container provides a self-contained environment with all
       -e TZ=Europe/Berlin \
       -p 7681:7681 \
       -v /path/to/media:/data \
+      # -v /path/to/ssd:/cache \  # Optional: fast temp storage
       --restart unless-stopped \
       cryptochrome/dovi_convert:latest
     ```
@@ -46,6 +47,7 @@ The dovi_convert Docker container provides a self-contained environment with all
           # Mount your media folder(s) here
           - /mnt/media/movies:/data/movies
           - /mnt/media/tv:/data/tv
+          # - /path/to/ssd:/cache  # Optional: fast temp storage
         ports:
           - 7681:7681
         restart: unless-stopped
@@ -93,6 +95,22 @@ Mount your media directories to `/data` inside the container. You can mount mult
 ```
 
 Inside the container, access your files at `/data/movies`, `/data/tv`, etc.
+
+### Temp directory for faster conversions
+
+If your media is on slow storage (mechanical HDDs), you can bind-mount a faster drive for temporary files:
+
+```bash
+-v /path/to/ssd:/cache
+```
+
+Then use the `-temp` flag when converting:
+
+```bash
+dovi_convert -convert /data/movie.mkv -temp /cache
+```
+
+Temporary files are written to the fast drive while the source and final output stay on your media volume.
 
 ### Port configuration
 
