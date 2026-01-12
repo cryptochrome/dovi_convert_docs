@@ -128,6 +128,16 @@ The backup contains your complete original file. You can restore it by:
 mv "Movie.mkv.bak.dovi_convert" "Movie.mkv"
 ```
 
+### Custom output directory
+
+Use `-o` to place the converted file in a different directory:
+
+```bash
+dovi_convert -convert "Movie.mkv" -o /output/converted
+```
+
+The converted file is placed in the output directory. Your original file is renamed to `.bak.dovi_convert` and stays in the source location. The output directory is created automatically if it does not exist.
+
 ## Troubleshooting
 
 If conversion fails:

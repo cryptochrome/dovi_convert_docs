@@ -57,6 +57,25 @@ Combine with directory targeting:
 dovi_convert -batch /movies -r 3
 ```
 
+### Custom output directory
+
+Use `-o` to place converted files in a separate directory instead of alongside the originals:
+
+```bash
+dovi_convert -batch /movies/action -o /output
+```
+
+The output mirrors the source structure, preserving the basename of the source directory. This follows the same convention as Unix tools like `cp` and `rsync`.
+
+| Source | Output |
+|--------|--------|
+| `/movies/action/Die.Hard.mkv` | `/output/action/Die.Hard.mkv` |
+| `/movies/action/1980s/Predator.mkv` | `/output/action/1980s/Predator.mkv` |
+
+The output directory is created automatically if it does not exist. Subdirectories are also created as needed.
+
+Your original files are renamed to `.bak.dovi_convert` and stay in the source location - they are not moved or deleted.
+
 ## Safety behavior
 
 Batch processing follows the same safety rules as single-file conversion:

@@ -28,6 +28,7 @@ The original file is automatically backed up as `*.mkv.bak.dovi_convert` before 
 
 | Option | Description |
 |--------|-------------|
+| `-o PATH` | Output directory for converted files |
 | `-temp PATH` | Write temporary files to a separate directory (improves speed on HDDs/NAS) |
 | `-force` | Override Complex FEL safety check and convert anyway |
 | `-safe` | Force Safe Mode (disk extraction). Slower but handles problematic files |
@@ -97,6 +98,14 @@ dovi_convert -convert "Movie.mkv" -debug
 ```bash
 dovi_convert -convert "Movie.mkv" -temp /mnt/ssd/temp
 ```
+
+**Save converted file to a different directory:**
+
+```bash
+dovi_convert -convert "Movie.mkv" -o /output/converted
+```
+
+The converted file is placed directly in the output directory. The original file stays in place as a backup.
 
 ## Conversion Process
 

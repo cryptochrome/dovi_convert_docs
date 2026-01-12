@@ -25,6 +25,7 @@ Scans directories for Profile 7 files, analyzes their FEL complexity, and batch-
 
 | Option | Description |
 |--------|-------------|
+| `-o PATH` | Output directory for converted files. Directory structure is preserved |
 | `-temp PATH` | Write temporary files to a separate directory (improves speed on HDDs/NAS) |
 | `-y` | Skip confirmation prompts (auto-confirm batch start) |
 | `-include-simple` | Include Simple FEL files in auto-mode (requires `-y`) |
@@ -114,6 +115,20 @@ This is irreversible. Your original Profile 7 files are gone permanently. Only u
 ```bash
 dovi_convert -batch -temp /mnt/ssd/temp
 ```
+
+**Save converted files to a different directory:**
+
+```bash
+dovi_convert -batch /movies -o /output/converted
+```
+
+The output directory mirrors the source structure. For example, if you run:
+
+```bash
+dovi_convert -batch /movies/action -o /output
+```
+
+Files from `/movies/action/subdir/` end up in `/output/action/subdir/`. The directory name "action" is preserved, following the same convention as `cp` and `rsync`.
 
 ## Batch Summary
 
