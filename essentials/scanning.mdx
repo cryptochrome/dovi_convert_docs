@@ -54,7 +54,19 @@ dovi_convert -scan -r 2              # Recursive (depth: 2 folders)
 dovi_convert -scan /movies -r 3      # Directory with recursion
 ```
 
-### Understanding the output
+### Show only conversion candidates
+
+If you only want to see files that can be converted (Profile 7), use the `-candidates` flag to filter out SDR, HDR10, Profile 8, and other non-convertible formats:
+
+```bash
+dovi_convert -scan -candidates
+dovi_convert -scan /movies -candidates
+dovi_convert -scan -candidates -r 3
+```
+
+This is useful when scanning large libraries where most files are already in the correct format.
+
+## Understanding the output
 
 The scan displays color-coded results for each file:
 

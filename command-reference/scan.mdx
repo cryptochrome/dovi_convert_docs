@@ -7,7 +7,7 @@ icon: "scanner-image"
 ## Synopsis
 
 ```
-dovi_convert -scan [path] [path2] ... [-r depth]
+dovi_convert -scan [path] [path2] ... [-r depth] [-candidates]
 ```
 
 **Alias:** `-check`
@@ -26,6 +26,7 @@ The scan samples 10 timestamps across each file and analyzes the RPU metadata to
 |--------|------|---------|-------------|
 | `[path]` | path | current directory | File or directory to scan. Multiple paths supported |
 | `-r [depth]` | number | 5 | Scan subdirectories recursively up to specified depth |
+| `-candidates` | flag | off | Show only Profile 7 files that can be converted |
 
 ## Examples
 
@@ -69,6 +70,12 @@ dovi_convert -scan -r 2
 
 ```bash
 dovi_convert -scan /movies -r 3
+```
+
+**Show only conversion candidates:**
+
+```bash
+dovi_convert -scan -candidates
 ```
 
 ## Output
