@@ -104,6 +104,22 @@ dovi_convert -convert "Movie.mkv" -debug
 
 This creates `dovi_convert_debug.log` in the current directory, containing output from all internal tools (ffmpeg, dovi_tool, mkvmerge).
 
+### HDR10 mode (`-hdr10`)
+
+Convert to HDR10 instead of Dolby Vision Profile 8.1:
+
+```bash
+dovi_convert -convert "Movie.mkv" -hdr10
+```
+
+This strips all Dolby Vision metadata from the file, leaving a clean HDR10 stream. If the source contains HDR10+ metadata, it is preserved in the output.
+
+<Callout icon="circle-info" color="#8caaee" iconType="solid">
+  **When to use this:** Some devices like the Nvidia Shield convert Profile 7 files to Profile 8.1 automatically during playback - even when they shouldn't. For [Complex FEL](/before-you-start#complex-fel-brightness-expansion) files, this produces incorrect tone mapping. Converting to HDR10 upfront prevents the device from attempting its own conversion. You lose the dynamic metadata, but the picture displays correctly. HDR10 is better than messed up Dovi 8.1.
+</Callout>
+
+HDR10 mode is only available with `-convert`, not `-batch`. This is intentional - stripping Dolby Vision entirely is a more significant decision than converting to Profile 8.1.
+
 ## Handling Simple FEL files
 
 When converting a Simple FEL file, dovi_convert prompts for confirmation:

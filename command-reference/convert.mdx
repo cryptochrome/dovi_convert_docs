@@ -28,6 +28,7 @@ The original file is automatically backed up as `*.mkv.bak.dovi_convert` before 
 
 | Option | Description |
 |--------|-------------|
+| `-hdr10` | Convert to HDR10 instead of Dolby Vision Profile 8.1 |
 | `-o PATH` | Output directory for converted files |
 | `-temp PATH` | Write temporary files to a separate directory (improves speed on HDDs/NAS) |
 | `-force` | Override Complex FEL safety check and convert anyway |
@@ -60,6 +61,14 @@ A summary is displayed at the end showing success/failure counts.
 ```bash
 dovi_convert -convert *.mkv
 ```
+
+**Convert to HDR10 instead of Profile 8.1:**
+
+```bash
+dovi_convert -convert "Movie.mkv" -hdr10
+```
+
+Strips all Dolby Vision metadata, leaving a clean HDR10 stream. Only available with `-convert`, not `-batch`.
 
 **Force conversion on Complex FEL file:**
 
