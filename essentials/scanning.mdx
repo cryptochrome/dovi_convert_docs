@@ -71,11 +71,11 @@ This is useful when scanning large libraries where most files are already in the
 
 The scan displays color-coded results for each file:
 
-| Color | Classification | Meaning |
-|-------|----------------|---------|
-| **Green** | MEL | No enhancement data. Safe to convert. |
-| **Cyan** | Simple FEL | No brightness expansion detected. Usually safe. |
-| **Red** | Complex FEL | Active brightness expansion. Conversion not recommended. |
+| Color     | Classification | Meaning                                                  |
+| --------- | -------------- | -------------------------------------------------------- |
+| **Green** | MEL            | No enhancement data. Safe to convert.                    |
+| **Cyan**  | Simple FEL     | No brightness expansion detected. Usually safe.          |
+| **Red**   | Complex FEL    | Active brightness expansion. Conversion not recommended. |
 
 Non-Profile 7 files (HDR10, SDR, etc.) are also identified but cannot be converted by this tool.
 
@@ -83,8 +83,8 @@ Non-Profile 7 files (HDR10, SDR, etc.) are also identified but cannot be convert
 
 The scan samples 10 timestamps across the file and analyzes the RPU (Reference Processing Unit) metadata at each point. It checks for brightness values that exceed the Base Layer's capability — an indicator of Complex FEL.
 
-<Callout icon="circle-info" color="#8caaee" iconType="solid">
-Sampling is fast but not exhaustive. A file might have brightness spikes in sections the scan didn't sample. For definitive results, use `inspect`.
+<Callout icon="circle-info" iconType="solid" color="#8caaee">
+  Sampling is fast but not exhaustive. A file might have brightness spikes in sections the scan didn't sample. For definitive results, use `inspect`.
 </Callout>
 
 ## Terminology
@@ -109,7 +109,8 @@ Performs a full frame-by-frame analysis of the entire file. Use this when you ne
 
 ### When to Use `inspect`
 
-- Verify a **Simple FEL** verdict from `scan`
+- Verify a **Simple FEL** verdict from `scan`  
+- Check if a Complex FEL verdict might be a false positive
 - Get absolute certainty before converting a file
 - Investigate files that `scan` couldn't fully classify
 
@@ -121,14 +122,14 @@ dovi_convert inspect movie.mkv
 
 ### How `inspect` Differs from `scan`
 
-| Aspect | `scan` | `inspect` |
-|--------|--------|-----------|
-| **Speed** | Fast (samples 10 points) | Slow (reads entire file) |
-| **Accuracy** | High (may miss isolated spikes) | Definitive |
-| **Batch support** | Yes | No (single file only) |
+| Aspect            | `scan`                          | `inspect`                |
+| ----------------- | ------------------------------- | ------------------------ |
+| **Speed**         | Fast (samples 10 points)        | Slow (reads entire file) |
+| **Accuracy**      | High (may miss isolated spikes) | Definitive               |
+| **Batch support** | Yes                             | No (single file only)    |
 
-<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
-`inspect` reads the entire file frame-by-frame. For a typical 50-80 GB movie, this takes several minutes. It's not suitable for batch operations.
+<Callout icon="circle-exclamation" iconType="solid" color="#ef9f76">
+  `inspect` reads the entire file frame-by-frame. For a typical 50-80 GB movie, this takes several minutes. It's not suitable for batch operations.
 </Callout>
 
 ### Interpreting Results
