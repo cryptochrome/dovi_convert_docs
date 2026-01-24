@@ -6,7 +6,7 @@ icon: "arrows-rotate"
 
 ## Synopsis
 
-```
+```shellscript
 dovi_convert convert [files|directories] [options]
 ```
 
@@ -23,27 +23,27 @@ The original file is automatically backed up as `*.mkv.bak.dovi_convert` before 
 
 ## Arguments
 
-| Argument | Required | Description |
-|----------|----------|-------------|
-| `[files\|directories]` | No | One or more MKV files or directories. If omitted, scans the current directory |
+| Argument              | Required | Description                                                                   |
+| --------------------- | -------- | ----------------------------------------------------------------------------- |
+| `[files|directories]` | No       | One or more MKV files or directories. If omitted, scans the current directory |
 
 ## Options
 
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--force` | `-f` | Override Complex FEL safety check and convert anyway |
-| `--safe` | `-s` | Force Safe Mode (disk extraction). Slower but handles problematic files |
-| `--yes` | `-y` | Skip confirmation prompts (for automation) |
-| `--recursive [N]` | `-r [N]` | Scan directories recursively up to depth N (default: 5) |
-| `--output PATH` | `-o PATH` | Output directory for converted files |
-| `--temp PATH` | `-t PATH` | Write temporary files to a separate directory |
-| `--delete` | — | Delete backup file after successful conversion |
-| `--hdr10` | — | Convert to HDR10 instead of Profile 8.1 (single file only) |
-| `--include-simple` | — | Include Simple FEL files in batch conversions |
-| `--debug` | — | Generate `dovi_convert_debug.log` with detailed output |
+| Option             | Short     | Description                                                             |
+| ------------------ | --------- | ----------------------------------------------------------------------- |
+| `--force`          | `-f`      | Override Complex FEL safety check and convert anyway                    |
+| `--safe`           | `-s`      | Force Safe Mode (disk extraction). Slower but handles problematic files |
+| `--yes`            | `-y`      | Skip confirmation prompts (for automation)                              |
+| `--recursive [N]`  | `-r [N]`  | Scan directories recursively up to depth N (default: 5)                 |
+| `--output PATH`    | `-o PATH` | Output directory for converted files                                    |
+| `--temp PATH`      | `-t PATH` | Write temporary files to a separate directory (e.g. fast SSD)           |
+| `--delete`         | —         | Delete backup file after successful conversion                          |
+| `--hdr10`          | —         | Convert to HDR10 instead of Profile 8.1 (single file only)              |
+| `--include-simple` | —         | Include Simple FEL files in batch conversions                           |
+| `--debug`          | —         | Generate `dovi_convert_debug.log` with detailed output                  |
 
-<Callout icon="circle-info" color="#8caaee" iconType="solid">
-If Standard mode fails (common with Seamless Branching), Safe mode is triggered automatically. You don't need to manually retry.
+<Callout icon="circle-info" iconType="solid" color="#8caaee">
+  If Standard mode fails (common with Seamless Branching), Safe mode is triggered automatically. You don't need to manually retry.
 </Callout>
 
 ## Behavioral Notes
@@ -60,13 +60,13 @@ In batch mode, you see a summary of all eligible files before conversion begins.
 
 ### Restrictions
 
-**`--hdr10` requires a single file.** HDR10 conversion is blocked when directories are present.
+**`--hdr10` **requires a single file. HDR10 conversion is blocked when directories are present.
 
-**`--output` with mixed inputs is blocked.** When converting both files and directories, output paths could collide. Convert them separately or omit `--output`.
+`--output `with mixed inputs is blocked. When converting both files and directories, output paths could collide. Convert them separately or omit `--output`.
 
-**`--yes` skips Simple FEL files by default.** For unattended operations, Simple FEL files are skipped unless you also pass `--include-simple`. This prevents accidental conversions of files that don't need it.
+**`--yes `**skips Simple FEL files by default. For unattended operations, Simple FEL files are skipped unless you also pass `--include-simple`. This prevents accidental conversions.
 
-**`--recursive` without directories prints a warning.** If you pass `-r` with only files, the flag is ignored and a warning is shown.
+**`--recursive `**without directories prints a warning. If you pass `-r` with only files, the flag is ignored and a warning is shown.
 
 ## Examples
 
@@ -97,13 +97,13 @@ dovi_convert convert /movies --recursive
 dovi_convert convert /movies -r
 ```
 
-Scans up to 5 levels deep by default.
+Scans and converts up to 5 levels deep by default.
 
-**Limit recursion depth:**
+**Limit or expand recursion depth:**
 
 ```bash
 dovi_convert convert /movies --recursive 2
-dovi_convert convert /movies -r 2
+dovi_convert convert /movies --recursive 10
 ```
 
 **Skip confirmation prompts:**
@@ -113,11 +113,11 @@ dovi_convert convert /movies --yes
 dovi_convert convert /movies -y
 ```
 
-<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
-With `--yes`, Simple FEL files are skipped unless you also pass `--include-simple`.
-</Callout>
-
 **Include Simple FEL files in automated batch:**
+
+<Callout icon="circle-exclamation" iconType="solid" color="#ef9f76">
+  With `--yes`, Simple FEL files are skipped unless you also pass `--include-simple`.
+</Callout>
 
 ```bash
 dovi_convert convert /movies --yes --include-simple
@@ -131,15 +131,15 @@ dovi_convert convert movie.mkv --hdr10
 
 Strips all Dolby Vision metadata, leaving a clean HDR10 stream.
 
-**Force conversion on Complex FEL file:**
+**Force conversion of Complex FEL file:**
 
 ```bash
 dovi_convert convert movie.mkv --force
 dovi_convert convert movie.mkv -f
 ```
 
-<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
-Forcing conversion on Complex FEL files produces incorrect tone mapping. Only use this if you understand and accept the quality loss.
+<Callout icon="circle-exclamation" iconType="solid" color="#ef9f76">
+  Forcing conversion on Complex FEL files produces incorrect tone mapping. Only use this if you understand and accept the quality loss.
 </Callout>
 
 **Use Safe Mode:**
@@ -155,8 +155,8 @@ dovi_convert convert movie.mkv -s
 dovi_convert convert movie.mkv --delete
 ```
 
-<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
-This removes your only copy of the original Profile 7 file. Use with caution.
+<Callout icon="triangle-exclamation" iconType="solid" color="#e78284">
+  This removes your only copy of the original Profile 7 file. Use with caution.
 </Callout>
 
 **Use a fast temp directory:**
