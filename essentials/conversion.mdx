@@ -156,6 +156,7 @@ Convert to HDR10 instead of Dolby Vision Profile 8.1:
 
 ```bash
 dovi_convert convert movie.mkv --hdr10
+dovi_convert convert movie.mkv --hdr10 --force   # if Complex FEL
 ```
 
 This strips all Dolby Vision metadata from the file, leaving a clean HDR10 stream. If the source contains HDR10+ metadata, it is preserved.
