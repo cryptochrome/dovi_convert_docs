@@ -31,7 +31,9 @@ dovi_convert is designed to be non-destructive:
 
 All audio and subtitle tracks are preserved in the converted file.
 
-## Converting Single Files
+## Converting Files
+
+### Single Files
 
 Convert a file:
 
@@ -54,7 +56,7 @@ dovi_convert convert movie1.mkv movie2.mkv movie3.mkv
 
 Each file is processed immediately, one after another.
 
-## Converting Directories
+### Directories
 
 When you pass directories instead of files, dovi_convert switches to batch mode:
 
@@ -69,7 +71,7 @@ In batch mode:
 3. You confirm before conversion begins
 4. Each eligible file is converted
 
-### Recursive Scanning
+#### Recursive Scanning
 
 By default, only the top level of each directory is scanned. Use `--recursive` (or `-r`) to scan subdirectories:
 
@@ -85,7 +87,7 @@ dovi_convert convert /movies --recursive 2   # scans and converts 2 levels deep
 dovi_convert convert /movies --recursive 10  # scans and converts 10 levels deep
 ```
 
-### Skipping Confirmation
+#### Skipping Confirmation
 
 For automated workflows, use `--yes` (or `-y`) to skip the confirmation prompts:
 
@@ -126,20 +128,17 @@ dovi_convert convert movie.mkv -s
   If Standard mode fails (common with Seamless Branching or irregular file structures), Safe mode is triggered automatically. You don't need to manually retry.
 </Callout>
 
-## Handling Complex FEL
+## What Gets Converted
 
-Complex FEL files are skipped by default because converting them produces incorrect tone mapping. To override this safety check:
+### Complex FEL
 
-```bash
-dovi_convert convert movie.mkv --force
-dovi_convert convert movie.mkv -f
-```
+Complex FEL files are skipped by default because converting them produces incorrect tone mapping. To override this safety check, use `--force` (see [Conversion Options](#conversion-options)).
 
 <Callout icon="circle-exclamation" iconType="solid" color="#ef9f76">
   Forcing conversion on Complex FEL files produces incorrect tone mapping. The picture may appear dark, have flickering, or show other artifacts. Only use this if you understand and accept the quality loss.
 </Callout>
 
-## Handling Simple FEL
+### Simple FEL
 
 When converting a Simple FEL file, dovi_convert prompts for confirmation:
 
@@ -150,7 +149,18 @@ Continue? [y/N]
 
 This is a precaution — Simple FEL files usually convert correctly, but the scan might have missed isolated brightness spikes. If you want certainty, run `inspect` first.
 
-## HDR10 Mode
+## Conversion Options
+
+### Force Mode (`--force`)
+
+Override the Complex FEL safety check:
+
+```bash
+dovi_convert convert movie.mkv --force
+dovi_convert convert movie.mkv -f
+```
+
+### HDR10 Mode (`--hdr10`)
 
 Convert to HDR10 instead of Dolby Vision Profile 8.1:
 
@@ -167,6 +177,42 @@ This strips all Dolby Vision metadata from the file, leaving a clean HDR10 strea
 
 HDR10 mode is only available for single file conversions. This is intentional — stripping Dolby Vision entirely is a more significant decision than converting to Profile 8.1.
 
+### Output Directory (`--output`)
+
+Place converted files in a different directory:
+
+```bash
+dovi_convert convert movie.mkv --output /converted
+dovi_convert convert movie.mkv -o /converted
+```
+
+The original file is renamed to `.bak.dovi_convert` and stays in the source location. The output directory is created automatically if it doesn't exist.
+
+### Temp Directory (`--temp`)
+
+If your source files are on a mechanical hard drive or network storage, conversion can be slow. Use `--temp` to write temporary files to a separate, faster drive:
+
+```bash
+dovi_convert convert movie.mkv --temp /mnt/ssd/temp
+dovi_convert convert movie.mkv -t /mnt/ssd/temp
+```
+
+<Callout icon="lightbulb" iconType="solid" color="#a6d189">
+  Use an SSD or NVMe drive as your temp directory for best results.
+</Callout>
+
+### Delete Backup (`--delete`)
+
+Automatically delete the backup file after successful conversion:
+
+```bash
+dovi_convert convert movie.mkv --delete
+```
+
+<Callout icon="triangle-exclamation" iconType="solid" color="#e78284">
+  This removes your only copy of the original Profile 7 file. Use with caution. If something goes wrong or you later want to restore the original, you can't.
+</Callout>
+
 ## What Happens to Your Files
 
 | Before                  | After                                          |
@@ -179,44 +225,6 @@ The backup contains your complete original file. Restore it by:
 ```bash
 mv "movie.mkv.bak.dovi_convert" "movie.mkv"
 ```
-
-### Custom Output Directory
-
-Use `--output` (or `-o`) to place converted files in a different directory:
-
-```bash
-dovi_convert convert movie.mkv --output /converted
-dovi_convert convert movie.mkv -o /converted
-```
-
-The original file is renamed to `.bak.dovi_convert` and stays in the source location. The output directory is created automatically if it doesn't exist.
-
-### Deleting Backups
-
-Automatically delete the backup file after successful conversion:
-
-```bash
-dovi_convert convert movie.mkv --delete
-```
-
-<Callout icon="triangle-exclamation" iconType="solid" color="#e78284">
-  This removes your only copy of the original Profile 7 file. Use with caution. If something goes wrong or you later want to restore the original, you can't.
-</Callout>
-
-## Improving Performance on Slow Storage
-
-If your source files are on a mechanical hard drive or network storage, conversion can be slow. This happens because the disk has to read the source file and write temporary files at the same time.
-
-Use `--temp` (or `-t`) to write temporary files to a separate, faster drive:
-
-```bash
-dovi_convert convert movie.mkv --temp /mnt/ssd/temp
-dovi_convert convert movie.mkv -t /mnt/ssd/temp
-```
-
-<Callout icon="lightbulb" iconType="solid" color="#a6d189">
-  Use an SSD or NVMe drive as your temp directory for best results.
-</Callout>
 
 ## Troubleshooting
 
