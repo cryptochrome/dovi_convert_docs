@@ -71,9 +71,9 @@ In batch mode:
 3. You confirm before conversion begins
 4. Each eligible file is converted
 
-#### Recursive Scanning
+#### Recursive Conversion
 
-By default, only the top level of each directory is scanned. Use `--recursive` (or `-r`) to scan subdirectories:
+By default, only the top level of each directory is scanned and converted. Use `--recursive` (or `-r`) to scan and convert subdirectories:
 
 ```bash
 dovi_convert convert /movies --recursive
@@ -142,7 +142,7 @@ Complex FEL files are skipped by default because converting them produces incorr
 
 When converting a Simple FEL file, dovi_convert prompts for confirmation:
 
-```
+``` wrap
 Simple FEL detected. This file likely converts safely, but verify with inspect if uncertain.
 Continue? [y/N]
 ```
