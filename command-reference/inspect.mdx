@@ -6,7 +6,7 @@ icon: "magnifying-glass"
 
 ## Synopsis
 
-```
+```shellscript
 dovi_convert inspect <file> [options]
 ```
 
@@ -16,19 +16,19 @@ Performs a definitive frame-by-frame analysis of the entire file to verify wheth
 
 ## Arguments
 
-| Argument | Required | Description |
-|----------|----------|-------------|
-| `<file>` | Yes | Path to the MKV file to inspect |
+| Argument | Required | Description                     |
+| -------- | -------- | ------------------------------- |
+| `<file>` | Yes      | Path to the MKV file to inspect |
 
 ## Options
 
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--safe` | `-s` | Force Safe Mode (disk extraction). Extracts video stream to disk before analyzing |
-| `--debug` | — | Generate `dovi_convert_debug.log` with detailed output |
+| Option    | Short | Description                                                                       |
+| --------- | ----- | --------------------------------------------------------------------------------- |
+| `--safe`  | `-s`  | Force Safe Mode (disk extraction). Extracts video stream to disk before analyzing |
+| `--debug` | —     | Generate `dovi_convert_debug.log` with detailed output                            |
 
-<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
-`inspect` reads the entire file frame-by-frame. For a typical 50-80 GB movie, this takes several minutes. It's not suitable for batch operations.
+<Callout icon="circle-exclamation" iconType="solid" color="#ef9f76">
+  `inspect` reads the entire file frame-by-frame. For a typical 50-80 GB movie, this takes several minutes. It's not suitable for batch operations.
 </Callout>
 
 ## Examples
