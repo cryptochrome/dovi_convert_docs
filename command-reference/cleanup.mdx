@@ -6,24 +6,24 @@ icon: "trash"
 
 ## Synopsis
 
-```
+```shellscript
 dovi_convert cleanup [options]
 ```
 
 ## Description
 
-Scans for and removes `*.mkv.bak.dovi_convert` backup files in the current directory. Includes orphan protection — only deletes backups where the corresponding converted file exists.
+Scans for and removes `*.mkv.bak.dovi_convert` backup files in the current directory. Includes orphan protection — only deletes backups where the corresponding converted file exists in the same directory.
 
 ## Options
 
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--recursive` | `-r` | Scan recursively through subdirectories |
-| `--yes` | `-y` | Skip confirmation prompt |
-| `--debug` | — | Generate `dovi_convert_debug.log` with detailed output |
+| Option        | Short | Description                                            |
+| ------------- | ----- | ------------------------------------------------------ |
+| `--recursive` | `-r`  | Scan recursively through subdirectories                |
+| `--yes`       | `-y`  | Skip confirmation prompt                               |
+| `--debug`     | —     | Generate `dovi_convert_debug.log` with detailed output |
 
-<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
-This is irreversible. Your original Profile 7 files are gone permanently. Only use this if storage space is a concern and you're confident in the conversion results.
+<Callout icon="triangle-exclamation" iconType="solid" color="#e78284">
+  This is irreversible. Your original Profile 7 files are gone permanently unless you have other backups. Only use this if storage space is a concern and you're confident in the conversion results.
 </Callout>
 
 ## Examples
@@ -57,11 +57,12 @@ dovi_convert cleanup -r -y
 
 ## Orphan Protection
 
-The cleanup command has a safety check: it only deletes backups where the corresponding converted file exists.
+The cleanup command has a safety check: it only deletes backups where the corresponding converted file exists in the same directory as the original.
 
 **Example:**
+
 - Backup exists: `movie.mkv.bak.dovi_convert`
-- Converted file missing: `movie.mkv` (deleted or corrupted)
+- Converted file missing: `movie.mkv` (deleted or moved)
 - **Result:** Backup is kept
 
 This prevents data loss if you've deleted a converted file due to quality issues.
