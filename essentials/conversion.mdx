@@ -17,8 +17,8 @@ The conversion process:
 3. **Injects** the RPU metadata into the Base Layer
 4. **Remuxes** everything back into a new MKV file
 
-<Callout icon="circle-info" color="#8caaee" iconType="solid">
-No video re-encoding happens. The bitstream is processed directly, so conversion is fast and quality is preserved exactly.
+<Callout icon="circle-info" iconType="solid" color="#8caaee">
+  No video re-encoding happens. The bitstream is processed directly, so conversion is fast and quality is preserved exactly.
 </Callout>
 
 ## Safety Features
@@ -78,22 +78,23 @@ dovi_convert convert /movies --recursive
 dovi_convert convert /movies -r
 ```
 
-This scans up to 5 levels deep. Specify a number to limit the depth:
+This scans up to 5 levels deep. Specify a number to limit or expand the depth:
 
 ```bash
-dovi_convert convert /movies --recursive 2
+dovi_convert convert /movies --recursive 2   # scans and converts 2 levels deep
+dovi_convert convert /movies --recursive 10  # scans and converts 10 levels deep
 ```
 
 ### Skipping Confirmation
 
-For automated workflows, use `--yes` (or `-y`) to skip the confirmation prompt:
+For automated workflows, use `--yes` (or `-y`) to skip the confirmation prompts:
 
 ```bash
 dovi_convert convert /movies --yes
 ```
 
-<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
-With `--yes`, Simple FEL files are automatically skipped. This prevents unattended conversions from processing files that might need manual review. To include them, add `--include-simple`.
+<Callout icon="circle-exclamation" iconType="solid" color="#ef9f76">
+  With `--yes`, Simple FEL files are automatically skipped. This prevents unattended conversions from processing files that might need manual review. To include them, add `--include-simple`.
 </Callout>
 
 ```bash
@@ -106,7 +107,7 @@ dovi_convert has two processing modes:
 
 ### Standard Mode (Default)
 
-Pipes video data directly between ffmpeg and dovi_tool. Fast and efficient — requires no temporary disk space for the video stream.
+Pipes video data directly from ffmpeg to dovi_tool. Fast and efficient — requires no temporary disk space for the video stream.
 
 ```bash
 dovi_convert convert movie.mkv
@@ -121,8 +122,8 @@ dovi_convert convert movie.mkv --safe
 dovi_convert convert movie.mkv -s
 ```
 
-<Callout icon="circle-info" color="#8caaee" iconType="solid">
-If Standard mode fails (common with Seamless Branching or irregular file structures), Safe mode is triggered automatically. You don't need to manually retry.
+<Callout icon="circle-info" iconType="solid" color="#8caaee">
+  If Standard mode fails (common with Seamless Branching or irregular file structures), Safe mode is triggered automatically. You don't need to manually retry.
 </Callout>
 
 ## Handling Complex FEL
@@ -134,8 +135,8 @@ dovi_convert convert movie.mkv --force
 dovi_convert convert movie.mkv -f
 ```
 
-<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
-Forcing conversion on Complex FEL files produces incorrect tone mapping. The picture may appear dark, have flickering, or show other artifacts. Only use this if you understand and accept the quality loss.
+<Callout icon="circle-exclamation" iconType="solid" color="#ef9f76">
+  Forcing conversion on Complex FEL files produces incorrect tone mapping. The picture may appear dark, have flickering, or show other artifacts. Only use this if you understand and accept the quality loss.
 </Callout>
 
 ## Handling Simple FEL
@@ -159,8 +160,8 @@ dovi_convert convert movie.mkv --hdr10
 
 This strips all Dolby Vision metadata from the file, leaving a clean HDR10 stream. If the source contains HDR10+ metadata, it is preserved.
 
-<Callout icon="circle-info" color="#8caaee" iconType="solid">
-**When to use this:** Some devices like the Nvidia Shield convert Profile 7 files to Profile 8.1 automatically during playback — even when they shouldn't. For [Complex FEL](/before-you-start#complex-fel-brightness-expansion) files, this produces incorrect tone mapping. Converting to HDR10 upfront prevents the device from attempting its own conversion. You lose the dynamic metadata, but the picture displays correctly. HDR10 is better than broken Dolby Vision.
+<Callout icon="circle-info" iconType="solid" color="#8caaee">
+  **When to use this:** Some devices like the Nvidia Shield convert Profile 7 files to Profile 8.1 automatically during playback — even when they shouldn't. For [Complex FEL](/before-you-start#complex-fel-brightness-expansion) files, this produces incorrect tone mapping. Converting to HDR10 upfront prevents the device from attempting its own conversion. You lose the dynamic metadata, but the picture displays correctly. HDR10 is better than broken Dolby Vision.
 </Callout>
 
 HDR10 mode is only available for single file conversions. This is intentional — stripping Dolby Vision entirely is a more significant decision than converting to Profile 8.1.
@@ -197,8 +198,8 @@ Automatically delete the backup file after successful conversion:
 dovi_convert convert movie.mkv --delete
 ```
 
-<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
-This removes your only copy of the original Profile 7 file. Use with caution. If something goes wrong or you later want to restore the original, you can't.
+<Callout icon="triangle-exclamation" iconType="solid" color="#e78284">
+  This removes your only copy of the original Profile 7 file. Use with caution. If something goes wrong or you later want to restore the original, you can't.
 </Callout>
 
 ## Improving Performance on Slow Storage
@@ -212,8 +213,8 @@ dovi_convert convert movie.mkv --temp /mnt/ssd/temp
 dovi_convert convert movie.mkv -t /mnt/ssd/temp
 ```
 
-<Callout icon="lightbulb" color="#a6d189" iconType="solid">
-Use an SSD or NVMe drive as your temp directory for best results.
+<Callout icon="lightbulb" iconType="solid" color="#a6d189">
+  Use an SSD or NVMe drive as your temp directory for best results.
 </Callout>
 
 ## Troubleshooting
@@ -225,9 +226,7 @@ If conversion fails:
    ```bash
    dovi_convert convert movie.mkv --debug
    ```
-
 2. Check `dovi_convert_debug.log` for errors from ffmpeg, dovi_tool, or mkvmerge
-
 3. Common issues:
    - **Seamless Branching** — Try with `--safe` mode
    - **Corrupted files** — Verify the original file plays correctly
