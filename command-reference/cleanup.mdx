@@ -1,5 +1,5 @@
 ---
-title: "-cleanup"
+title: "cleanup"
 description: "Remove backup files created during conversion"
 icon: "trash"
 ---
@@ -7,19 +7,20 @@ icon: "trash"
 ## Synopsis
 
 ```
-dovi_convert -cleanup [-r] [-y]
+dovi_convert cleanup [options]
 ```
 
 ## Description
 
-Scans for and removes `*.mkv.bak.dovi_convert` backup files in the current directory. Includes orphan protection - only deletes backups where the corresponding converted file exists.
+Scans for and removes `*.mkv.bak.dovi_convert` backup files in the current directory. Includes orphan protection — only deletes backups where the corresponding converted file exists.
 
 ## Options
 
-| Option | Description |
-|--------|-------------|
-| `-r` | Scan recursively through subdirectories |
-| `-y` | Skip confirmation prompt |
+| Option | Short | Description |
+|--------|-------|-------------|
+| `--recursive` | `-r` | Scan recursively through subdirectories |
+| `--yes` | `-y` | Skip confirmation prompt |
+| `--debug` | — | Generate `dovi_convert_debug.log` with detailed output |
 
 <Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
 This is irreversible. Your original Profile 7 files are gone permanently. Only use this if storage space is a concern and you're confident in the conversion results.
@@ -30,25 +31,28 @@ This is irreversible. Your original Profile 7 files are gone permanently. Only u
 **Clean up current directory:**
 
 ```bash
-dovi_convert -cleanup
+dovi_convert cleanup
 ```
 
 **Clean up recursively:**
 
 ```bash
-dovi_convert -cleanup -r
+dovi_convert cleanup --recursive
+dovi_convert cleanup -r
 ```
 
 **Auto-confirm cleanup:**
 
 ```bash
-dovi_convert -cleanup -y
+dovi_convert cleanup --yes
+dovi_convert cleanup -y
 ```
 
 **Recursive cleanup without prompts:**
 
 ```bash
-dovi_convert -cleanup -r -y
+dovi_convert cleanup --recursive --yes
+dovi_convert cleanup -r -y
 ```
 
 ## Orphan Protection
@@ -56,13 +60,12 @@ dovi_convert -cleanup -r -y
 The cleanup command has a safety check: it only deletes backups where the corresponding converted file exists.
 
 **Example:**
-- Backup exists: `Movie.mkv.bak.dovi_convert`
-- Converted file missing: `Movie.mkv` (deleted or corrupted)
+- Backup exists: `movie.mkv.bak.dovi_convert`
+- Converted file missing: `movie.mkv` (deleted or corrupted)
 - **Result:** Backup is kept
 
 This prevents data loss if you've deleted a converted file due to quality issues.
 
-## See also
+## See Also
 
-- [-convert](/command-reference/convert) - Convert single files
-- [-batch](/command-reference/batch) - Batch convert files
+- [convert](convert) — Convert files or directories

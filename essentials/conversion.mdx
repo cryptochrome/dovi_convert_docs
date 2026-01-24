@@ -4,9 +4,11 @@ description: "Convert Dolby Vision Profile 7 files to Profile 8.1"
 icon: "download"
 ---
 
-The `-convert` command converts a single Dolby Vision Profile 7 file to Profile 8.1. The process strips the Enhancement Layer, injects the dynamic metadata (RPU) into the Base Layer, and produces a file compatible with most Dolby Vision devices.
+The `convert` command converts Dolby Vision Profile 7 files to Profile 8.1. The process strips the Enhancement Layer, injects the dynamic metadata (RPU) into the Base Layer, and produces a file compatible with most Dolby Vision devices.
 
-## How conversion works
+You can convert individual files or entire directories. When you pass directories, the command enters batch mode — scanning everything first, showing a summary, then converting all eligible files.
+
+## How Conversion Works
 
 The conversion process:
 
@@ -16,180 +18,228 @@ The conversion process:
 4. **Remuxes** everything back into a new MKV file
 
 <Callout icon="circle-info" color="#8caaee" iconType="solid">
-  No video re-encoding happens. The bitstream is processed directly, so conversion is fast and quality is preserved exactly.
+No video re-encoding happens. The bitstream is processed directly, so conversion is fast and quality is preserved exactly.
 </Callout>
 
-## Safety features
+## Safety Features
 
 dovi_convert is designed to be non-destructive:
 
-- **Automatic backup** - Your original file is renamed to `*.bak.dovi_convert` before any changes
-- **Scan before convert** - Each file is analyzed to detect Complex FEL
-- **Safe defaults** - Complex FEL files are skipped unless you explicitly override
+- **Automatic backup** — Your original file is renamed to `*.bak.dovi_convert` before any changes
+- **Scan before convert** — Each file is analyzed to detect Complex FEL
+- **Safe defaults** — Complex FEL files are skipped unless you explicitly override
 
 All audio and subtitle tracks are preserved in the converted file.
 
-## Basic usage
+## Converting Single Files
 
-Convert a single file:
+Convert a file:
 
 ```bash
-dovi_convert -convert "Movie.mkv"
+dovi_convert convert movie.mkv
 ```
 
 The command:
 
 1. Analyzes the file for FEL complexity
-2. Creates a backup (`Movie.mkv.bak.dovi_convert`)
+2. Creates a backup (`movie.mkv.bak.dovi_convert`)
 3. Converts to Profile 8.1
 4. Replaces the original with the converted file
 
-## Conversion modes
+Convert multiple files:
+
+```bash
+dovi_convert convert movie1.mkv movie2.mkv movie3.mkv
+```
+
+Each file is processed immediately, one after another.
+
+## Converting Directories
+
+When you pass directories instead of files, dovi_convert switches to batch mode:
+
+```bash
+dovi_convert convert /movies
+```
+
+In batch mode:
+
+1. All directories are scanned for Profile 7 files
+2. A summary shows what will be converted
+3. You confirm before conversion begins
+4. Each eligible file is converted
+
+### Recursive Scanning
+
+By default, only the top level of each directory is scanned. Use `--recursive` (or `-r`) to scan subdirectories:
+
+```bash
+dovi_convert convert /movies --recursive
+dovi_convert convert /movies -r
+```
+
+This scans up to 5 levels deep. Specify a number to limit the depth:
+
+```bash
+dovi_convert convert /movies --recursive 2
+```
+
+### Skipping Confirmation
+
+For automated workflows, use `--yes` (or `-y`) to skip the confirmation prompt:
+
+```bash
+dovi_convert convert /movies --yes
+```
+
+<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
+With `--yes`, Simple FEL files are automatically skipped. This prevents unattended conversions from processing files that might need manual review. To include them, add `--include-simple`.
+</Callout>
+
+```bash
+dovi_convert convert /movies --yes --include-simple
+```
+
+## Processing Modes
 
 dovi_convert has two processing modes:
 
-### Standard mode (default)
+### Standard Mode (Default)
 
-Pipes video data directly between ffmpeg and dovi_tool. Fast and efficient - requires no temporary disk space for the video stream.
+Pipes video data directly between ffmpeg and dovi_tool. Fast and efficient — requires no temporary disk space for the video stream.
 
 ```bash
-dovi_convert -convert "Movie.mkv"
+dovi_convert convert movie.mkv
 ```
 
-### Safe mode
+### Safe Mode
 
 Extracts the video stream to disk first, then processes it. Slower, but handles files that Standard mode can't process.
 
 ```bash
-dovi_convert -convert "Movie.mkv" -safe
+dovi_convert convert movie.mkv --safe
+dovi_convert convert movie.mkv -s
 ```
 
 <Callout icon="circle-info" color="#8caaee" iconType="solid">
-  If Standard mode fails (common with Seamless Branching or irregular file structures), Safe mode is triggered automatically. You don't need to manually retry.
+If Standard mode fails (common with Seamless Branching or irregular file structures), Safe mode is triggered automatically. You don't need to manually retry.
 </Callout>
 
-## Command options
+## Handling Complex FEL
 
-### Force conversion (`-force`)
-
-Override safety checks and convert Complex FEL files:
+Complex FEL files are skipped by default because converting them produces incorrect tone mapping. To override this safety check:
 
 ```bash
-dovi_convert -convert "Movie.mkv" -force
+dovi_convert convert movie.mkv --force
+dovi_convert convert movie.mkv -f
 ```
 
 <Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
-  Forcing conversion on Complex FEL files produces incorrect tone mapping. The picture may appear dark, have flickering, or show other artifacts. Only use this if you understand and accept the quality loss.
+Forcing conversion on Complex FEL files produces incorrect tone mapping. The picture may appear dark, have flickering, or show other artifacts. Only use this if you understand and accept the quality loss.
 </Callout>
 
-### Delete backup (`-delete`)
-
-Automatically delete the backup file after successful conversion:
-
-```bash
-dovi_convert -convert "Movie.mkv" -delete
-```
-
-<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
-  This removes your only copy of the original Profile 7 file. Use with caution. If something goes wrong or you later want to restore the original, you can't.
-</Callout>
-
-### Debug mode (`-debug`)
-
-Generate a detailed log file for troubleshooting:
-
-```bash
-dovi_convert -convert "Movie.mkv" -debug
-```
-
-This creates `dovi_convert_debug.log` in the current directory, containing output from all internal tools (ffmpeg, dovi_tool, mkvmerge).
-
-### HDR10 mode (`-hdr10`)
-
-Convert to HDR10 instead of Dolby Vision Profile 8.1:
-
-```bash
-dovi_convert -convert "Movie.mkv" -hdr10
-```
-
-This strips all Dolby Vision metadata from the file, leaving a clean HDR10 stream. If the source contains HDR10+ metadata, it is preserved in the output.
-
-<Callout icon="circle-info" color="#8caaee" iconType="solid">
-  **When to use this:** Some devices like the Nvidia Shield convert Profile 7 files to Profile 8.1 automatically during playback - even when they shouldn't. For [Complex FEL](/before-you-start#complex-fel-brightness-expansion) files, this produces incorrect tone mapping. Converting to HDR10 upfront prevents the device from attempting its own conversion. You lose the dynamic metadata, but the picture displays correctly. HDR10 is better than messed up Dovi 8.1.
-</Callout>
-
-HDR10 mode is only available with `-convert`, not `-batch`. This is intentional - stripping Dolby Vision entirely is a more significant decision than converting to Profile 8.1.
-
-## Handling Simple FEL files
+## Handling Simple FEL
 
 When converting a Simple FEL file, dovi_convert prompts for confirmation:
 
 ```
-Simple FEL detected. This file likely converts safely, but verify with -inspect if uncertain.
+Simple FEL detected. This file likely converts safely, but verify with inspect if uncertain.
 Continue? [y/N]
 ```
 
-This is a precaution - Simple FEL files usually convert correctly, but the scan might have missed isolated brightness spikes. If you want certainty, run `-inspect` first.
+This is a precaution — Simple FEL files usually convert correctly, but the scan might have missed isolated brightness spikes. If you want certainty, run `inspect` first.
 
-## What happens to your files
+## HDR10 Mode
+
+Convert to HDR10 instead of Dolby Vision Profile 8.1:
+
+```bash
+dovi_convert convert movie.mkv --hdr10
+```
+
+This strips all Dolby Vision metadata from the file, leaving a clean HDR10 stream. If the source contains HDR10+ metadata, it is preserved.
+
+<Callout icon="circle-info" color="#8caaee" iconType="solid">
+**When to use this:** Some devices like the Nvidia Shield convert Profile 7 files to Profile 8.1 automatically during playback — even when they shouldn't. For [Complex FEL](/before-you-start#complex-fel-brightness-expansion) files, this produces incorrect tone mapping. Converting to HDR10 upfront prevents the device from attempting its own conversion. You lose the dynamic metadata, but the picture displays correctly. HDR10 is better than broken Dolby Vision.
+</Callout>
+
+HDR10 mode is only available for single file conversions. This is intentional — stripping Dolby Vision entirely is a more significant decision than converting to Profile 8.1.
+
+## What Happens to Your Files
 
 | Before                  | After                                          |
 | ----------------------- | ---------------------------------------------- |
-| `Movie.mkv` (Profile 7) | `Movie.mkv` (Profile 8.1)                      |
-| -                       | `Movie.mkv.bak.dovi_convert` (original backup) |
+| `movie.mkv` (Profile 7) | `movie.mkv` (Profile 8.1)                      |
+| —                       | `movie.mkv.bak.dovi_convert` (original backup) |
 
-The backup contains your complete original file. You can restore it by:
-
-```bash
-mv "Movie.mkv.bak.dovi_convert" "Movie.mkv"
-```
-
-### Custom output directory
-
-Use `-o` to place the converted file in a different directory:
+The backup contains your complete original file. Restore it by:
 
 ```bash
-dovi_convert -convert "Movie.mkv" -o /output/converted
+mv "movie.mkv.bak.dovi_convert" "movie.mkv"
 ```
 
-The converted file is placed in the output directory. Your original file is renamed to `.bak.dovi_convert` and stays in the source location. The output directory is created automatically if it does not exist.
+### Custom Output Directory
 
-## Troubleshooting
+Use `--output` (or `-o`) to place converted files in a different directory:
 
-If conversion fails:
+```bash
+dovi_convert convert movie.mkv --output /converted
+dovi_convert convert movie.mkv -o /converted
+```
 
-1. Run with `-debug` to generate a log:
+The original file is renamed to `.bak.dovi_convert` and stays in the source location. The output directory is created automatically if it doesn't exist.
 
-   ```bash
-   dovi_convert -convert "Movie.mkv" -debug
-   ```
-2. Check `dovi_convert_debug.log` for errors from ffmpeg, dovi_tool, or mkvmerge
-3. Common issues:
-   - **Seamless Branching** - Try with `-safe` mode
-   - **Corrupted files** - Verify the original file plays correctly
-   - **Disk space** - Safe mode needs space for the extracted video stream
+### Deleting Backups
 
-## Improving performance on slow storage
+Automatically delete the backup file after successful conversion:
+
+```bash
+dovi_convert convert movie.mkv --delete
+```
+
+<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
+This removes your only copy of the original Profile 7 file. Use with caution. If something goes wrong or you later want to restore the original, you can't.
+</Callout>
+
+## Improving Performance on Slow Storage
 
 If your source files are on a mechanical hard drive or network storage, conversion can be slow. This happens because the disk has to read the source file and write temporary files at the same time.
 
-Use the `-temp` flag to write temporary files to a separate, faster drive:
+Use `--temp` (or `-t`) to write temporary files to a separate, faster drive:
 
 ```bash
-dovi_convert -convert "Movie.mkv" -temp /mnt/ssd/temp
+dovi_convert convert movie.mkv --temp /mnt/ssd/temp
+dovi_convert convert movie.mkv -t /mnt/ssd/temp
 ```
 
 <Callout icon="lightbulb" color="#a6d189" iconType="solid">
 Use an SSD or NVMe drive as your temp directory for best results.
 </Callout>
 
-## Next steps
+## Troubleshooting
+
+If conversion fails:
+
+1. Run with `--debug` to generate a log:
+
+   ```bash
+   dovi_convert convert movie.mkv --debug
+   ```
+
+2. Check `dovi_convert_debug.log` for errors from ffmpeg, dovi_tool, or mkvmerge
+
+3. Common issues:
+   - **Seamless Branching** — Try with `--safe` mode
+   - **Corrupted files** — Verify the original file plays correctly
+   - **Disk space** — Safe mode needs space for the extracted video stream
+
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Batch Processing" icon="files" href="/essentials/batch">
-    Convert entire directories at once
-  </Card>
   <Card title="File Scanning" icon="scanner-image" href="/essentials/scanning">
     Learn more about analyzing files before conversion
+  </Card>
+  <Card title="Backup and Restore" icon="clock-rotate-left" href="/essentials/backup-restore">
+    Managing backup files and restoring originals
   </Card>
 </CardGroup>

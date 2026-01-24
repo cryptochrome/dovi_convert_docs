@@ -1,5 +1,5 @@
 ---
-title: "-update-check"
+title: "update-check"
 description: "Check for newer versions of dovi_convert"
 icon: "download"
 ---
@@ -7,7 +7,7 @@ icon: "download"
 ## Synopsis
 
 ```
-dovi_convert -update-check
+dovi_convert update-check
 ```
 
 ## Description
@@ -16,14 +16,16 @@ Checks if a newer version of dovi_convert is available on GitHub. Displays the c
 
 ## Options
 
-This command has no options.
+| Option | Description |
+|--------|-------------|
+| `--debug` | Generate `dovi_convert_debug.log` with detailed output |
 
 ## Examples
 
 **Check for updates:**
 
 ```bash
-dovi_convert -update-check
+dovi_convert update-check
 ```
 
 ## Automatic Update Checks
@@ -41,4 +43,4 @@ To update dovi_convert:
 
 1. Download the latest version from [GitHub Releases](https://github.com/cryptochrome/dovi_convert/releases)
 2. Replace your existing `dovi_convert.py` file
-3. Run `dovi_convert -help` to verify the new version
+3. Run `dovi_convert --help` to verify the new version

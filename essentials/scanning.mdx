@@ -4,69 +4,70 @@ description: "Identify video formats and analyze FEL complexity before conversio
 icon: "magnifying-glass-waveform"
 ---
 
-Before converting files, you should analyze them to understand their format and whether conversion is safe. dovi_convert provides two commands for this: `-scan` for quick analysis and `-inspect` for deep verification.
+Before converting files, you should analyze them to understand their format and whether conversion is safe. dovi_convert provides two commands for this: `scan` for quick analysis and `inspect` for deep verification.
 
-## Why scan first?
+## Why Scan First?
 
-Not every Dolby Vision Profile 7 file should be converted. Some contain Enhancement Layers with brightness expansion data - converting these produces incorrect results (dark picture, flickering).
+Not every Dolby Vision Profile 7 file should be converted. Some contain Enhancement Layers with brightness expansion data — converting these produces incorrect results (dark picture, flickering).
 
 Scanning identifies:
 
-- **Video format** - HDR10, HDR10+, Dolby Vision (and which profile)
-- **FEL classification** - MEL, Simple FEL, or Complex FEL
-- **Conversion safety** - Whether the file is safe to convert
+- **Video format** — HDR10, HDR10+, Dolby Vision (and which profile)
+- **FEL classification** — MEL, Simple FEL, or Complex FEL
+- **Conversion safety** — Whether the file is safe to convert
 
-The `-convert` and `-batch` commands automatically scan files before processing and warn you about risky conversions. Running `-scan` separately gives you an overview without starting any conversion.
+The `convert` command automatically scans files before processing and warns you about risky conversions. Running `scan` separately gives you an overview without starting any conversion.
 
-## The `-scan` command
+## The `scan` Command
 
 Scans files to identify their video format and FEL status. You can scan individual files, entire directories, or any combination.
 
-### Basic usage
+### Basic Usage
 
 ```bash
-dovi_convert -scan                   # All MKV files in current directory
-dovi_convert -scan "Movie.mkv"       # Specific file
+dovi_convert scan                   # All MKV files in current directory
+dovi_convert scan movie.mkv         # Specific file
 ```
 
-### Scan directories
+### Scan Directories
 
-Point `-scan` at any directory instead of navigating there first:
+Point `scan` at any directory instead of navigating there first:
 
 ```bash
-dovi_convert -scan /path/to/movies
+dovi_convert scan /movies
 ```
 
 Scan multiple directories or mix files and directories:
 
 ```bash
-dovi_convert -scan /movies /tv
-dovi_convert -scan /movies "Individual.mkv"
+dovi_convert scan /movies /tv
+dovi_convert scan /movies movie.mkv
 ```
 
-### Recursive scanning
+### Recursive Scanning
 
-Scan subdirectories with the `-r` flag:
+Scan subdirectories with the `--recursive` (or `-r`) flag:
 
 ```bash
-dovi_convert -scan -r                # Recursive (default depth: 5)
-dovi_convert -scan -r 2              # Recursive (depth: 2 folders)
-dovi_convert -scan /movies -r 3      # Directory with recursion
+dovi_convert scan --recursive              # Recursive (default depth: 5)
+dovi_convert scan -r                       # Same, short form
+dovi_convert scan --recursive 2            # Recursive (depth: 2 folders)
+dovi_convert scan /movies --recursive 3    # Directory with recursion
 ```
 
-### Show only conversion candidates
+### Show Only Conversion Candidates
 
-If you only want to see files that can be converted (Profile 7), use the `-candidates` flag to filter out SDR, HDR10, Profile 8, and other non-convertible formats:
+If you only want to see files that can be converted (Profile 7), use the `--candidates` flag to filter out SDR, HDR10, Profile 8, and other non-convertible formats:
 
 ```bash
-dovi_convert -scan -candidates
-dovi_convert -scan /movies -candidates
-dovi_convert -scan -candidates -r 3
+dovi_convert scan --candidates
+dovi_convert scan /movies --candidates
+dovi_convert scan --candidates --recursive 3
 ```
 
 This is useful when scanning large libraries where most files are already in the correct format.
 
-## Understanding the output
+## Understanding the Output
 
 The scan displays color-coded results for each file:
 
@@ -78,84 +79,84 @@ The scan displays color-coded results for each file:
 
 Non-Profile 7 files (HDR10, SDR, etc.) are also identified but cannot be converted by this tool.
 
-### How `-scan` works
+### How `scan` Works
 
-The scan samples 10 timestamps across the file and analyzes the RPU (Reference Processing Unit) metadata at each point. It checks for brightness values that exceed the Base Layer's capability - an indicator of Complex FEL.
+The scan samples 10 timestamps across the file and analyzes the RPU (Reference Processing Unit) metadata at each point. It checks for brightness values that exceed the Base Layer's capability — an indicator of Complex FEL.
 
 <Callout icon="circle-info" color="#8caaee" iconType="solid">
-Sampling is fast but not exhaustive. A file might have brightness spikes in sections the scan didn't sample. For definitive results, use `-inspect`.
+Sampling is fast but not exhaustive. A file might have brightness spikes in sections the scan didn't sample. For definitive results, use `inspect`.
 </Callout>
 
 ## Terminology
 
 ### MEL (Minimal Enhancement Layer)
 
-The Enhancement Layer exists but contains no useful data. This is the most common type. Converting is completely safe - you lose nothing.
+The Enhancement Layer exists but contains no useful data. This is the most common type. Converting is completely safe — you lose nothing.
 
-### Simple FEL (No brightness expansion)
+### Simple FEL (No Brightness Expansion)
 
-The Enhancement Layer contains some data (film grain, minor color adjustments), but does not expand brightness. Converting is generally safe - you lose minor enhancements, but the picture remains correct.
+The Enhancement Layer contains some data (film grain, minor color adjustments), but does not expand brightness. Converting is generally safe — you lose minor enhancements, but the picture remains correct.
 
-### Complex FEL (Brightness expansion)
+### Complex FEL (Brightness Expansion)
 
 The Enhancement Layer actively elevates brightness beyond the Base Layer. Converting produces incorrect tone mapping. These files are skipped by default.
 
 For more details on FEL types and their implications, see [Before You Start](/before-you-start#understanding-the-enhancement-layer).
 
-## The `-inspect` command
+## The `inspect` Command
 
 Performs a full frame-by-frame analysis of the entire file. Use this when you need definitive confirmation.
 
-### When to use `-inspect`
+### When to Use `inspect`
 
-- Verify a **Simple FEL** verdict from `-scan`
+- Verify a **Simple FEL** verdict from `scan`
 - Get absolute certainty before converting a file
-- Investigate files that `-scan` couldn't fully classify
+- Investigate files that `scan` couldn't fully classify
 
-### Basic usage
+### Basic Usage
 
 ```bash
-dovi_convert -inspect "Movie.mkv"
+dovi_convert inspect movie.mkv
 ```
 
-### How `-inspect` differs from `-scan`
+### How `inspect` Differs from `scan`
 
-| Aspect | `-scan` | `-inspect` |
-|--------|---------|------------|
+| Aspect | `scan` | `inspect` |
+|--------|--------|-----------|
 | **Speed** | Fast (samples 10 points) | Slow (reads entire file) |
 | **Accuracy** | High (may miss isolated spikes) | Definitive |
 | **Batch support** | Yes | No (single file only) |
 
 <Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
-`-inspect` reads the entire file frame-by-frame. For a typical 50-80 GB movie, this takes several minutes. It's not suitable for batch operations.
+`inspect` reads the entire file frame-by-frame. For a typical 50-80 GB movie, this takes several minutes. It's not suitable for batch operations.
 </Callout>
 
-### Interpreting results
+### Interpreting Results
 
-After analysis, `-inspect` reports:
+After analysis, `inspect` reports:
 
 - Whether **brightness expansion** was detected (the primary concern)
 - The **peak brightness** values found in the metadata
 - A **verdict** confirming if the file is safe to convert
 
-If `-inspect` says the file is safe but `-scan` said Complex FEL, trust `-inspect` - it analyzed the entire file rather than sampling.
+If `inspect` says the file is safe but `scan` said Complex FEL, trust `inspect` — it analyzed the entire file rather than sampling.
 
-## Automatic scanning in other commands
+## Automatic Scanning in Convert
 
-You don't always need to run `-scan` manually. Both `-convert` and `-batch` perform the same analysis automatically:
+You don't always need to run `scan` manually. The `convert` command performs the same analysis automatically:
 
-- **Complex FEL files** are skipped by default (use `-force` to override)
+- **Complex FEL files** are skipped by default (use `--force` to override)
 - **Simple FEL files** trigger a confirmation prompt
 
-This means you can safely run `-convert` on any file - the tool warns you before doing anything risky.
+This means you can safely run `convert` on any file — the tool warns you before doing anything risky.
 
-## Next steps
+## Next Steps
 
 <CardGroup cols={2}>
   <Card title="File Conversion" icon="recycle" href="/essentials/conversion">
-    Convert individual files to Profile 8.1
+    Convert individual files or directories to Profile 8.1
   </Card>
-  <Card title="Batch Processing" icon="files" href="/essentials/batch">
-    Scan and convert entire directories
+  <Card title="Backup & Restore" icon="clock-rotate-left" href="/essentials/backup-restore">
+    Managing backup files and restoring originals
   </Card>
 </CardGroup>

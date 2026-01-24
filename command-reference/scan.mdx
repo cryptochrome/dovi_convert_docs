@@ -1,5 +1,5 @@
 ---
-title: "-scan"
+title: "scan"
 description: "Analyze files to identify video format and FEL complexity"
 icon: "scanner-image"
 ---
@@ -7,14 +7,12 @@ icon: "scanner-image"
 ## Synopsis
 
 ```
-dovi_convert -scan [path] [path2] ... [-r depth] [-candidates]
+dovi_convert scan [files|directories] [options]
 ```
-
-**Alias:** `-check`
 
 ## Description
 
-Scans MKV files to identify their video format (HDR10, Dolby Vision Profile) and analyzes Profile 7 files to determine FEL complexity. 
+Scans MKV files to identify their video format (HDR10, Dolby Vision Profile) and analyzes Profile 7 files to determine FEL complexity.
 
 You can scan individual files, directories, or any combination. If no path is specified, scans all MKV files in the current directory.
 
@@ -22,72 +20,82 @@ The scan samples 10 timestamps across each file and analyzes the RPU metadata to
 
 ## Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `[path]` | path | current directory | File or directory to scan. Multiple paths supported |
-| `-r [depth]` | number | 5 | Scan subdirectories recursively up to specified depth |
-| `-candidates` | flag | off | Show only Profile 7 files that can be converted |
+| Option | Short | Description |
+|--------|-------|-------------|
+| `--recursive [N]` | `-r [N]` | Scan subdirectories recursively up to depth N (default: 5) |
+| `--candidates` | — | Show only Profile 7 files that can be converted |
+| `--debug` | — | Generate `dovi_convert_debug.log` with detailed output |
 
 ## Examples
 
 **Scan current directory:**
 
 ```bash
-dovi_convert -scan
+dovi_convert scan
 ```
 
 **Scan specific file:**
 
 ```bash
-dovi_convert -scan "Movie.mkv"
+dovi_convert scan movie.mkv
 ```
 
 **Scan a directory:**
 
 ```bash
-dovi_convert -scan /path/to/movies
+dovi_convert scan /movies
 ```
 
 **Scan multiple directories:**
 
 ```bash
-dovi_convert -scan /movies /tv
+dovi_convert scan /movies /tv
 ```
 
 **Mixed files and directories:**
 
 ```bash
-dovi_convert -scan /movies "Individual.mkv" /tv
+dovi_convert scan /movies movie.mkv /tv
 ```
 
-**Scan recursively (2 levels deep):**
+**Scan recursively:**
 
 ```bash
-dovi_convert -scan -r 2
+dovi_convert scan --recursive
+dovi_convert scan -r
+```
+
+Scans up to 5 levels deep by default.
+
+**Limit recursion depth:**
+
+```bash
+dovi_convert scan --recursive 2
+dovi_convert scan -r 2
 ```
 
 **Directory with recursion:**
 
 ```bash
-dovi_convert -scan /movies -r 3
+dovi_convert scan /movies --recursive 3
+dovi_convert scan /movies -r 3
 ```
 
 **Show only conversion candidates:**
 
 ```bash
-dovi_convert -scan -candidates
+dovi_convert scan --candidates
 ```
 
 ## Output
 
 The scan displays:
 
-- **Video format** - HDR10, Dolby Vision Profile 5/7/8, etc.
-- **FEL type** (for Profile 7) - MEL, Simple FEL, or Complex FEL
-- **Color-coded verdict** - Green (safe), yellow (verify), red (skip)
+- **Video format** — HDR10, Dolby Vision Profile 5/7/8, etc.
+- **FEL type** (for Profile 7) — MEL, Simple FEL, or Complex FEL
+- **Color-coded verdict** — Green (safe), yellow (verify), red (skip)
 
-## See also
+## See Also
 
-- [-inspect](/command-reference/inspect) - Full frame-by-frame analysis
-- [-convert](/command-reference/convert) - Convert a single file
-- [-batch](/command-reference/batch) - Batch convert files
+- [inspect](inspect) — Full frame-by-frame analysis
+- [convert](convert) — Convert files or directories

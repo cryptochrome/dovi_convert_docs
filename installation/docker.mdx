@@ -8,12 +8,12 @@ The dovi_convert Docker container provides a self-contained environment with all
 
 ## Features
 
-- **Web terminal** - Access dovi_convert through your browser at `http://your-host:7681`
-- **Pre-configured environment** - All dependencies (ffmpeg, dovi_tool, mkvtoolnix, mediainfo) included
-- **NAS-friendly** - Designed for network storage devices and servers
-- **User mapping** - Run with your own UID/GID to avoid file permission issues
+- **Web terminal** — Access dovi_convert through your browser at `http://your-host:7681`
+- **Pre-configured environment** — All dependencies (ffmpeg, dovi_tool, mkvtoolnix, mediainfo) included
+- **NAS-friendly** — Designed for network storage devices and servers
+- **User mapping** — Run with your own UID/GID to avoid file permission issues
 
-## Quick start
+## Quick Start
 
 <Tabs>
   <Tab title="Docker run">
@@ -65,7 +65,7 @@ Then open `http://your-docker-host:7681` in your browser.
 
 ## Configuration
 
-### User and group IDs
+### User and Group IDs
 
 The `PUID` and `PGID` environment variables control which user the container runs as. Set these to match your host user to avoid permission problems when accessing files.
 
@@ -77,7 +77,7 @@ id
 
 This outputs something like `uid=1000(yourname) gid=1000(yourname)`. Use these values for `PUID` and `PGID`.
 
-### Environment variables
+### Environment Variables
 
 | Variable | Default         | Description                   |
 | -------- | --------------- | ----------------------------- |
@@ -85,7 +85,7 @@ This outputs something like `uid=1000(yourname) gid=1000(yourname)`. Use these v
 | `PGID`   | 1000            | Group ID for file permissions |
 | `TZ`     | `Europe/Berlin` | Timezone for log timestamps   |
 
-### Volume mounts
+### Volume Mounts
 
 Mount your media directories to `/data` inside the container. You can mount multiple paths:
 
@@ -96,7 +96,7 @@ Mount your media directories to `/data` inside the container. You can mount mult
 
 Inside the container, access your files at `/data/movies`, `/data/tv`, etc.
 
-### Temp directory for faster conversions
+### Temp Directory for Faster Conversions
 
 If your media is on slow storage (mechanical HDDs), you can bind-mount a faster drive for temporary files:
 
@@ -104,15 +104,15 @@ If your media is on slow storage (mechanical HDDs), you can bind-mount a faster 
 -v /path/to/ssd:/cache
 ```
 
-Then use the `-temp` flag when converting:
+Then use the `--temp` flag when converting:
 
 ```bash
-dovi_convert -convert /data/movie.mkv -temp /cache
+dovi_convert convert /data/movie.mkv --temp /cache
 ```
 
 Temporary files are written to the fast drive while the source and final output stay on your media volume.
 
-### Port configuration
+### Port Configuration
 
 The web terminal runs on port 7681 inside the container. Map it to any available port on your host:
 
@@ -120,24 +120,24 @@ The web terminal runs on port 7681 inside the container. Map it to any available
 -p 8080:7681  # Access at http://your-host:8080
 ```
 
-## Using the web terminal
+## Using the Web Terminal
 
 Once the container is running, open `http://your-docker-host:7681` in your browser. You'll see a terminal session with dovi_convert ready to use.
 
 The container includes a `dovi` alias for convenience:
 
 ```bash
-dovi -help         # Same as dovi_convert -help
-dovi -scan         # Scan all files in current directory
+dovi --help        # Same as dovi_convert --help
+dovi scan          # Scan all files in current directory
 ```
 
-## Next steps
+## Next Steps
 
 <CardGroup cols={2}>
   <Card title="File Scanning" icon="scanner-image" href="/essentials/scanning">
     Analyze your files to identify formats and FEL status
   </Card>
-  <Card title="Batch Processing" icon="files" href="/essentials/batch">
-    Process entire directories at once
+  <Card title="File Conversion" icon="recycle" href="/essentials/conversion">
+    Convert files or directories to Profile 8.1
   </Card>
 </CardGroup>

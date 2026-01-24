@@ -34,7 +34,6 @@
             "pages": [
               "essentials/scanning",
               "essentials/conversion",
-              "essentials/batch",
               "essentials/backup-restore"
             ]
           }
@@ -54,7 +53,6 @@
             "group": "Conversion",
             "pages": [
               "command-reference/convert",
-              "command-reference/batch",
               "command-reference/cleanup"
             ]
           },

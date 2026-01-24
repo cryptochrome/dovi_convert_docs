@@ -3,30 +3,30 @@ title: "Before You Start"
 description: "Understand the technical background, caveats, and why dovi_convert exists"
 ---
 
-Before converting your files, take a few minutes to understand what dovi_convert does, why it exists, and when conversion is - or isn't - appropriate.
+Before converting your files, take a few minutes to understand what dovi_convert does, why it exists, and when conversion is — or isn't — appropriate.
 
-## The problem
+## The Problem
 
 Dolby Vision Profile 7 was designed for UHD Blu-ray, exclusively. Blu-ray discs contain two video layers:
 
-- **Base Layer (BL)** - HDR10-compatible video
-- **Enhancement Layer (EL)** - Additional data that improves picture quality
+- **Base Layer (BL)** — HDR10-compatible video
+- **Enhancement Layer (EL)** — Additional data that improves picture quality
 
-Blu-ray players have dual decoders to handle both layers. Most media players and streaming devices only have one - they can't decode the Enhancement Layer. When they encounter Profile 7 content, they either:
+Blu-ray players have dual decoders to handle both layers. Most media players and streaming devices only have one — they can't decode the Enhancement Layer. When they encounter Profile 7 content, they either:
 
-1. **Fall back to HDR10** - You lose all Dolby Vision benefits
-2. **Fail to play** - The file won't work at all
-3. **Convert blindly** - Strip the Enhancement Layer without checking if it's safe
+1. **Fall back to HDR10** — You lose all Dolby Vision benefits
+2. **Fail to play** — The file won't work at all
+3. **Convert blindly** — Strip the Enhancement Layer without checking if it's safe
 
 The third option is what devices like Nvidia Shield and software like Kodi (with Dolby Vision Compatibility Mode) do. They convert on-the-fly, but they don't check whether the Enhancement Layer contains critical brightness data. If it does, the conversion produces a broken picture.
 
-## What dovi_convert does differently
+## What dovi_convert Does Differently
 
 <Callout icon="circle-info" iconType="solid" color="#8caaee">
-  **The key difference:** dovi_convert analyzes your files _before_ conversion.
+**The key difference:** dovi_convert analyzes your files _before_ conversion.
 </Callout>
 
-It examines the Enhancement Layer to determine whether stripping it is safe. If the layer contains brightness expansion data - meaning it actively increases brightness beyond the base video - the tool warns you and skips the file by default.
+It examines the Enhancement Layer to determine whether stripping it is safe. If the layer contains brightness expansion data — meaning it actively increases brightness beyond the base video — the tool warns you and skips the file by default.
 
 The conversion process:
 
@@ -36,19 +36,19 @@ The conversion process:
 
 All audio and subtitle tracks are preserved. Your original file is backed up automatically.
 
-## What you lose (and why it usually doesn't matter) - and what you gain
+## What You Lose (and Why It Usually Doesn't Matter) — and What You Gain
 
 The Enhancement Layer can contain more than brightness data. Some titles include reconstructive information like film grain, noise patterns, or color corrections. When you convert to Profile 8.1, this data is discarded.
 
-However, this is only a concern if your playback device supports FEL - and if it did, you wouldn't need this tool. Devices that lack FEL support do either of these two things:
+However, this is only a concern if your playback device supports FEL — and if it did, you wouldn't need this tool. Devices that lack FEL support do either of these two things:
 
-1. **Fall back to plain HDR10** - Lose all Dolby Vision benefits, including dynamic metadata (almost all devices)
-2. **Convert to Profile 8.1 on the fly** - Keep the dynamic metadata, lose only the Enhancement Layer (this is what the Nvidia Shield does). However, devices that do this convert any profile 7 content to 8.1, which can be unsafe (explained above). 
+1. **Fall back to plain HDR10** — Lose all Dolby Vision benefits, including dynamic metadata (almost all devices)
+2. **Convert to Profile 8.1 on the fly** — Keep the dynamic metadata, lose only the Enhancement Layer (this is what the Nvidia Shield does). However, devices that do this convert any profile 7 content to 8.1, which can be unsafe (explained above).
 
 The dynamic metadata (RPU) is the core of what makes Dolby Vision valuable. It contains scene-by-scene tone mapping instructions that tell your TV how to display each frame. Profile 8.1 preserves this entirely. HDR10 fallback gives you none of it.
 
 <Callout icon="lightbulb" iconType="solid" color="#a6d189">
-  Converting to Profile 8.1 is almost always better than falling back to HDR10. You retain the dynamic tone mapping that makes Dolby Vision look good - you just lose enhancements your device couldn't use anyway.
+Converting to Profile 8.1 is almost always better than falling back to HDR10. You retain the dynamic tone mapping that makes Dolby Vision look good — you just lose enhancements your device couldn't use anyway.
 </Callout>
 
 ## Understanding the Enhancement Layer
@@ -63,46 +63,46 @@ The Enhancement Layer in Profile 7 files comes in different forms. dovi_convert 
 
 ### MEL (Minimal Enhancement Layer)
 
-Very common. The Enhancement Layer exists in the file structure but contains no useful data. Converting is completely safe - you lose nothing.
+Very common. The Enhancement Layer exists in the file structure but contains no useful data. Converting is completely safe — you lose nothing.
 
-### Simple FEL (No brightness expansion)
+### Simple FEL (No Brightness Expansion)
 
 The Enhancement Layer contains some data (like film grain or minor color adjustments), but does not expand brightness. Converting is generally safe. You lose the minor enhancements, but retain the Dolby Vision dynamic metadata.
 
 <Callout icon="lightbulb" iconType="solid" color="#a6d189">
-  If you're uncertain about a Simple FEL verdict, use the `-inspect` command for a definitive frame-by-frame analysis.
+If you're uncertain about a Simple FEL verdict, use the `inspect` command for a definitive frame-by-frame analysis.
 </Callout>
 
-### Complex FEL (Brightness expansion)
+### Complex FEL (Brightness Expansion)
 
-The Enhancement Layer actively elevates brightness beyond what the Base Layer contains. Some films are mastered at 4000 nits but have an HDR10 Base Layer trimmed to 1000 nits - the Enhancement Layer provides the missing brightness.
+The Enhancement Layer actively elevates brightness beyond what the Base Layer contains. Some films are mastered at 4000 nits but have an HDR10 Base Layer trimmed to 1000 nits — the Enhancement Layer provides the missing brightness.
 
 <Callout icon="circle-exclamation" iconType="solid" color="#ef9f76">
-  Converting Complex FEL files produces incorrect results. The retained metadata was designed for the combined layers. Without the Enhancement Layer, tone mapping is incorrect - causing a darker picture, flickering, and other issues.
+Converting Complex FEL files produces incorrect results. The retained metadata was designed for the combined layers. Without the Enhancement Layer, tone mapping is incorrect — causing a darker picture, flickering, and other issues.
 </Callout>
 
 **What to do with Complex FEL files:**
 
 - Watch the HDR10 fallback
   - Most devices automatically fall back to playing the HDR10 Base Layer
-  - Some devices, like the Shield, will not fallback, but try to convert to 8.1, no matter what. You can use `dovi_convert` to convert to HDR10 in those situations. Watching the HDR10 Base Layer is always better than watching a force-converted 8.1 file that should not be converted (incorrect tonemapping). 
+  - Some devices, like the Shield, will not fallback, but try to convert to 8.1, no matter what. You can use `dovi_convert` to convert to HDR10 in those situations. Watching the HDR10 Base Layer is always better than watching a force-converted 8.1 file that should not be converted (incorrect tonemapping).
 - Use a device that supports Profile 7 FEL playback (e.g., Ugoos AM6B+)
 - Do not convert unless you understand and accept the quality loss
 
 <Callout icon="circle-info" iconType="solid" color="#8caaee">
-  R3S3t999, author of [DoVi_Scripts](https://github.com/R3S3t9999/DoVi_Scripts), maintains a spreadsheet of known Complex FEL titles. Check the [FEL List](https://docs.google.com/spreadsheets/d/15i0a84uiBtWiHZ5CXZZ7wygLFXwYOd84/edit?gid=828864432#gid=828864432) if you want another source of information.
+R3S3t999, author of [DoVi_Scripts](https://github.com/R3S3t9999/DoVi_Scripts), maintains a spreadsheet of known Complex FEL titles. Check the [FEL List](https://docs.google.com/spreadsheets/d/15i0a84uiBtWiHZ5CXZZ7wygLFXwYOd84/edit?gid=828864432#gid=828864432) if you want another source of information.
 </Callout>
 
-## Device-specific notes
+## Device-Specific Notes
 
 ### Nvidia Shield
 
-The Shield handles Profile 7 files by stripping the Enhancement Layer and injecting the RPU in real-time - the same process dovi_convert does offline.
+The Shield handles Profile 7 files by stripping the Enhancement Layer and injecting the RPU in real-time — the same process dovi_convert does offline.
 
 However, the Shield has limitations:
 
-- **High bitrate struggles** - Real-time conversion during playback can cause stuttering on high-bitrate files
-- **No safety checks!** - The Shield converts everything, including Complex FEL files
+- **High bitrate struggles** — Real-time conversion during playback can cause stuttering on high-bitrate files
+- **No safety checks!** — The Shield converts everything, including Complex FEL files
 
 dovi_convert gives you control. You analyze files in advance, identify problematic titles, and only convert what's safe.
 
@@ -115,18 +115,18 @@ If you use Plex on Apple TV 4K, you may encounter "Fake Dolby Vision" regardless
 - **The solution:** Use [Infuse](https://firecore.com/infuse) instead of Plex. Infuse uses a custom player that correctly applies Dolby Vision metadata. It integrates with Plex servers (the free version doesn't support Dolby Vision).
 
 <Callout icon="circle-info" iconType="solid" color="#8caaee">
-  This is a Plex player issue, not a file format problem. Apple TV hardware supports Profile 8.1 correctly - Plex's implementation doesn't.
+This is a Plex player issue, not a file format problem. Apple TV hardware supports Profile 8.1 correctly — Plex's implementation doesn't.
 </Callout>
 
-## What conversion cannot fix
+## What Conversion Cannot Fix
 
 Converting to Profile 8.1 does not solve format incompatibility issues unrelated to the Enhancement Layer:
 
-- **TrueHD Atmos audio** - Apple TV can't decode TrueHD. You need EAC3 Atmos or AAC fallback tracks.
-- **Multi-angle or Picture-in-Picture** - Secondary video streams are dropped during conversion.
-- **Subtitle compatibility** - Some devices have issues with PGS subtitles; conversion doesn't change this.
+- **TrueHD Atmos audio** — Apple TV can't decode TrueHD. You need EAC3 Atmos or AAC fallback tracks.
+- **Multi-angle or Picture-in-Picture** — Secondary video streams are dropped during conversion.
+- **Subtitle compatibility** — Some devices have issues with PGS subtitles; conversion doesn't change this.
 
-## Next steps
+## Next Steps
 
 <CardGroup cols={2}>
   <Card title="Installation" icon="download" href="/installation/terminal">

@@ -5,17 +5,17 @@ icon: "floppy-disk"
 ---
 
 <Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
-  **Coming Soon:** This feature is currently in development. The documentation below describes the planned functionality.
+**Coming Soon:** This feature is currently in development. The documentation below describes the planned functionality.
 </Callout>
 
 dovi_convert creates space-efficient `.dovi` archives that allow you to restore your original Profile 7 files bit-for-bit, even after converting them to Profile 8.1 or HDR10.
 
-## Why use archives?
+## Why Use Archives?
 
 A full backup of a 60 GB movie takes another 60 GB. A `.dovi` archive is significantly smaller because it stores only the essential Dolby Vision data:
 
-1. **Enhancement Layer (EL)** - The track containing the difference between the base layer and the full 12-bit signal
-2. **RPU Metadata** - The dynamic brightness information
+1. **Enhancement Layer (EL)** — The track containing the difference between the base layer and the full 12-bit signal
+2. **RPU Metadata** — The dynamic brightness information
 
 **Typical savings:**
 - **MEL (Minimal Enhancement Layer):** Extremely small (~200 MB - 1 GB)
@@ -24,7 +24,7 @@ A full backup of a 60 GB movie takes another 60 GB. A `.dovi` archive is signifi
 
 This allows you to keep bit-exact backups of your entire library without doubling your storage requirements.
 
-## Creating a backup
+## Creating a Backup
 
 You can create a backup snapshot either before conversion or while converting.
 
@@ -33,54 +33,54 @@ You can create a backup snapshot either before conversion or while converting.
 Create a snapshot without modifying the video file:
 
 ```bash
-dovi_convert -backup "Movie.mkv"
+dovi_convert backup movie.mkv
 ```
 
-This creates `Movie.dovi` in the same directory.
+This creates `movie.dovi` in the same directory.
 
-### Backup during conversion
+### Backup During Conversion
 
 Create a backup automatically when you convert to Profile 8.1:
 
 ```bash
-dovi_convert -convert "Movie.mkv" -backup
+dovi_convert convert movie.mkv --backup
 ```
 
 Or when stripping Dolby Vision to clean HDR10:
 
 ```bash
-dovi_convert -convert -hdr10 "Movie.mkv" -backup
+dovi_convert convert movie.mkv --hdr10 --backup
 ```
 
 <Callout icon="circle-info" color="#8caaee" iconType="solid">
-  Another feature that's coming soon
+Another feature that's coming soon
 </Callout>
 
-## Restoring files
+## Restoring Files
 
 Restoration is a "purist" process. It ensures the output is identical to the original source, regardless of whether your current file is Profile 8.1 (with injected RPU) or plain HDR10.
 
 To restore a file:
 
 ```bash
-dovi_convert -restore "Movie.mkv"
+dovi_convert restore movie.mkv
 ```
 
 The tool will:
-1. Locate `Movie.dovi`
+1. Locate `movie.dovi`
 2. Extract the Base Layer from your video
 3. Sanitize it (remove any injected RPU if present)
 4. Mux it with the original Enhancement Layer from the archive
 5. Remux everything with your audio and subtitle tracks
 
-### Restoring from a different location
+### Restoring from a Different Location
 
 If you moved your `.dovi` archive to a backup drive, point to it explicitly:
 
 ```bash
-dovi_convert -restore "Movie.mkv" -source "/Volumes/Backups/Movie.dovi"
+dovi_convert restore movie.mkv --source /Volumes/Backups/movie.dovi
 ```
 
 <Callout icon="circle-info" color="#8caaee" iconType="solid">
-  **Bit-exact restoration**: The process separates metadata from video essence to guarantee the restored file is identical to the source.
+**Bit-exact restoration**: The process separates metadata from video essence to guarantee the restored file is identical to the source.
 </Callout>

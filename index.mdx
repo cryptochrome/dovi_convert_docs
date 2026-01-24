@@ -9,17 +9,17 @@ dovi_convert automates the conversion of Dolby Vision Profile 7 MKV files (typic
   This is the documentation for dovi_convert. For source code, releases, and issue tracking, visit the GitHub repository.
 </Card>
 
-## Why convert?
+## Why Convert?
 
-Many popular devices - including Apple TV 4K, Nvidia Shield, Zidoo players, and Plex clients - cannot process the Enhancement Layer in Profile 7 files. Without proper handling, these devices fall back to HDR10, losing Dolby Vision benefits entirely.
+Many popular devices — including Apple TV 4K, Nvidia Shield, Zidoo players, and Plex clients — cannot process the Enhancement Layer in Profile 7 files. Without proper handling, these devices fall back to HDR10, losing Dolby Vision benefits entirely.
 
 Converting to Profile 8.1 strips the Enhancement Layer while preserving the dynamic metadata (RPU), giving you a file that works on virtually any Dolby Vision-capable device.
 
 <Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
-  Not every Profile 7 file should be converted. Some use the Enhancement Layer for brightness expansion - converting these causes visual issues. dovi_convert analyzes files before conversion and warns you when conversion is risky.
+Not every Profile 7 file should be converted. Some use the Enhancement Layer for brightness expansion — converting these causes visual issues. dovi_convert analyzes files before conversion and warns you when conversion is risky.
 </Callout>
 
-## What you need to know
+## What You Need to Know
 
 Before using dovi_convert, you should understand what it does and when conversion is appropriate.
 
@@ -28,11 +28,11 @@ Before using dovi_convert, you should understand what it does and when conversio
     Understand the technical background, caveats, and device-specific considerations
   </Card>
   <Card title="FEL Types Explained" icon="layer-group" href="/before-you-start#understanding-the-enhancement-layer">
-    Learn about MEL, Simple FEL, and Complex FEL - and why it matters
+    Learn about MEL, Simple FEL, and Complex FEL — and why it matters
   </Card>
 </CardGroup>
 
-## Platform support
+## Platform Support
 
 dovi_convert runs on:
 
@@ -42,7 +42,7 @@ dovi_convert runs on:
 - **Docker** (with web terminal access)
 
 <Callout icon="circle-info" color="#8caaee" iconType="solid">
-  The conversion process does not re-encode video. Your CPU only needs to handle metadata extraction and remuxing - no powerful hardware required.
+The conversion process does not re-encode video. Your CPU only needs to handle metadata extraction and remuxing — no powerful hardware required.
 </Callout>
 
 ## Installation
@@ -56,19 +56,16 @@ dovi_convert runs on:
   </Card>
 </CardGroup>
 
-## Core concepts
+## Core Concepts
 
 Once installed, familiarize yourself with the main features:
 
 <CardGroup cols={2}>
   <Card title="File Scanning & Analysis" icon="scanner-image" href="/essentials/scanning">
-    Identify video formats and analyze FEL complexity with `-scan` and `-inspect`
+    Identify video formats and analyze FEL complexity with `scan` and `inspect`
   </Card>
   <Card title="File Conversion" icon="recycle" href="/essentials/conversion">
-    Convert individual files with `-convert`
-  </Card>
-  <Card title="Batch Processing" icon="files" href="/essentials/batch">
-    Scan and convert entire directories with `-batch`
+    Convert individual files or directories with `convert`
   </Card>
   <Card title="Backup & Restore" icon="floppy-disk" href="/essentials/backup-restore">
     Archive original layers for future restoration (coming soon)
