@@ -12,6 +12,7 @@ The dovi_convert Docker container provides a self-contained environment with all
 - **Pre-configured environment** — All dependencies (ffmpeg, dovi_tool, mkvtoolnix, mediainfo) included
 - **NAS-friendly** — Designed for network storage devices and servers
 - **User mapping** — Run with your own UID/GID to avoid file permission issues
+- **Persistent sessions** — The container has `tmux` for session management installed
 
 ## Quick Start
 
@@ -25,7 +26,6 @@ The dovi_convert Docker container provides a self-contained environment with all
       -e TZ=Europe/Berlin \
       -p 7681:7681 \
       -v /path/to/media:/data \
-      # -v /path/to/ssd:/cache \  # Optional: fast temp storage
       --restart unless-stopped \
       cryptochrome/dovi_convert:latest
     ```
@@ -40,9 +40,10 @@ The dovi_convert Docker container provides a self-contained environment with all
         container_name: dovi_convert
         hostname: dovi-convert
         environment:
-          - PUID=1000  # Your user ID (run 'id' to find)
-          - PGID=1000  # Your group ID
-          - TZ=Europe/Berlin  # Your timezone
+          - PUID=1000                   # Your user ID (run 'id' to find)
+          - PGID=1000                   # Your group ID
+          - TZ=UTC                      # Your timezone
+          - TMUX_HISTORY_LIMIT=50000    # Number of lines to reserve for `tmux` buffer
         volumes:
           # Mount your media folder(s) here
           - /mnt/media/movies:/data/movies
@@ -81,9 +82,10 @@ This outputs something like `uid=1000(yourname) gid=1000(yourname)`. Use these v
 
 | Variable | Default         | Description                   |
 | -------- | --------------- | ----------------------------- |
-| `PUID`   | 1000            | User ID for file permissions  |
-| `PGID`   | 1000            | Group ID for file permissions |
-| `TZ`     | `Europe/Berlin` | Timezone for log timestamps   |
+| `PUID`   | `1000`            | User ID for file permissions  |
+| `PGID`   | `1000`            | Group ID for file permissions |
+| `TZ`     | `UTC` | Timezone for log timestamps   |
+| `TMUX_HISTORY_LIMIT` | `50000` | Number of lines to reserve for `tmux` buffer |
 
 ### Volume Mounts
 
@@ -124,13 +126,78 @@ The web terminal runs on port 7681 inside the container. Map it to any available
 
 Once the container is running, open `http://your-docker-host:7681` in your browser. You'll see a terminal session with dovi_convert ready to use.
 
-The container includes a `dovi` alias for convenience:
+The container includes a `dovi` alias for convenience - for example:
 
 ```bash
 dovi help          # Same as dovi_convert --help
-dovi scan          # Scan all files in current directory
-etc.
+dovi scan          # Same as dovi_convert scan
+# etc.
 ```
+
+## Session Persistence
+
+If you run longer, unattended conversions and close your browser window, the session will be terminated and the conversion interrupted. To avoid this, you can use `tmux` to create persistent sessions. This allows you to close your browser and later re-attach to the session to check on status or continue working where you left off.
+
+<Callout icon="circle-info" iconType="solid" color="#8caaee">
+`tmux` sessions persist as long as the container is running, unless you manually terminate them.
+</Callout>
+
+
+### Using `tmux`
+
+<Tabs>
+  <Tab title="Start a session">
+    This will start a new `tmux` session. You are automatically attached to it and can start working with dovi_convert. 
+
+    ```bash
+    tmux new -s mysession
+    ```
+  </Tab>
+  <Tab title="Detach from session">
+    You can simply close your browser and the session will continue running in the background. For a more graceful exit, you can use this keyboard shortcut to detach:
+    Press `Ctrl+b` followed by `d`.
+  </Tab>
+  <Tab title="Re-attach to session">
+    When you later come back and login to the container again, you can re-attach to the existing session with:
+
+    ```bash
+    tmux attach -t mysession
+    ```
+  </Tab>
+  <Tab title="List running sessions">
+    To list all running sessions, use:
+    
+    ```bash
+    tmux ls
+    ```
+  </Tab>
+  <Tab title="Kill a session">
+    To kill a detached session, use:
+    
+    ```bash
+    tmux kill-session -t mysession
+    ```
+  </Tab>
+  <Tab title="End session">
+    To end a session you are currently attached to, simply exit the shell by typing:
+    
+    ```bash
+    exit
+    ```
+  </Tab>
+</Tabs>
+
+To scroll through the session history after re-attaching, use `Ctrl+b` followed by `[`, then use the arrow or Page Up/Down keys to scroll. Press `q` to exit scroll mode.
+
+<Callout icon="circle-info" iconType="solid" color="#8caaee">
+For more info on how to use `tmux`, see the [official tmux documentation](https://github.com/tmux/tmux/wiki).
+</Callout>
+
+## Session Buffer
+
+By default, the container reserves a buffer of 50,000 lines of text for `tmux`. This should be plenty for scrolling back in sessions after you re-attach (to check on progress, for example). However, 50k lines consume about 50-100 MB of RAM. If you are memory constrained, or want an even larger buffer, you can change the buffer size by setting the `TMUX_HISTORY_LIMIT` environment variable for the Docker container. An example is provided in the Docker Compose file on this page.
+
+---
 
 ## Next Steps
 
