@@ -193,7 +193,7 @@ To scroll through the session history after re-attaching, use `Ctrl+b` followed 
 For more info on how to use `tmux`, see the [official tmux documentation](https://github.com/tmux/tmux/wiki).
 </Callout>
 
-## Session Buffer
+### Session Buffer
 
 By default, the container reserves a buffer of 50,000 lines of text for `tmux`. This should be plenty for scrolling back in sessions after you re-attach (to check on progress, for example). However, 50k lines consume about 50-100 MB of RAM. If you are memory constrained, or want an even larger buffer, you can change the buffer size by setting the `TMUX_HISTORY_LIMIT` environment variable for the Docker container. An example is provided in the Docker Compose file on this page.
 
