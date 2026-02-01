@@ -1,0 +1,99 @@
+---
+title: "restore"
+description: "Rebuild a Profile 7 file from a converted file and its archive"
+icon: "clock-rotate-left"
+---
+
+## Synopsis
+
+```shellscript
+dovi_convert restore <file> [options]
+```
+
+## Description
+
+Restores a Profile 7 file by combining a converted file (Profile 8.1 or HDR10) with its `.dovi` archive. The command automatically detects the current file format and handles the restoration process accordingly.
+
+The output file is named `<original>.restored.mkv` and contains the rebuilt Profile 7 video with all original audio and subtitle tracks.
+
+## Arguments
+
+| Argument | Required | Description |
+| -------- | -------- | ----------- |
+| `<file>` | Yes | A converted MKV file (Profile 8.1 or HDR10) |
+
+## Options
+
+| Option | Short | Description |
+| ------ | ----- | ----------- |
+| `--source PATH` | — | Path to the `.dovi` archive (if not in same directory as file) |
+| `--temp PATH` | `-t PATH` | Write temporary files to a separate directory |
+| `--debug` | — | Generate `dovi_convert_debug.log` with detailed output |
+
+## Examples
+
+**Restore using archive in the same directory:**
+
+```bash
+dovi_convert restore movie.mkv
+```
+
+Looks for `movie.dovi` in the same directory as `movie.mkv`.
+
+**Restore using archive from a backup drive:**
+
+```bash
+dovi_convert restore movie.mkv --source /Volumes/Backups/movie.dovi
+```
+
+**Use a fast temp directory:**
+
+```bash
+dovi_convert restore movie.mkv --temp /mnt/ssd/temp
+```
+
+## Output
+
+```
+Restoring: movie.mkv
+  Using backup: movie.dovi
+Restoring Profile 7... Done.
+
+Restore completed successfully.
+  Restored file: movie.restored.mkv
+  Size: 52.33 GB
+  Format: Profile 7 (Dolby Vision, Version 1.0, dvhe.07.06, BL+EL+RPU)
+```
+
+## Restoration Process
+
+1. **Locate archive** — Finds `<filename>.dovi` in the same directory, or uses `--source`
+2. **Extract Base Layer** — Pulls the video stream from the current file
+3. **Detect format** — Checks if the file is Profile 8.1 or HDR10
+4. **Sanitize** — If Profile 8.1, strips the injected RPU to get a clean Base Layer
+5. **Unpack archive** — Extracts the original Enhancement Layer
+6. **Rebuild** — Muxes Base Layer + Enhancement Layer into Profile 7
+7. **Remux** — Combines restored video with original audio and subtitles
+8. **Verify** — Confirms the output is valid Profile 7
+
+## Error Handling
+
+**Missing archive:**
+
+```
+No backup found.
+  Expected: /path/to/movie.dovi
+  Hint: Use --source to specify an alternate backup location.
+```
+
+Use `--source` to specify the correct path to the archive.
+
+## Restrictions
+
+- **Single file only.** There is no batch restore mode.
+- **Requires matching archive.** The `.dovi` archive must be from the same source file. Using an archive from a different file produces invalid output.
+
+## See Also
+
+- [backup](backup) — Create archives for later restoration
+- [Backup & Restore concept](/essentials/backup-restore) — How archiving works

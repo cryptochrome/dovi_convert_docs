@@ -1,0 +1,76 @@
+---
+title: "backup"
+description: "Create a restorable Enhancement Layer archive from a Profile 7 file"
+icon: "floppy-disk"
+---
+
+## Synopsis
+
+```shellscript
+dovi_convert backup <file> [options]
+```
+
+## Description
+
+Creates a `.dovi` archive containing the Enhancement Layer from a Profile 7 MKV file. This archive can later be used with the `restore` command to rebuild the original Profile 7 file.
+
+The archive is a compact representation of the recoverable data - typically 10-25% of the original file size for Full Enhancement Layer content, or about 1-2 GB for Minimal Enhancement Layer content.
+
+## Arguments
+
+| Argument | Required | Description |
+| -------- | -------- | ----------- |
+| `<file>` | Yes | A single Profile 7 MKV file |
+
+## Options
+
+| Option | Short | Description |
+| ------ | ----- | ----------- |
+| `--output PATH` | `-o PATH` | Output directory for the archive |
+| `--temp PATH` | `-t PATH` | Write temporary files to a separate directory |
+| `--debug` | — | Generate `dovi_convert_debug.log` with detailed output |
+
+## Examples
+
+**Create an archive in the same directory:**
+
+```bash
+dovi_convert backup movie.mkv
+```
+
+Creates `movie.dovi` alongside the source file.
+
+**Save the archive to a backup drive:**
+
+```bash
+dovi_convert backup movie.mkv --output /Volumes/Backups/
+dovi_convert backup movie.mkv -o /Volumes/Backups/
+```
+
+**Use a fast temp directory:**
+
+```bash
+dovi_convert backup movie.mkv --temp /mnt/ssd/temp
+```
+
+## Output
+
+```
+Analyzing: movie.mkv
+Creating backup...
+Extracting Enhancement Layer... Done.
+
+Backup created successfully.
+  Archive: movie.dovi
+  Size: 1.24 GB (2.4% of original)
+```
+
+## Restrictions
+
+- **Single file only.** The `backup` command does not accept directories. For batch operations, use `convert --backup` instead.
+- **Profile 7 only.** The source file must be Dolby Vision Profile 7 (FEL). Profile 8.1 files don't have an Enhancement Layer to archive.
+
+## See Also
+
+- [restore](restore) — Rebuild Profile 7 from an archive
+- [convert](convert) — Convert with `--backup` flag for batch operations

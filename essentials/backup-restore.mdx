@@ -4,83 +4,155 @@ description: "Create space-efficient archives and restore original Profile 7 fil
 icon: "floppy-disk"
 ---
 
-<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
-**Coming Soon:** This feature is currently in development. The documentation below describes the planned functionality.
-</Callout>
+When you convert a Profile 7 file to Profile 8.1 or HDR10, the Enhancement Layer is discarded. The backup feature lets you save this Enhancement Layer as a compact `.dovi` archive before conversion. Later, you can combine this archive with your converted file to rebuild the original Profile 7 file.
 
-dovi_convert creates space-efficient `.dovi` archives that allow you to restore your original Profile 7 files bit-for-bit, even after converting them to Profile 8.1 or HDR10.
+## Why Back Up?
 
-## Why Use Archives?
+By default, `convert` renames the original file to `.bak.dovi_convert` as a safety backup. This works, but it doubles your storage - a 60 GB movie creates a 60 GB backup.
 
-A full backup of a 60 GB movie takes another 60 GB. A `.dovi` archive is significantly smaller because it stores only the essential Dolby Vision data:
+A `.dovi` archive stores only the Enhancement Layer, typically 10-25% of the original size. With this archive, you can delete the large `.bak.dovi_convert` file and still restore the original Profile 7 later.
 
-1. **Enhancement Layer (EL)** — The track containing the difference between the base layer and the full 12-bit signal
-2. **RPU Metadata** — The dynamic brightness information
+**Typical archive sizes:**
 
-**Typical savings:**
-- **MEL (Minimal Enhancement Layer):** Extremely small (~200 MB - 1 GB)
-- **FEL (Full Enhancement Layer):** Larger, typically **10-25%** of the original file size (e.g., 6-15 GB for a 60 GB movie)
+| FEL Type | Archive Size | Example (60 GB source) |
+| -------- | ------------ | ---------------------- |
+| MEL (Minimal Enhancement Layer) | Very small | 1 GB - 2 GB |
+| FEL (Full Enhancement Layer) | 10-25% of original | 6 - 15 GB |
 
 
-This allows you to keep bit-exact backups of your entire library without doubling your storage requirements.
 
-## Creating a Backup
+## Creating Backups
 
-You can create a backup snapshot either before conversion or while converting.
+You can create a backup either as a standalone operation or during conversion.
 
 ### Standalone Backup
 
-Create a snapshot without modifying the video file:
+Create an archive without modifying the source file:
 
 ```bash
 dovi_convert backup movie.mkv
 ```
 
-This creates `movie.dovi` in the same directory.
+This creates `movie.dovi` in the same directory as the source.
+
+To save the archive elsewhere:
+
+```bash
+dovi_convert backup movie.mkv --output /backups/
+```
+
+<Callout icon="circle-info" color="#8caaee" iconType="solid">
+The `backup` command works on single files only. For batch operations, use `convert --backup` instead.
+</Callout>
 
 ### Backup During Conversion
 
-Create a backup automatically when you convert to Profile 8.1:
+Create a backup automatically when you convert:
 
 ```bash
 dovi_convert convert movie.mkv --backup
 ```
 
-Or when stripping Dolby Vision to clean HDR10:
+This creates `movie.dovi` before converting to Profile 8.1. The archive is saved in the same directory as the source file. You can combine this with the `--output` flag, which moves both the converted file as well as the backup archive to the specified output folder. 
+
+The `--backup` flag works with both single files and batch mode (directories):
 
 ```bash
-dovi_convert convert movie.mkv --hdr10 --backup
+dovi_convert convert /movies --recursive --backup
 ```
 
-<Callout icon="circle-info" color="#8caaee" iconType="solid">
-Another feature that's coming soon
+<Callout icon="triangle-exclamation" color="#e78284" iconType="solid">
+Batch backups can consume significant disk space. For example, backing up 50 movies creates around 500 GB of archives. Make sure you have enough free space before running batch operations with `--backup`.
+</Callout>
+
+### Combining with `--delete`
+
+If you want to remove the original file after conversion but still have a way to restore:
+
+```bash
+dovi_convert convert movie.mkv --backup --delete
+```
+
+The `.dovi` archive is preserved even when `--delete` removes the `.bak.dovi_convert` backup.
+
+<Callout icon="circle-exclamation" color="#ef9f76" iconType="solid">
+With `--backup --delete`, your only way to restore the original Profile 7 file is through the `.dovi` archive. Make sure the archive was created successfully before relying on this workflow. Verify before trust. 
 </Callout>
 
 ## Restoring Files
 
-Restoration is a "purist" process. It ensures the output is identical to the original source, regardless of whether your current file is Profile 8.1 (with injected RPU) or plain HDR10.
-
-To restore a file:
+The `restore` command rebuilds a Profile 7 file from a converted file and its `.dovi` archive.
 
 ```bash
 dovi_convert restore movie.mkv
 ```
 
-The tool will:
-1. Locate `movie.dovi`
-2. Extract the Base Layer from your video
-3. Sanitize it (remove any injected RPU if present)
-4. Mux it with the original Enhancement Layer from the archive
-5. Remux everything with your audio and subtitle tracks
+The command:
 
-### Restoring from a Different Location
+1. Locates `movie.dovi` in the same directory
+2. Extracts the Base Layer from your current file
+3. Detects whether the file is Profile 8.1 or HDR10
+4. Sanitizes the Base Layer (removes any injected RPU if present)
+5. Rebuilds Profile 7 using the Enhancement Layer from the archive
+6. Remuxes with all original audio and subtitle tracks
+7. Verifies the result is valid Profile 7
 
-If you moved your `.dovi` archive to a backup drive, point to it explicitly:
+The output is saved as `movie.restored.mkv`. The converted profile 8.1 file is not modified or deleted - you can remove it manually after verifying the restoration.
+
+### Using Archives from Another Location
+
+If you moved your `.dovi` archive to a backup drive:
 
 ```bash
 dovi_convert restore movie.mkv --source /Volumes/Backups/movie.dovi
 ```
 
+### What Gets Restored
+
+The restore process works on both Profile 8.1 and HDR10 files:
+
+| Current File | Process |
+| ------------ | ------- |
+| Profile 8.1 | Strips injected RPU from Base Layer, then rebuilds with original EL |
+| HDR10 | Rebuilds directly with original EL (no sanitization needed) |
+
 <Callout icon="circle-info" color="#8caaee" iconType="solid">
-**Bit-exact restoration**: The process separates metadata from video essence to guarantee the restored file is identical to the source.
+The `restore` command works on single files only. There is no batch restore mode.
 </Callout>
+
+## Archive Format
+
+The `.dovi` archive is an uncompressed TAR file containing a single `el.hevc` file (the Enhancement Layer). The format is intentionally simple:
+
+- No compression overhead (the video is already heavily compressed)
+- Fast extraction
+- Standard format readable by any TAR tool
+
+## Troubleshooting
+
+### Missing Backup Error
+
+If the archive can't be found:
+
+```
+No backup found.
+  Expected: /path/to/movie.dovi
+  Hint: Use --source to specify an alternate backup location.
+```
+
+Use `--source` to point to the correct location.
+
+### Verification Failure
+
+If restore completes but verification shows the file is not Profile 7, the archive may be corrupted or from a different source file.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="backup command" icon="terminal" href="/command-reference/backup">
+    Full command reference for creating archives
+  </Card>
+  <Card title="restore command" icon="terminal" href="/command-reference/restore">
+    Full command reference for restoring files
+  </Card>
+</CardGroup>
