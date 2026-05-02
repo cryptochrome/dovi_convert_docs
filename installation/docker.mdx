@@ -4,32 +4,19 @@ description: "Run dovi_convert in a container with a web-based terminal"
 icon: "whale"
 ---
 
-The dovi_convert Docker container provides a self-contained environment with all dependencies pre-installed. It includes a web-based terminal, so you can access the tool from any browser without installing anything on your host system.
+The dovi\_convert Docker container provides a self-contained environment with all dependencies pre-installed. It includes a web-based terminal, so you can access the tool from any browser without installing anything on your host system.
 
 ## Features
 
-- **Web terminal** — Access dovi_convert through your browser at `http://your-host:7681`
-- **Pre-configured environment** — All dependencies (ffmpeg, dovi_tool, mkvtoolnix, mediainfo) included
+- **Web terminal** — Access dovi\_convert through your browser at `http://your-host:7681`
+- **Pre-configured environment** — All dependencies (ffmpeg, dovi\_tool, mkvtoolnix, mediainfo) included
 - **NAS-friendly** — Designed for network storage devices and servers
-- **User mapping** — Run with your own UID/GID to avoid file permission issues
+- **User mapping** — Run with your own UID/GID and set UMASK to avoid file permission issues
 - **Persistent sessions** — The container has `tmux` for session management installed
 
-## Quick Start
+## Quick Start Examples
 
 <Tabs>
-  <Tab title="Docker run">
-    ```bash
-    docker run -d \
-      --name=dovi_convert \
-      -e PUID=1000 \
-      -e PGID=1000 \
-      -e TZ=Europe/Berlin \
-      -p 7681:7681 \
-      -v /path/to/media:/data \
-      --restart unless-stopped \
-      cryptochrome/dovi_convert:latest
-    ```
-  </Tab>
   <Tab title="Docker Compose">
     Save this as `docker-compose.yml`:
 
@@ -60,6 +47,19 @@ The dovi_convert Docker container provides a self-contained environment with all
     docker compose up -d
     ```
   </Tab>
+  <Tab title="Docker run">
+    ```bash
+    docker run -d \
+      --name=dovi_convert \
+      -e PUID=1000 \
+      -e PGID=1000 \
+      -e TZ=Europe/Berlin \
+      -p 7681:7681 \
+      -v /path/to/media:/data \
+      --restart unless-stopped \
+      cryptochrome/dovi_convert:latest
+    ```
+  </Tab>
 </Tabs>
 
 Then open `http://your-docker-host:7681` in your browser.
@@ -80,16 +80,17 @@ This outputs something like `uid=1000(yourname) gid=1000(yourname)`. Use these v
 
 ### Environment Variables
 
-| Variable | Default         | Description                   |
-| -------- | --------------- | ----------------------------- |
-| `PUID`   | `1000`            | User ID for file permissions  |
-| `PGID`   | `1000`            | Group ID for file permissions |
-| `TZ`     | `UTC` | Timezone for log timestamps   |
+| Variable | Default | Description |
+| --- | --- | --- |
+| `PUID` | `1000` | User ID for file permissions |
+| `PGID` | `1000` | Group ID for file permissions |
+| `TZ` | `UTC` | Timezone for log timestamps |
+| `UMASK` | `022` | Set file permission UMASK if necessary |
 | `TMUX_HISTORY_LIMIT` | `50000` | Number of lines to reserve for `tmux` buffer |
 
 ### Volume Mounts
 
-Mount your media directories to `/data` inside the container. You can mount multiple paths:
+Mount your media directories to `/data` inside the container. You can mount multiple paths, or just your root media folder (subdirectories are automatically included):
 
 ```bash
 -v /mnt/movies:/data/movies \
@@ -124,7 +125,7 @@ The web terminal runs on port 7681 inside the container. Map it to any available
 
 ## Using the Web Terminal
 
-Once the container is running, open `http://your-docker-host:7681` in your browser. You'll see a terminal session with dovi_convert ready to use.
+Once the container is running, open `http://your-docker-host:7681` in your browser. You'll see a terminal session with dovi\_convert ready to use.
 
 The container includes a `dovi` alias for convenience - for example:
 
@@ -139,23 +140,21 @@ dovi scan          # Same as dovi_convert scan
 If you run longer, unattended conversions and close your browser window, the session will be terminated and the conversion interrupted. To avoid this, you can use `tmux` to create persistent sessions. This allows you to close your browser and later re-attach to the session to check on status or continue working where you left off.
 
 <Callout icon="circle-info" iconType="solid" color="#8caaee">
-`tmux` sessions persist as long as the container is running, unless you manually terminate them.
+  `tmux` sessions persist as long as the container is running, unless you manually terminate them.
 </Callout>
-
 
 ### Using `tmux`
 
 <Tabs>
   <Tab title="Start a session">
-    This will start a new `tmux` session. You are automatically attached to it and can start working with dovi_convert. 
+    This will start a new `tmux` session. You are automatically attached to it and can start working with dovi\_convert.
 
     ```bash
     tmux new -s mysession
     ```
   </Tab>
   <Tab title="Detach from session">
-    You can simply close your browser and the session will continue running in the background. For a more graceful exit, you can use this keyboard shortcut to detach:
-    Press `Ctrl+b` followed by `d`.
+    You can simply close your browser and the session will continue running in the background. For a more graceful exit, you can use this keyboard shortcut to detach: Press `Ctrl+b` followed by `d`.
   </Tab>
   <Tab title="Re-attach to session">
     When you later come back and login to the container again, you can re-attach to the existing session with:
@@ -166,21 +165,21 @@ If you run longer, unattended conversions and close your browser window, the ses
   </Tab>
   <Tab title="List running sessions">
     To list all running sessions, use:
-    
+
     ```bash
     tmux ls
     ```
   </Tab>
   <Tab title="Kill a session">
     To kill a detached session, use:
-    
+
     ```bash
     tmux kill-session -t mysession
     ```
   </Tab>
   <Tab title="End session">
     To end a session you are currently attached to, simply exit the shell by typing:
-    
+
     ```bash
     exit
     ```
@@ -190,7 +189,7 @@ If you run longer, unattended conversions and close your browser window, the ses
 To scroll through the session history after re-attaching, use `Ctrl+b` followed by `[`, then use the arrow or Page Up/Down keys to scroll. Press `q` to exit scroll mode.
 
 <Callout icon="circle-info" iconType="solid" color="#8caaee">
-For more info on how to use `tmux`, see the [official tmux documentation](https://github.com/tmux/tmux/wiki).
+  For more info on how to use `tmux`, see the [official tmux documentation](https://github.com/tmux/tmux/wiki).
 </Callout>
 
 ### Session Buffer
@@ -205,6 +204,7 @@ By default, the container reserves a buffer of 50,000 lines of text for `tmux`. 
   <Card title="File Scanning" icon="scanner-image" href="/essentials/scanning">
     Analyze your files to identify formats and FEL status
   </Card>
+
   <Card title="File Conversion" icon="recycle" href="/essentials/conversion">
     Convert files or directories to Profile 8.1
   </Card>
